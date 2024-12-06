@@ -17,4 +17,54 @@ public class AssetType {
     private int expectedLifeSpan;
     private String image;
     private List<SpecificAsset> specificAssets;
+
+    public AssetType(String name, int expectedLifeSpan, String image) {
+        this.name = name;
+        this.expectedLifeSpan = expectedLifeSpan;
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getExpectedLifeSpan() {
+        return expectedLifeSpan;
+    }
+
+    public void setExpectedLifeSpan(int expectedLifeSpan) {
+        this.expectedLifeSpan = expectedLifeSpan;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public List<SpecificAsset> getSpecificAssets() {
+        return specificAssets;
+    }
+
+    public void setSpecificAssets(List<SpecificAsset> specificAssets) {
+        this.specificAssets = specificAssets;
+    }
+
+    public static Map<String, AssetType> getAssettypesByName() {
+        return assettypesByName;
+    }
+
+    public static void setAssettypesByName(Map<String, AssetType> assettypesByName) {
+        AssetType.assettypesByName = assettypesByName;
+    }
+
+    public static void addAssetType(AssetType assetType) {
+        assettypesByName.put(assetType.getName(), assetType);
+    }
 }
