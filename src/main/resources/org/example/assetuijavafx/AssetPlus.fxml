@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.assetuijavafx.controllers.AssetPlusController">
+    <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="600.0" tabMaxWidth="800.0">
+        <Tab text="AssetType">
+            <fx:include source="AssetType.fxml" />
+        </Tab>
+        <Tab text="SpecificAsset">
+            <fx:include source="SpecificAsset.fxml" />
+        </Tab>
+    </TabPane>
+</Pane>

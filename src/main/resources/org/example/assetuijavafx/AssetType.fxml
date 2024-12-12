@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefWrapLength="720.0" vgap="16.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.assetuijavafx.controllers.AssetTypeController">
+   <children>
+      <Button fx:id="addAssetType" mnemonicParsing="false" onAction="#addAssetType" text="Add AssetType" />
+      <TableView fx:id="table" prefWidth="720.0">
+        <columns>
+          <TableColumn fx:id="name" prefWidth="75.0" text="name" />
+          <TableColumn fx:id="expectedLifeSpan" prefWidth="75.0" text="expectedLifeSpan" />
+            <TableColumn fx:id="image" prefWidth="75.0" text="image" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+   <padding>
+      <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+   </padding>
+</FlowPane>
