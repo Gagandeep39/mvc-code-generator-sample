@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.models.AssetType;
 
-public class AddAssetTypeController {
+public class AssetTypeFormController {
 
     // Handle Add
 
@@ -23,12 +23,27 @@ public class AddAssetTypeController {
     @FXML
     private TextField inputFieldName;
 
+    private AssetType currentAssetType;
+
+    public void setData(AssetType type) {
+        this.currentAssetType = type;
+        inputFieldName.setText(type.getName());
+        inputFieldImage.setText(type.getImage());
+        inputFieldExpectedLifeSpan.setText(String.valueOf(type.getExpectedLifeSpan()));
+    }
+
     @FXML
     private void save(ActionEvent event) {
         String name = inputFieldName.getText();
         String image = inputFieldImage.getText();
         int expectedLifeSpan = Integer.parseInt(inputFieldExpectedLifeSpan.getText());
-        AssetType.addAssetType(new AssetType(name, expectedLifeSpan, image));
+        if (currentAssetType != null) {
+            currentAssetType.setExpectedLifeSpan(expectedLifeSpan);
+            currentAssetType.setImage(image);
+            currentAssetType.setName(name);
+        } else {
+            AssetType.addAssetType(new AssetType(name, expectedLifeSpan, image));
+        }
         cancel(event);
     }
 

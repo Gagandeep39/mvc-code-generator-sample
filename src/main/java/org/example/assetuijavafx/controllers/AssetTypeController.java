@@ -39,6 +39,9 @@ public class AssetTypeController implements Initializable {
     private TableColumn<AssetType, Button> delete;
 
     @FXML
+    private TableColumn<AssetType, Button> update;
+
+    @FXML
     private TableView<AssetType> table;
 
 
@@ -49,8 +52,21 @@ public class AssetTypeController implements Initializable {
 
     @FXML
     private void addAssetType(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AddAssetType.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AssetTypeForm.fxml"));
         Parent parent = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(parent));
+        stage.showAndWait();
+        initializeTable();
+    }
+
+    @FXML
+    private void updateAssetType(AssetType assetType) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AssetTypeForm.fxml"));
+        Parent parent = fxmlLoader.load();
+        AssetTypeFormController controller = fxmlLoader.getController();
+        controller.setData(assetType);
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(parent));
@@ -63,11 +79,18 @@ public class AssetTypeController implements Initializable {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         expectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
         image.setCellValueFactory(new PropertyValueFactory<>("image"));
+        update.setCellFactory(column -> new ButtonCell<>("Update", (assetType -> {
+            try {
+                updateAssetType(assetType);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        })));
         delete.setCellFactory(column -> new ButtonCell<>("Delete", (assetType) -> {
             try {
                 showDialogDeleteAssetType(assetType);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }));
         table.setItems(list);
