@@ -78,4 +78,8 @@ public class AssetType {
     public void setSpecificAssets(List<SpecificAsset> specificAssets) {
         this.specificAssets = specificAssets;
     }
+
+    public static void delete(AssetType type) {
+        assettypesByName.remove(type.getName());
+    }
 }

@@ -11,10 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.assetuijavafx.layouts.ButtonCell;
 import org.example.assetuijavafx.models.AssetType;
 
 import java.io.IOException;
@@ -36,12 +36,15 @@ public class AssetTypeController implements Initializable {
     private TableColumn<AssetType, String> name;
 
     @FXML
+    private TableColumn<AssetType, Button> delete;
+
+    @FXML
     private TableView<AssetType> table;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        intializeTable();
+        initializeTable();
     }
 
     @FXML
@@ -52,14 +55,39 @@ public class AssetTypeController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(parent));
         stage.showAndWait();
-        intializeTable();
+        initializeTable();
     }
 
-    private void intializeTable() {
+    private void initializeTable() {
         ObservableList<AssetType> list = FXCollections.observableArrayList(getAssettypesByName().values());
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         expectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
         image.setCellValueFactory(new PropertyValueFactory<>("image"));
+        delete.setCellFactory(column -> new ButtonCell<>("Delete", (assetType) -> {
+            try {
+                showDialogDeleteAssetType(assetType);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }));
         table.setItems(list);
+    }
+
+    private void showDialogDeleteAssetType(AssetType assetType) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "DeleteDialog.fxml"));
+        Parent parent = fxmlLoader.load();
+        // Get controller
+        DeleteDialogController<AssetType> controller = fxmlLoader.getController();
+        controller.setAction(a -> deleteAssetType(assetType));
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(parent));
+        stage.showAndWait();
+        initializeTable();
+    }
+
+    private void deleteAssetType(AssetType assetType) {
+        System.out.println("Deleted AssetType: " + assetType);
+        AssetType.delete(assetType);
     }
 }
