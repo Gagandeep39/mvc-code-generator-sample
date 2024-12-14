@@ -8,7 +8,7 @@
           xmlns:fx="http://javafx.com/fxml/1"
           fx:controller="org.example.assetuijavafx.controllers.AssetTypeController" fx:id="root">
     <children>
-        <Button fx:id="addAssetType" mnemonicParsing="false" onAction="#addAssetType" text="Add AssetType"/>
+        <Button mnemonicParsing="false" onAction="#onAddAssetType" text="Add AssetType"/>
         <fx:include source="AssetTypeTable.fxml" fx:id="table"/>
     </children>
     <padding>

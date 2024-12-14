@@ -24,7 +24,7 @@ public class AssetTypeController {
     private AssetTypeTableController tableController;
 
     @FXML
-    private void addAssetType(ActionEvent event) throws IOException {
+    private void onAddAssetType(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AssetTypeForm.fxml"));
         Parent parent = fxmlLoader.load();
         Stage stage = new Stage();

@@ -19,13 +19,13 @@ public class DeleteDialogController<T> {
     }
 
     @FXML
-    private void delete(ActionEvent event) {
+    private void onDelete(ActionEvent event) {
         confirmAction.accept(null);
-        cancel(event);
+        onCancel(event);
     }
 
     @FXML
-    private void cancel(ActionEvent event) {
+    private void onCancel(ActionEvent event) {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
     }

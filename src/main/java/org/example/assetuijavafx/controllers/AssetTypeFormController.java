@@ -35,7 +35,7 @@ public class AssetTypeFormController {
     }
 
     @FXML
-    private void save(ActionEvent event) {
+    private void onSave(ActionEvent event) {
         // Check for Validations
         String errorMessage = checkForErrors();
         if (!errorMessage.isEmpty()) {
@@ -56,11 +56,11 @@ public class AssetTypeFormController {
         } else {
             AssetType.addAssetType(new AssetType(name, expectedLifeSpan, image));
         }
-        cancel(event);
+        onCancel(event);
     }
 
     @FXML
-    private void cancel(ActionEvent event) {
+    private void onCancel(ActionEvent event) {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
     }

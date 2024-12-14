@@ -26,19 +26,19 @@ import static org.example.assetuijavafx.models.AssetType.getAssettypesByName;
 public class AssetTypeTableController implements Initializable {
 
     @FXML
-    private TableColumn<AssetType, String> expectedLifeSpan;
+    private TableColumn<AssetType, String> columnExpectedLifeSpan;
 
     @FXML
-    private TableColumn<AssetType, String> image;
+    private TableColumn<AssetType, String> columnImage;
 
     @FXML
-    private TableColumn<AssetType, String> name;
+    private TableColumn<AssetType, String> columnName;
 
     @FXML
-    private TableColumn<AssetType, Button> delete;
+    private TableColumn<AssetType, Button> columnDelete;
 
     @FXML
-    private TableColumn<AssetType, Button> update;
+    private TableColumn<AssetType, Button> columnUpdate;
 
     @FXML
     private TableView<AssetType> table;
@@ -49,52 +49,47 @@ public class AssetTypeTableController implements Initializable {
         initializeTable();
     }
 
-    @FXML
-    private void updateAssetType(AssetType assetType) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AssetTypeForm.fxml"));
-        Parent parent = fxmlLoader.load();
-        AssetTypeFormController controller = fxmlLoader.getController();
-        controller.setData(assetType);
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(parent));
-        stage.showAndWait();
-        initializeTable();
-    }
-
     public void initializeTable() {
         ObservableList<AssetType> list = FXCollections.observableArrayList(getAssettypesByName().values());
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        expectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
-        image.setCellValueFactory(new PropertyValueFactory<>("image"));
-        update.setCellFactory(column -> new ButtonCell<>("Update", (assetType -> {
-            try {
-                updateAssetType(assetType);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        })));
-        delete.setCellFactory(column -> new ButtonCell<>("Delete", (assetType) -> {
-            try {
-                showDialogDeleteAssetType(assetType);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }));
+        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnExpectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
+        columnImage.setCellValueFactory(new PropertyValueFactory<>("image"));
+        columnUpdate.setCellFactory(column -> new ButtonCell<>("Update", this::updateAssetType));
+        columnDelete.setCellFactory(column -> new ButtonCell<>("Delete", this::showDialogDeleteAssetType));
         table.setItems(list);
     }
 
-    private void showDialogDeleteAssetType(AssetType assetType) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "DeleteDialog.fxml"));
-        Parent parent = fxmlLoader.load();
-        // Get controller
-        DeleteDialogController<AssetType> controller = fxmlLoader.getController();
-        controller.setAction(a -> deleteAssetType(assetType));
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(parent));
-        stage.showAndWait();
-        initializeTable();
+    private void updateAssetType(AssetType assetType) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AssetTypeForm.fxml"));
+            Parent parent = fxmlLoader.load();
+            AssetTypeFormController controller = fxmlLoader.getController();
+            controller.setData(assetType);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(parent));
+            stage.showAndWait();
+            initializeTable();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showDialogDeleteAssetType(AssetType assetType) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "DeleteDialog.fxml"));
+            Parent parent = fxmlLoader.load();
+            // Get controller
+            DeleteDialogController<AssetType> controller = fxmlLoader.getController();
+            controller.setAction(a -> deleteAssetType(assetType));
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(parent));
+            stage.showAndWait();
+            initializeTable();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void deleteAssetType(AssetType assetType) {
