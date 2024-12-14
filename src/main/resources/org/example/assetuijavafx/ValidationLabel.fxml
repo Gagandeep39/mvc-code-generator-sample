@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.assetuijavafx.controllers.ValidationLabelController">
+
+    <Label fx:id="labelError" alignment="TOP_LEFT" text="Error!" textFill="RED" visible="false" />
+</HBox>

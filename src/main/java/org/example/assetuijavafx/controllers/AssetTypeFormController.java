@@ -6,10 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.models.AssetType;
+import org.example.assetuijavafx.utilities.ValidationHelper;
 
 public class AssetTypeFormController {
-
-    // Handle Add
 
     @FXML
     private Button buttonCancel;
@@ -23,6 +22,9 @@ public class AssetTypeFormController {
     @FXML
     private TextField inputFieldName;
 
+    @FXML
+    private ValidationLabelController validationLabelController;
+
     private AssetType currentAssetType;
 
     public void setData(AssetType type) {
@@ -34,9 +36,19 @@ public class AssetTypeFormController {
 
     @FXML
     private void save(ActionEvent event) {
+        // Check for Validations
+        String errorMessage = checkForErrors();
+        if (!errorMessage.isEmpty()) {
+            validationLabelController.showValidationError(errorMessage);
+            return;
+        }
+        validationLabelController.hideValidationError();
+
+        // Perform Actual mapping
         String name = inputFieldName.getText();
         String image = inputFieldImage.getText();
         int expectedLifeSpan = Integer.parseInt(inputFieldExpectedLifeSpan.getText());
+
         if (currentAssetType != null) {
             currentAssetType.setExpectedLifeSpan(expectedLifeSpan);
             currentAssetType.setImage(image);
@@ -51,5 +63,19 @@ public class AssetTypeFormController {
     private void cancel(ActionEvent event) {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
+    }
+
+    public String checkForErrors() {
+        String errorMessage = "";
+        if (!ValidationHelper.isValidNumber(inputFieldExpectedLifeSpan.getText())) {
+            errorMessage = "Please enter a valid number";
+        }
+        if (!ValidationHelper.isValidString(inputFieldName.getText())) {
+            errorMessage = "Text Fields cannot be blank!";
+        }
+        if (!ValidationHelper.isValidString(inputFieldImage.getText())) {
+            errorMessage = "Text Fields cannot be blank!";
+        }
+        return errorMessage;
     }
 }
