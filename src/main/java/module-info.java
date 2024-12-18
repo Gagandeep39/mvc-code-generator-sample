@@ -2,6 +2,7 @@ module org.example.assetuijavafx {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
+    requires java.sql;
 
 
     opens org.example.assetuijavafx.models to javafx.base;
