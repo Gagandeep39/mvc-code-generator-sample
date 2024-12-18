@@ -1,6 +1,6 @@
 package org.example.assetuijavafx.models;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +18,60 @@ public class SpecificAsset {
     private int floorNumber;
     private int roomNumber;
     private Date purchaseDate;
+    private AssetPlus assetPlus;
 
-    private AssetType assetType;
+    public AssetPlus getAssetPlus() {
+        return assetPlus;
+    }
+
+    public void setAssetPlus(AssetPlus assetPlus) {
+        this.assetPlus = assetPlus;
+    }
+
+    public SpecificAsset(int assetNumber, Date purchaseDate, int roomNumber, int floorNumber) {
+        this.assetNumber = assetNumber;
+        this.purchaseDate = purchaseDate;
+        this.roomNumber = roomNumber;
+        this.floorNumber = floorNumber;
+    }
+
+    public static Map<Integer, SpecificAsset> getSpecificassetsByAssetNumber() {
+        return specificassetsByAssetNumber;
+    }
+
+    public static void setSpecificassetsByAssetNumber(Map<Integer, SpecificAsset> specificassetsByAssetNumber) {
+        SpecificAsset.specificassetsByAssetNumber = specificassetsByAssetNumber;
+    }
+
+    public int getAssetNumber() {
+        return assetNumber;
+    }
+
+    public void setAssetNumber(int assetNumber) {
+        this.assetNumber = assetNumber;
+    }
+
+    public int getFloorNumber() {
+        return floorNumber;
+    }
+
+    public void setFloorNumber(int floorNumber) {
+        this.floorNumber = floorNumber;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public Date getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(Date purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
 }

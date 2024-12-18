@@ -6,24 +6,14 @@ import java.util.Map;
 
 public class AssetType {
 
-    private static Map<String, AssetType> assettypesByName = new HashMap<>(Map.of(
-            "Laptop", new AssetType("Laptop", 5, "laptop.jpg"),
-            "Desktop", new AssetType("Desktop", 7, "desktop.jpg"),
-            "Printer", new AssetType("Printer", 10, "printer.jpg"),
-            "Scanner", new AssetType("Scanner", 8, "scanner.jpg"),
-            "Projector", new AssetType("Projector", 6, "projector.jpg"),
-            "Router", new AssetType("Router", 4, "router.jpg"),
-            "Switch", new AssetType("Switch", 10, "switch.jpg"),
-            "Monitor", new AssetType("Monitor", 6, "monitor.jpg"),
-            "Server", new AssetType("Server", 12, "server.jpg"),
-            "UPS", new AssetType("UPS", 5, "ups.jpg")
-    ));
+    private static Map<String, AssetType> assettypesByName = new HashMap<>();
 
     //------------------------
     // MEMBER VARIABLES
     //------------------------
 
     //AssetType Attributes
+    private AssetPlus assetPlus;
     private String name;
     private int expectedLifeSpan;
     private String image;
@@ -81,5 +71,13 @@ public class AssetType {
 
     public static void delete(AssetType type) {
         assettypesByName.remove(type.getName());
+    }
+
+    public AssetPlus getAssetPlus() {
+        return assetPlus;
+    }
+
+    public void setAssetPlus(AssetPlus assetPlus) {
+        this.assetPlus = assetPlus;
     }
 }
