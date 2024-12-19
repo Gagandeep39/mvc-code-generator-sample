@@ -19,6 +19,8 @@ public class AssetType {
     private String image;
     private List<SpecificAsset> specificAssets;
 
+    public AssetType() {}
+
     public AssetType(String name, int expectedLifeSpan, String image) {
         this.name = name;
         this.expectedLifeSpan = expectedLifeSpan;

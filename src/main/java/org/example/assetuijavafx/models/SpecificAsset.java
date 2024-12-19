@@ -28,6 +28,8 @@ public class SpecificAsset {
         this.assetPlus = assetPlus;
     }
 
+    public SpecificAsset() {}
+
     public SpecificAsset(int assetNumber, Date purchaseDate, int roomNumber, int floorNumber) {
         this.assetNumber = assetNumber;
         this.purchaseDate = purchaseDate;
@@ -73,5 +75,9 @@ public class SpecificAsset {
 
     public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
+    }
+
+    public static void delete(SpecificAsset specificAsset) {
+        specificassetsByAssetNumber.remove(specificAsset.getAssetNumber());
     }
 }

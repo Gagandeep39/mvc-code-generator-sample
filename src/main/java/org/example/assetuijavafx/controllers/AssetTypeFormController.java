@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.models.AssetType;
-import org.example.assetuijavafx.utilities.ValidationHelper;
 
 public class AssetTypeFormController {
 
@@ -22,9 +21,6 @@ public class AssetTypeFormController {
     @FXML
     private TextField inputFieldName;
 
-    @FXML
-    private ValidationLabelController validationLabelController;
-
     private AssetType currentAssetType;
 
     public void setData(AssetType type) {
@@ -32,17 +28,11 @@ public class AssetTypeFormController {
         inputFieldName.setText(type.getName());
         inputFieldImage.setText(type.getImage());
         inputFieldExpectedLifeSpan.setText(String.valueOf(type.getExpectedLifeSpan()));
+        System.out.println("Triggered onSave");
     }
 
     @FXML
     private void onSave(ActionEvent event) {
-        // Check for Validations
-        String errorMessage = checkForErrors();
-        if (!errorMessage.isEmpty()) {
-            validationLabelController.showValidationError(errorMessage);
-            return;
-        }
-        validationLabelController.hideValidationError();
 
         // Perform Actual mapping
         String name = inputFieldName.getText();
@@ -54,7 +44,11 @@ public class AssetTypeFormController {
             currentAssetType.setImage(image);
             currentAssetType.setName(name);
         } else {
-            AssetType.addAssetType(new AssetType(name, expectedLifeSpan, image));
+            AssetType tempAssetType = new AssetType();
+            tempAssetType.setName(name);
+            tempAssetType.setImage(image);
+            tempAssetType.setExpectedLifeSpan(expectedLifeSpan);
+            AssetType.addAssetType(tempAssetType);
         }
         onCancel(event);
     }
@@ -63,19 +57,5 @@ public class AssetTypeFormController {
     private void onCancel(ActionEvent event) {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
-    }
-
-    public String checkForErrors() {
-        String errorMessage = "";
-        if (!ValidationHelper.isValidNumber(inputFieldExpectedLifeSpan.getText())) {
-            errorMessage = "Please enter a valid number";
-        }
-        if (!ValidationHelper.isValidString(inputFieldName.getText())) {
-            errorMessage = "Text Fields cannot be blank!";
-        }
-        if (!ValidationHelper.isValidString(inputFieldImage.getText())) {
-            errorMessage = "Text Fields cannot be blank!";
-        }
-        return errorMessage;
     }
 }
