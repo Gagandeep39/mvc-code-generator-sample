@@ -80,4 +80,8 @@ public class SpecificAsset {
     public static void delete(SpecificAsset specificAsset) {
         specificassetsByAssetNumber.remove(specificAsset.getAssetNumber());
     }
+
+    public static void addSpecificAsset(SpecificAsset specificAsset) {
+        specificassetsByAssetNumber.put(specificAsset.getAssetNumber(), specificAsset);
+    }
 }
