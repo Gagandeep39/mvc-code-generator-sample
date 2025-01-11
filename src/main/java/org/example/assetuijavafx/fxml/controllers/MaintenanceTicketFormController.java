@@ -2,16 +2,20 @@ package org.example.assetuijavafx.fxml.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.models.MaintenanceTicket;
 import org.example.assetuijavafx.models.MaintenanceTicket.*;
 
+import java.net.URL;
 import java.sql.Date;
+import java.util.ResourceBundle;
 
-public class MaintenanceTicketFormController {
+public class MaintenanceTicketFormController implements Initializable {
 
 	@FXML
 	private TextField inputFieldId;
@@ -19,15 +23,26 @@ public class MaintenanceTicketFormController {
     private DatePicker inputFieldRaisedOnDate;
 	@FXML
 	private TextField inputFieldDescription;
+//	@FXML
+//	private TextField inputFieldTimeToResolve;
 	@FXML
-	private TextField inputFieldTimeToResolve;
+	private ChoiceBox<TimeEstimate> choiceBoxTimeToResolve;
+//	@FXML
+//	private TextField inputFieldPriority;
 	@FXML
-	private TextField inputFieldPriority;
+	private ChoiceBox<PriorityLevel> choiceBoxPriorityLevel;
 
     @FXML
     private Button buttonCancel;
 
     private MaintenanceTicket currentMaintenanceTicket;
+
+
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		choiceBoxTimeToResolve.getItems().addAll(TimeEstimate.values());
+		choiceBoxPriorityLevel.getItems().addAll(PriorityLevel.values());
+	}
 
     public void setData(MaintenanceTicket maintenanceTicket) {
         this.currentMaintenanceTicket = maintenanceTicket;
@@ -35,8 +50,8 @@ public class MaintenanceTicketFormController {
     	inputFieldId.setText(String.valueOf(maintenanceTicket.getId()));
     	inputFieldRaisedOnDate.setValue(maintenanceTicket.getRaisedOnDate().toLocalDate());
     	inputFieldDescription.setText(maintenanceTicket.getDescription());
-    	inputFieldTimeToResolve.setText(maintenanceTicket.getTimeToResolve());
-    	inputFieldPriority.setText(maintenanceTicket.getPriority());
+    	choiceBoxTimeToResolve.setValue(maintenanceTicket.getTimeToResolve());
+    	choiceBoxPriorityLevel.setValue(maintenanceTicket.getPriority());
         System.out.println("Preloaded MaintenanceTicket data");
     }
 
@@ -45,8 +60,8 @@ public class MaintenanceTicketFormController {
 		int id = Integer.parseInt(inputFieldId.getText());
 		Date raisedOnDate = Date.valueOf(inputFieldRaisedOnDate.getValue());
 		String description = inputFieldDescription.getText();
-		TimeEstimate timeToResolve = inputFieldTimeToResolve.getText();
-		PriorityLevel priority = inputFieldPriority.getText();
+		TimeEstimate timeToResolve = choiceBoxTimeToResolve.getValue();
+		PriorityLevel priority = choiceBoxPriorityLevel.getValue();
 		if (currentMaintenanceTicket != null) {
 			currentMaintenanceTicket.setId(id);
 			currentMaintenanceTicket.setRaisedOnDate(raisedOnDate);
@@ -71,4 +86,5 @@ public class MaintenanceTicketFormController {
         Stage stage = (Stage) buttonCancel.getScene().getWindow();
         stage.close();
     }
+
 }

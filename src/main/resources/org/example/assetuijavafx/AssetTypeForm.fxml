@@ -27,7 +27,6 @@
                         <TextField fx:id="inputFieldImage" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                     </children>
                 </GridPane>
-                <fx:include source="ValidationLabel.fxml" fx:id="validationLabel"/>
                 <HBox alignment="CENTER" spacing="16.0">
                     <children>
                         <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#onSave" text="Save"/>
