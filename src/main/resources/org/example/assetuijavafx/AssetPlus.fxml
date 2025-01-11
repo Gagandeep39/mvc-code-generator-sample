@@ -12,5 +12,8 @@
         <Tab text="SpecificAsset">
             <fx:include source="SpecificAsset.fxml" />
         </Tab>
+        <Tab text="MaintenanceTicket">
+            <fx:include source="MaintenanceTicket.fxml" />
+        </Tab>
     </TabPane>
 </Pane>
