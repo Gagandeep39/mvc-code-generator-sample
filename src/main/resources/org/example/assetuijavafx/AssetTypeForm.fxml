@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.assetuijavafx.controllers.AssetTypeFormController">
+            fx:controller="org.example.assetuijavafx.fxml.controllers.AssetTypeFormController">
     <children>
         <VBox alignment="CENTER" spacing="16.0">
             <children>

@@ -1,4 +1,4 @@
-package org.example.assetuijavafx.controllers;
+package org.example.assetuijavafx.fxml.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

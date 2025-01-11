@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.assetuijavafx.controllers.SpecificAssetController"
+            fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetController"
             prefHeight="400.0" prefWidth="600.0">
     <Label text="Specific Asset" />
 </AnchorPane>

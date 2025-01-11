@@ -1,4 +1,4 @@
-package org.example.assetuijavafx.controllers;
+package org.example.assetuijavafx.fxml.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.example.assetuijavafx.layouts.ButtonCell;
+import org.example.assetuijavafx.fxml.layouts.ButtonCell;
 import org.example.assetuijavafx.models.AssetType;
 
 import java.io.IOException;

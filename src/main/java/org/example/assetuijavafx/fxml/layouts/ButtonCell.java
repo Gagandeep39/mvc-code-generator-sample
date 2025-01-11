@@ -1,4 +1,4 @@
-package org.example.assetuijavafx.layouts;
+package org.example.assetuijavafx.fxml.layouts;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;

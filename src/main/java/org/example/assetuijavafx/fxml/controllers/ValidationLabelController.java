@@ -1,4 +1,4 @@
-package org.example.assetuijavafx.controllers;
+package org.example.assetuijavafx.fxml.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
