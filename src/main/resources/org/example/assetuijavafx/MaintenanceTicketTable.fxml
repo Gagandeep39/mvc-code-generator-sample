@@ -9,6 +9,11 @@
             fx:controller="org.example.assetuijavafx.fxml.controllers.MaintenanceTicketTableController">
     <TableView fx:id="table" prefWidth="720.0">
         <columns>
+            <TableColumn fx:id="columnid" prefWidth="75.0" text="id"/>
+            <TableColumn fx:id="columnraisedOnDate" prefWidth="75.0" text="raisedOnDate"/>
+            <TableColumn fx:id="columndescription" prefWidth="75.0" text="description"/>
+            <TableColumn fx:id="columntimeToResolve" prefWidth="75.0" text="timeToResolve"/>
+            <TableColumn fx:id="columnpriority" prefWidth="75.0" text="priority"/>
             <TableColumn fx:id="columnUpdate" prefWidth="75.0" text="Update" style="-fx-alignment: center"/>
             <TableColumn fx:id="columnDelete" prefWidth="75.0" text="Delete" style="-fx-alignment: center"/>
         </columns>
