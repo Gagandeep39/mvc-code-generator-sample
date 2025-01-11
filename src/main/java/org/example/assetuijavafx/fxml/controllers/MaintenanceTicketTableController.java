@@ -15,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
 import org.example.assetuijavafx.models.MaintenanceTicket;
+import org.example.assetuijavafx.models.MaintenanceTicket.*;
 
 import java.io.IOException;
 import java.net.URL;

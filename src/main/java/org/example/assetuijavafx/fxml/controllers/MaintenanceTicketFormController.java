@@ -7,6 +7,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.models.MaintenanceTicket;
+import org.example.assetuijavafx.models.MaintenanceTicket.*;
 
 import java.sql.Date;
 
