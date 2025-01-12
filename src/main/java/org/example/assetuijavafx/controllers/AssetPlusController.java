@@ -358,7 +358,8 @@ public class AssetPlusController {
       	if (maintenanceTicket == null) {
 			return null;
 		}
-		return new TOMaintenanceTicket(maintenanceTicket.getId(), maintenanceTicket.getRaisedOnDate(), maintenanceTicket.getDescription(), maintenanceTicket.getTimeToResolve(), maintenanceTicket.getPriority());
+		return new TOMaintenanceTicket(maintenanceTicket.getId(), maintenanceTicket.getRaisedOnDate(), maintenanceTicket.getDescription(),
+				maintenanceTicket.getTimeToResolve().toString(), maintenanceTicket.getPriority().toString());
     }
 
 	private static List<TOMaintenanceTicket> convertToTOMaintenanceTicket(List<MaintenanceTicket> maintenanceTicketList) {
