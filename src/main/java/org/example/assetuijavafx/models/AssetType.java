@@ -1,5 +1,6 @@
 package org.example.assetuijavafx.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +22,21 @@ public class AssetType {
 
     public AssetType() {}
 
-    public AssetType(String name, int expectedLifeSpan, String image) {
-        this.name = name;
-        this.expectedLifeSpan = expectedLifeSpan;
-        this.image = image;
+
+    public AssetType(String aName, int aExpectedLifeSpan, AssetPlus aAssetPlus)
+    {
+        expectedLifeSpan = aExpectedLifeSpan;
+        image = null;
+        if (!setName(aName))
+        {
+            throw new RuntimeException("Cannot create due to duplicate name. See http://manual.umple.org?RE003ViolationofUniqueness.html");
+        }
+        boolean didAddAssetPlus = setAssetPlus(aAssetPlus);
+        if (!didAddAssetPlus)
+        {
+            throw new RuntimeException("Unable to create assetType due to assetPlus. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+        }
+        specificAssets = new ArrayList<SpecificAsset>();
     }
 
     public static Map<String, AssetType> getAssettypesByName() {
@@ -43,8 +55,35 @@ public class AssetType {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public boolean setName(String aName)
+    {
+        boolean wasSet = false;
+        String anOldName = getName();
+        if (anOldName != null && anOldName.equals(aName)) {
+            return true;
+        }
+        if (hasWithName(aName)) {
+            return wasSet;
+        }
+        name = aName;
+        wasSet = true;
+        if (anOldName != null) {
+            assettypesByName.remove(anOldName);
+        }
+        assettypesByName.put(aName, this);
+        return wasSet;
+    }
+
+
+    public static boolean hasWithName(String aName)
+    {
+        return getWithName(aName) != null;
+    }
+
+
+    public static AssetType getWithName(String aName)
+    {
+        return assettypesByName.get(aName);
     }
 
     public int getExpectedLifeSpan() {
@@ -71,15 +110,45 @@ public class AssetType {
         this.specificAssets = specificAssets;
     }
 
-    public static void delete(AssetType type) {
-        assettypesByName.remove(type.getName());
+    public void delete()
+    {
+        assettypesByName.remove(getName());
+        AssetPlus placeholderAssetPlus = assetPlus;
+        this.assetPlus = null;
+        if(placeholderAssetPlus != null)
+        {
+            placeholderAssetPlus.removeAssetType(this);
+        }
     }
 
     public AssetPlus getAssetPlus() {
         return assetPlus;
     }
 
-    public void setAssetPlus(AssetPlus assetPlus) {
-        this.assetPlus = assetPlus;
+    public boolean setAssetPlus(AssetPlus aAssetPlus)
+    {
+        boolean wasSet = false;
+        if (aAssetPlus == null)
+        {
+            return wasSet;
+        }
+
+        AssetPlus existingAssetPlus = assetPlus;
+        assetPlus = aAssetPlus;
+        if (existingAssetPlus != null && !existingAssetPlus.equals(aAssetPlus))
+        {
+            existingAssetPlus.removeAssetType(this);
+        }
+        assetPlus.addAssetType(this);
+        wasSet = true;
+        return wasSet;
+    }
+
+
+    public static  void reinitializeUniqueName(List<AssetType> types){
+        assettypesByName = new HashMap<String, AssetType>();
+        for (AssetType t : types) {
+            assettypesByName.put(t.getName(), t);
+        }
     }
 }

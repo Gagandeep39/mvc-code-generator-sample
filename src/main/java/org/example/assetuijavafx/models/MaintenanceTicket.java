@@ -103,8 +103,19 @@ public class MaintenanceTicket
     maintenanceticketsById.put(maintenanceTicket.getId(), maintenanceTicket);
   }
 
-  public static void delete(MaintenanceTicket maintenanceTicket) {
-    maintenanceticketsById.remove(maintenanceTicket.getId());
+  public void delete() {
+    maintenanceticketsById.remove(getId());
+    AssetPlus placeholderAssetPlus = assetPlus;
+    this.assetPlus = null;
   }
 
+  public static boolean hasWithId(int aId)
+  {
+    return getWithId(aId) != null;
+  }
+
+  public static MaintenanceTicket getWithId(int aId)
+  {
+    return maintenanceticketsById.get(aId);
+  }
 }
