@@ -1,6 +1,5 @@
 package org.example.assetuijavafx.controllers;
 
-
 import org.example.assetuijavafx.AssetPlusApplication;
 import org.example.assetuijavafx.models.*;
 import org.example.assetuijavafx.persistence.AssetPlusPersistence;
@@ -14,6 +13,54 @@ public class AssetPlusController {
 
 	public AssetPlusController() {
 	}
+
+	public static String addAssetType() {
+		
+		AssetPlus root = AssetPlusApplication.getAssetPlus();
+		
+		try {
+			new AssetType();
+		}
+		catch (RuntimeException e) {
+			return "The assetType name must be unique.";
+		}
+	
+		try {
+			AssetPlusPersistence.save();
+		}
+		catch (RuntimeException e) {
+			return e.getMessage();
+		}
+	
+		return "";
+	}
+	
+
+	public static String addAssetType(String name, int expectedLifeSpan) {
+		
+		AssetPlus root = AssetPlusApplication.getAssetPlus();
+		
+		if (!(expectedLifeSpan > 0)) {
+			return "The expected life span must be greater than 0.";
+		}
+	
+		try {
+			new AssetType(name, expectedLifeSpan, root);
+		}
+		catch (RuntimeException e) {
+			return "The assetType name must be unique.";
+		}
+	
+		try {
+			AssetPlusPersistence.save();
+		}
+		catch (RuntimeException e) {
+			return e.getMessage();
+		}
+	
+		return "";
+	}
+	
 
 	public static String updateAssetType(String keyName, String name, int expectedLifeSpan, String image) {
 		
@@ -85,6 +132,62 @@ public class AssetPlusController {
 		   
 		return null;
 	}
+
+	public static String addSpecificAsset() {
+		
+		AssetPlus root = AssetPlusApplication.getAssetPlus();
+		
+		try {
+			new SpecificAsset();
+		}
+		catch (RuntimeException e) {
+			return "The specificAsset assetNumber must be unique.";
+		}
+	
+		try {
+			AssetPlusPersistence.save();
+		}
+		catch (RuntimeException e) {
+			return e.getMessage();
+		}
+	
+		return "";
+	}
+	
+
+	public static String addSpecificAsset(int assetNumber, int floorNumber, int roomNumber, Date purchaseDate) {
+		
+		AssetPlus root = AssetPlusApplication.getAssetPlus();
+		
+		if (!(assetNumber >= 1)) {
+			return "The asset number must be greater than or equal to 1.";
+		}
+	
+		if (!(floorNumber >= 0)) {
+			return "The floor number must be greater than or equal to 0.";
+		}
+	
+		if (!(roomNumber >= -1)) {
+			return "The room number must be greater than or equal to -1.";
+		}
+	
+		try {
+			new SpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate, root);
+		}
+		catch (RuntimeException e) {
+			return "The specificAsset assetNumber must be unique.";
+		}
+	
+		try {
+			AssetPlusPersistence.save();
+		}
+		catch (RuntimeException e) {
+			return e.getMessage();
+		}
+	
+		return "";
+	}
+	
 
 	public static String updateSpecificAsset(int keyAssetNumber, int assetNumber, int floorNumber, int roomNumber, Date purchaseDate) {
 		
@@ -176,7 +279,7 @@ public class AssetPlusController {
 			return "The timeToResolve must be lessThanADay, oneToThreeDays, threeToSevenDays, oneToThreeWeeks or threeOrMoreWeeks.";
 		}
 	
-		MaintenanceTicket.PriorityLevel parsedPriority;
+		PriorityLevel parsedPriority;
 		try {
 			parsedPriority = PriorityLevel.valueOf(priority);
 		}
@@ -255,9 +358,7 @@ public class AssetPlusController {
       	if (maintenanceTicket == null) {
 			return null;
 		}
-		// TODO Enums are manually converted to String here
-		// Acceleo generated a TO umple file which had String
-		return new TOMaintenanceTicket(maintenanceTicket.getId(), maintenanceTicket.getRaisedOnDate(), maintenanceTicket.getDescription(), maintenanceTicket.getTimeToResolve().toString(), maintenanceTicket.getPriority().toString());
+		return new TOMaintenanceTicket(maintenanceTicket.getId(), maintenanceTicket.getRaisedOnDate(), maintenanceTicket.getDescription(), maintenanceTicket.getTimeToResolve(), maintenanceTicket.getPriority());
     }
 
 	private static List<TOMaintenanceTicket> convertToTOMaintenanceTicket(List<MaintenanceTicket> maintenanceTicketList) {
