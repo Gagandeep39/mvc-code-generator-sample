@@ -24,6 +24,22 @@
       <artifactId>javafx-fxml</artifactId>
       <version>21</version>
     </dependency>
+    <!-- Manually added imports -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>29.0-jre</version>
+    </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.4.19</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.jettison</groupId>
+      <artifactId>jettison</artifactId>
+      <version>1.4.1</version>
+    </dependency>
 
 <dependency>
       <groupId>org.junit.jupiter</groupId>

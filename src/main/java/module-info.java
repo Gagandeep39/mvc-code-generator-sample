@@ -3,6 +3,8 @@ module org.example.assetuijavafx {
     requires javafx.fxml;
     requires java.desktop;
     requires java.sql;
+    requires xstream;
+    requires com.google.common;
 
 
     opens org.example.assetuijavafx.models to javafx.base;
