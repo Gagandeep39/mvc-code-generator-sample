@@ -1,5 +1,6 @@
 package org.example.assetuijavafx.controllers;
 
+
 import org.example.assetuijavafx.AssetPlusApplication;
 import org.example.assetuijavafx.models.*;
 import org.example.assetuijavafx.persistence.AssetPlusPersistence;
@@ -36,7 +37,7 @@ public class AssetPlusController {
 	}
 	
 
-	public static String addAssetType(String name, int expectedLifeSpan) {
+	public static String addAssetType(String name, int expectedLifeSpan, String image) {
 		
 		AssetPlus root = AssetPlusApplication.getAssetPlus();
 		
@@ -45,7 +46,7 @@ public class AssetPlusController {
 		}
 	
 		try {
-			new AssetType(name, expectedLifeSpan, root);
+			new AssetType(name, expectedLifeSpan, image, root);
 		}
 		catch (RuntimeException e) {
 			return "The assetType name must be unique.";
@@ -279,7 +280,7 @@ public class AssetPlusController {
 			return "The timeToResolve must be lessThanADay, oneToThreeDays, threeToSevenDays, oneToThreeWeeks or threeOrMoreWeeks.";
 		}
 	
-		PriorityLevel parsedPriority;
+		MaintenanceTicket.PriorityLevel parsedPriority;
 		try {
 			parsedPriority = PriorityLevel.valueOf(priority);
 		}
@@ -358,8 +359,7 @@ public class AssetPlusController {
       	if (maintenanceTicket == null) {
 			return null;
 		}
-		return new TOMaintenanceTicket(maintenanceTicket.getId(), maintenanceTicket.getRaisedOnDate(), maintenanceTicket.getDescription(),
-				maintenanceTicket.getTimeToResolve().toString(), maintenanceTicket.getPriority().toString());
+		return new TOMaintenanceTicket(maintenanceTicket.getId(), maintenanceTicket.getRaisedOnDate(), maintenanceTicket.getDescription(), maintenanceTicket.getTimeToResolve().toString(), maintenanceTicket.getPriority().toString());
     }
 
 	private static List<TOMaintenanceTicket> convertToTOMaintenanceTicket(List<MaintenanceTicket> maintenanceTicketList) {
