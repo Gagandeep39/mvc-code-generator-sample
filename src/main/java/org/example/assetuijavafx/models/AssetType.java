@@ -23,10 +23,10 @@ public class AssetType {
     public AssetType() {}
 
 
-    public AssetType(String aName, int aExpectedLifeSpan, AssetPlus aAssetPlus)
+    public AssetType(String aName, int aExpectedLifeSpan, String aImage, AssetPlus aAssetPlus)
     {
         expectedLifeSpan = aExpectedLifeSpan;
-        image = null;
+        image = aImage;
         if (!setName(aName))
         {
             throw new RuntimeException("Cannot create due to duplicate name. See http://manual.umple.org?RE003ViolationofUniqueness.html");
