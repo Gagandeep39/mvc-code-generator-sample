@@ -104,7 +104,7 @@ public class MaintenanceTicketTableController implements Initializable  {
 
     private void deleteMaintenanceTicket(MaintenanceTicket maintenanceTicket) {
         System.out.println("Deleted MaintenanceTicket Successfully");
-        MaintenanceTicket.delete(maintenanceTicket);
+        maintenanceTicket.delete();
     }
 
 }

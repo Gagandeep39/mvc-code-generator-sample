@@ -5,10 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.example.assetuijavafx.models.AssetType;
+import org.example.assetuijavafx.controllers.AssetPlusController;
+import org.example.assetuijavafx.models.TOAssetType;
 
 public class AssetTypeFormController {
-
     @FXML
     private Button buttonCancel;
 
@@ -21,9 +21,9 @@ public class AssetTypeFormController {
     @FXML
     private TextField inputFieldName;
 
-    private AssetType currentAssetType;
+    private TOAssetType currentAssetType;
 
-    public void setData(AssetType type) {
+    public void setData(TOAssetType type) {
         this.currentAssetType = type;
         inputFieldName.setText(type.getName());
         inputFieldImage.setText(type.getImage());
@@ -40,15 +40,9 @@ public class AssetTypeFormController {
         int expectedLifeSpan = Integer.parseInt(inputFieldExpectedLifeSpan.getText());
 
         if (currentAssetType != null) {
-            currentAssetType.setExpectedLifeSpan(expectedLifeSpan);
-            currentAssetType.setImage(image);
-            currentAssetType.setName(name);
+            AssetPlusController.updateAssetType(name, name, expectedLifeSpan, image);
         } else {
-            AssetType tempAssetType = new AssetType();
-            tempAssetType.setName(name);
-            tempAssetType.setImage(image);
-            tempAssetType.setExpectedLifeSpan(expectedLifeSpan);
-            AssetType.addAssetType(tempAssetType);
+            AssetPlusController.addAssetType(name, expectedLifeSpan, image);
         }
         onCancel(event);
     }

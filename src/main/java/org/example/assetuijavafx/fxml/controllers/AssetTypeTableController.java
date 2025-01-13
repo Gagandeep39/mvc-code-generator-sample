@@ -13,11 +13,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.assetuijavafx.AssetPlusApplication;
+import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
+import org.example.assetuijavafx.models.AssetPlus;
 import org.example.assetuijavafx.models.AssetType;
+import org.example.assetuijavafx.models.TOAssetType;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.example.assetuijavafx.AssetPlusApplication.PACKAGE_ID;
@@ -26,22 +32,22 @@ import static org.example.assetuijavafx.models.AssetType.getAssettypesByName;
 public class AssetTypeTableController implements Initializable {
 
     @FXML
-    private TableColumn<AssetType, String> columnExpectedLifeSpan;
+    private TableColumn<TOAssetType, String> columnExpectedLifeSpan;
 
     @FXML
-    private TableColumn<AssetType, String> columnImage;
+    private TableColumn<TOAssetType, String> columnImage;
 
     @FXML
-    private TableColumn<AssetType, String> columnName;
+    private TableColumn<TOAssetType, String> columnName;
 
     @FXML
-    private TableColumn<AssetType, Button> columnDelete;
+    private TableColumn<TOAssetType, Button> columnDelete;
 
     @FXML
-    private TableColumn<AssetType, Button> columnUpdate;
+    private TableColumn<TOAssetType, Button> columnUpdate;
 
     @FXML
-    private TableView<AssetType> table;
+    private TableView<TOAssetType> table;
 
 
     @Override
@@ -50,7 +56,11 @@ public class AssetTypeTableController implements Initializable {
     }
 
     public void initializeTable() {
-        ObservableList<AssetType> list = FXCollections.observableArrayList(getAssettypesByName().values());
+        List<TOAssetType> assetTypes = AssetPlusController.getAssetTypesOfAssetPlus();
+        if (assetTypes == null) {
+            assetTypes = Collections.emptyList();
+        }
+        ObservableList<TOAssetType> list = FXCollections.observableArrayList(assetTypes);
         columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnExpectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
         columnImage.setCellValueFactory(new PropertyValueFactory<>("image"));
@@ -59,7 +69,7 @@ public class AssetTypeTableController implements Initializable {
         table.setItems(list);
     }
 
-    private void updateAssetType(AssetType assetType) {
+    private void updateAssetType(TOAssetType assetType) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AssetTypeForm.fxml"));
             Parent parent = fxmlLoader.load();
@@ -75,7 +85,7 @@ public class AssetTypeTableController implements Initializable {
         }
     }
 
-    private void showDialogDeleteAssetType(AssetType assetType) {
+    private void showDialogDeleteAssetType(TOAssetType assetType) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "DeleteDialog.fxml"));
             Parent parent = fxmlLoader.load();
@@ -92,9 +102,9 @@ public class AssetTypeTableController implements Initializable {
         }
     }
 
-    private void deleteAssetType(AssetType assetType) {
+    private void deleteAssetType(TOAssetType assetType) {
         System.out.println("Deleted AssetType: " + assetType);
-        AssetType.delete(assetType);
+        AssetPlusController.getAssetType(assetType.getName()).delete();
     }
 
 }
