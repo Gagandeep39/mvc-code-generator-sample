@@ -58,7 +58,7 @@ public class JsonSerializer {
    *
    */
   private void setupXStreamAliases(String packageName) {
-    var modelPkg = packageName + ".model";
+    var modelPkg = packageName + ".models";
     try {
       ClassPath.from(getClass().getClassLoader()).getAllClasses().stream()
           // filter classes to only include those in the model package
