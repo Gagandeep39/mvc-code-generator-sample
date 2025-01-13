@@ -2,6 +2,7 @@ package org.example.assetuijavafx.models;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -117,5 +118,13 @@ public class MaintenanceTicket
   public static MaintenanceTicket getWithId(int aId)
   {
     return maintenanceticketsById.get(aId);
+  }
+
+
+  public static  void reinitializeUniqueId(List<MaintenanceTicket> tickets){
+    maintenanceticketsById = new HashMap<Integer, MaintenanceTicket>();
+    for (MaintenanceTicket t : tickets) {
+      maintenanceticketsById.put(t.getId(), t);
+    }
   }
 }

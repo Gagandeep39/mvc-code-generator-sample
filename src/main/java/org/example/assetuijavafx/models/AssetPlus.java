@@ -1,6 +1,3 @@
-/*PLEASE DO NOT EDIT THIS CODE*/
-/*This code was generated using the UMPLE 1.32.1.6535.66c005ced modeling language!*/
-
 package org.example.assetuijavafx.models;
 
 import java.util.ArrayList;
@@ -9,13 +6,14 @@ import java.util.List;
 
 public class AssetPlus {
 
-    private final List<SpecificAsset> specificAssets;
-    private final List<AssetType> assetTypes;
+    private List<SpecificAsset> specificAssets;
+    private List<AssetType> assetTypes;
     private List<MaintenanceTicket> maintenanceTickets;
 
     public AssetPlus() {
         this.specificAssets = new ArrayList<>();
-        assetTypes = new ArrayList<>();
+        this.assetTypes = new ArrayList<>();
+        this.maintenanceTickets = new ArrayList<>();
     }
 
 
@@ -32,6 +30,7 @@ public class AssetPlus {
     public void reinitialize() {
         SpecificAsset.reinitializeUniqueAssetNumber(this.getSpecificAssets());
         AssetType.reinitializeUniqueName(this.getAssetTypes());
+        MaintenanceTicket.reinitializeUniqueId(this.getMaintenanceTickets());
     }
 
 
