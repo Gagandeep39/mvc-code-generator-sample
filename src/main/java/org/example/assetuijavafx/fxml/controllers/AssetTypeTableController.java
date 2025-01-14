@@ -104,7 +104,7 @@ public class AssetTypeTableController implements Initializable {
 
     private void deleteAssetType(TOAssetType assetType) {
         System.out.println("Deleted AssetType: " + assetType);
-        AssetPlusController.getAssetType(assetType.getName()).delete();
+        AssetPlusController.removeAssetType(assetType.getName());
     }
 
 }
