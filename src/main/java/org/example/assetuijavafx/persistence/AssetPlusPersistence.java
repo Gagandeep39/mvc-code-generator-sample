@@ -9,7 +9,7 @@ public class AssetPlusPersistence {
 
     //The following fields and setFilename method deal with the json file location.
     private static String filename = "ap.data";
-    private static final JsonSerializer serializer = new JsonSerializer("org.example.assetuijavafx");
+    private static final JsonSerializer serializer = new JsonSerializer(AssetPlusApplication.PACKAGE_NAME);
 
     public static void setFilename(String filename) {
         AssetPlusPersistence.filename = filename;

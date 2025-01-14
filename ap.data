@@ -1,0 +1,25 @@
+{
+  "AssetPlus": {
+    "specificAssets": [
+      ""
+    ],
+    "assetTypes": [
+      {
+        "AssetType": {
+          "assetPlus": {
+            "@reference": "../../.."
+          },
+          "name": "wert5y6",
+          "expectedLifeSpan": 12,
+          "image": "dwsfegcdvfbghhyju",
+          "specificAssets": [
+            ""
+          ]
+        }
+      }
+    ],
+    "maintenanceTickets": [
+      ""
+    ]
+  }
+}
