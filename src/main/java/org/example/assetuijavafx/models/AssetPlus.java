@@ -121,4 +121,35 @@ public List<MaintenanceTicket> getMaintenanceTickets()
     return newMaintenanceTickets;
 }
 
+
+    public boolean addMaintenanceTicket(MaintenanceTicket aMaintenanceTicket)
+    {
+        boolean wasAdded = false;
+        if (maintenanceTickets.contains(aMaintenanceTicket)) { return false; }
+        AssetPlus existingAssetPlus = aMaintenanceTicket.getAssetPlus();
+        boolean isNewAssetPlus = existingAssetPlus != null && !this.equals(existingAssetPlus);
+        if (isNewAssetPlus)
+        {
+            aMaintenanceTicket.setAssetPlus(this);
+        }
+        else
+        {
+            maintenanceTickets.add(aMaintenanceTicket);
+        }
+        wasAdded = true;
+        return wasAdded;
+    }
+
+    public boolean removeMaintenanceTicket(MaintenanceTicket aMaintenanceTicket)
+    {
+        boolean wasRemoved = false;
+        //Unable to remove aMaintenanceTicket, as it must always have a assetPlus
+        if (!this.equals(aMaintenanceTicket.getAssetPlus()))
+        {
+            maintenanceTickets.remove(aMaintenanceTicket);
+            wasRemoved = true;
+        }
+        return wasRemoved;
+    }
+
 }

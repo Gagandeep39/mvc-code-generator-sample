@@ -36,12 +36,28 @@ public class MaintenanceTicket
   //MaintenanceTicket Associations
   private AssetPlus assetPlus;
 
-  public int getId() {
-    return id;
+
+
+  public MaintenanceTicket(int aId, Date aRaisedOnDate, String aDescription, TimeEstimate aTimeToResolve, PriorityLevel aPriority, AssetPlus aAssetPlus)
+  {
+    raisedOnDate = aRaisedOnDate;
+    description = aDescription;
+    timeToResolve = aTimeToResolve;
+    priority = aPriority;
+
+    if (!setId(aId))
+    {
+      throw new RuntimeException("Cannot create due to duplicate id. See http://manual.umple.org?RE003ViolationofUniqueness.html");
+    }
+    boolean didAddAssetPlus = setAssetPlus(aAssetPlus);
+    if (!didAddAssetPlus)
+    {
+      throw new RuntimeException("Unable to create maintenanceTicket due to assetPlus. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public int getId() {
+    return id;
   }
 
   public static Map<Integer, MaintenanceTicket> getMaintenanceticketsById() {
@@ -96,10 +112,6 @@ public class MaintenanceTicket
     return assetPlus;
   }
 
-  public void setAssetPlus(AssetPlus assetPlus) {
-    this.assetPlus = assetPlus;
-  }
-
   public static void addMaintenanceTicket(MaintenanceTicket maintenanceTicket) {
     maintenanceticketsById.put(maintenanceTicket.getId(), maintenanceTicket);
   }
@@ -127,4 +139,45 @@ public class MaintenanceTicket
       maintenanceticketsById.put(t.getId(), t);
     }
   }
+
+
+  public boolean setAssetPlus(AssetPlus aAssetPlus)
+  {
+    boolean wasSet = false;
+    if (aAssetPlus == null)
+    {
+      return wasSet;
+    }
+
+    AssetPlus existingAssetPlus = assetPlus;
+    assetPlus = aAssetPlus;
+    if (existingAssetPlus != null && !existingAssetPlus.equals(aAssetPlus))
+    {
+      existingAssetPlus.removeMaintenanceTicket(this);
+    }
+    assetPlus.addMaintenanceTicket(this);
+    wasSet = true;
+    return wasSet;
+  }
+
+
+  public boolean setId(int aId)
+  {
+    boolean wasSet = false;
+    Integer anOldId = getId();
+    if (anOldId != null && anOldId.equals(aId)) {
+      return true;
+    }
+    if (hasWithId(aId)) {
+      return wasSet;
+    }
+    id = aId;
+    wasSet = true;
+    if (anOldId != null) {
+      maintenanceticketsById.remove(anOldId);
+    }
+    maintenanceticketsById.put(aId, this);
+    return wasSet;
+  }
+
 }
