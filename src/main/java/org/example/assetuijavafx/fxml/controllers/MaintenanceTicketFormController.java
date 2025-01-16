@@ -3,11 +3,10 @@ package org.example.assetuijavafx.fxml.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.example.assetuijavafx.controllers.AssetPlusController;
+import org.example.assetuijavafx.fxml.utils.*;
 import org.example.assetuijavafx.models.MaintenanceTicket;
 import org.example.assetuijavafx.models.MaintenanceTicket.*;
 
@@ -15,7 +14,11 @@ import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
+import static org.example.assetuijavafx.fxml.layouts.AlertWindow.*;
+
 public class MaintenanceTicketFormController implements Initializable {
+
+	AssetPlusController assetPlusController;
 
 	@FXML
 	private TextField inputFieldId;
@@ -57,27 +60,23 @@ public class MaintenanceTicketFormController implements Initializable {
 
     @FXML
     private void onSave(ActionEvent event) {
-		int id = Integer.parseInt(inputFieldId.getText());
-		Date raisedOnDate = Date.valueOf(inputFieldRaisedOnDate.getValue());
-		String description = inputFieldDescription.getText();
-		TimeEstimate timeToResolve = choiceBoxTimeToResolve.getValue();
-		PriorityLevel priority = choiceBoxPriorityLevel.getValue();
-		if (currentMaintenanceTicket != null) {
-			currentMaintenanceTicket.setId(id);
-			currentMaintenanceTicket.setRaisedOnDate(raisedOnDate);
-			currentMaintenanceTicket.setDescription(description);
-			currentMaintenanceTicket.setTimeToResolve(timeToResolve);
-			currentMaintenanceTicket.setPriority(priority);
-		} else {
-			MaintenanceTicket maintenanceTicket = new MaintenanceTicket();
-			maintenanceTicket.setId(id);
-			maintenanceTicket.setRaisedOnDate(raisedOnDate);
-			maintenanceTicket.setDescription(description);
-			maintenanceTicket.setTimeToResolve(timeToResolve);
-			maintenanceTicket.setPriority(priority);
-			MaintenanceTicket.addMaintenanceTicket(maintenanceTicket);
+		try {
+			int id = Integer.parseInt(inputFieldId.getText());
+			Date raisedOnDate = Date.valueOf(inputFieldRaisedOnDate.getValue());
+			String description = inputFieldDescription.getText();
+			TimeEstimate timeToResolve = choiceBoxTimeToResolve.getValue();
+			PriorityLevel priority = choiceBoxPriorityLevel.getValue();
+			String savedStatus;
+			if (currentMaintenanceTicket != null) {
+				savedStatus = AssetPlusController.updateMaintenanceTicket(id, id, raisedOnDate, description, timeToResolve.toString(), priority.toString());
+			} else {
+				savedStatus = AssetPlusController.addMaintenanceTicket(id, raisedOnDate, description, timeToResolve.toString(), priority.toString());
+			}
+			if (!savedStatus.isEmpty()) throw new InvalidInputException(savedStatus);
+			else showSuccessAlert("Successfully saved item");
+		} catch (RuntimeException e) {
+			FormExceptionHandler.handleException(e);
 		}
-        System.out.println("Successfully saved item");
         onCancel(event);
     }
 
