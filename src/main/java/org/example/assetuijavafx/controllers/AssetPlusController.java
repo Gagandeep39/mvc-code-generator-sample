@@ -1,10 +1,12 @@
 package org.example.assetuijavafx.controllers;
 
-
 import org.example.assetuijavafx.AssetPlusApplication;
 import org.example.assetuijavafx.models.*;
 import org.example.assetuijavafx.persistence.AssetPlusPersistence;
+import org.example.assetuijavafx.models.AssetPlus.*;
 import org.example.assetuijavafx.models.MaintenanceTicket.*;
+import org.example.assetuijavafx.models.SpecificAsset.*;
+import org.example.assetuijavafx.models.AssetType.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -270,6 +272,44 @@ public class AssetPlusController {
 		return null;
 	}
 
+	public static String addMaintenanceTicket(int id, Date raisedOnDate, String description, String timeToResolve, String priority) {
+		
+		AssetPlus root = AssetPlusApplication.getAssetPlus();
+		
+		TimeEstimate parsedTimeToResolve;
+		try {
+			parsedTimeToResolve = TimeEstimate.valueOf(timeToResolve);
+		}
+		catch (Exception e) {		
+			return "The timeToResolve must be lessThanADay, oneToThreeDays, threeToSevenDays, oneToThreeWeeks or threeOrMoreWeeks.";
+		}
+	
+		PriorityLevel parsedPriority;
+		try {
+			parsedPriority = PriorityLevel.valueOf(priority);
+		}
+		catch (Exception e) {		
+			return "The priority must be Urgent, Normal or Low.";
+		}
+	
+		try {
+			new MaintenanceTicket(id, raisedOnDate, description, parsedTimeToResolve, parsedPriority, root);
+		}
+		catch (RuntimeException e) {
+			return "The maintenanceTicket id must be unique.";
+		}
+	
+		try {
+			AssetPlusPersistence.save();
+		}
+		catch (RuntimeException e) {
+			return e.getMessage();
+		}
+	
+		return "";
+	}
+	
+
 	public static String updateMaintenanceTicket(int keyId, int id, Date raisedOnDate, String description, String timeToResolve, String priority) {
 		
 		TimeEstimate parsedTimeToResolve;
@@ -280,7 +320,7 @@ public class AssetPlusController {
 			return "The timeToResolve must be lessThanADay, oneToThreeDays, threeToSevenDays, oneToThreeWeeks or threeOrMoreWeeks.";
 		}
 	
-		MaintenanceTicket.PriorityLevel parsedPriority;
+		PriorityLevel parsedPriority;
 		try {
 			parsedPriority = PriorityLevel.valueOf(priority);
 		}
