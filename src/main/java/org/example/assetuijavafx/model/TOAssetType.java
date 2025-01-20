@@ -16,16 +16,26 @@ public class TOAssetType
   private String name;
   private int expectedLifeSpan;
   private String image;
+  private boolean visible;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public TOAssetType(String aName, int aExpectedLifeSpan, String aImage)
+  public TOAssetType(String aName, int aExpectedLifeSpan, String aImage, boolean aVisible)
   {
     name = aName;
     expectedLifeSpan = aExpectedLifeSpan;
     image = aImage;
+    visible = aVisible;
+  }
+
+  public boolean getVisible() {
+    return visible;
+  }
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
   }
 
   //------------------------

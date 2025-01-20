@@ -39,7 +39,7 @@ public class AssetPlusController {
 	}
 	
 
-	public static String addAssetType(String name, int expectedLifeSpan, String image) {
+	public static String addAssetType(String name, int expectedLifeSpan, String image, boolean visible) {
 		
 		AssetPlus root = AssetPlusApplication.getAssetPlus();
 		
@@ -48,7 +48,7 @@ public class AssetPlusController {
 		}
 	
 		try {
-			new AssetType(name, expectedLifeSpan, image, root);
+			new AssetType(name, expectedLifeSpan, image, visible, root);
 		}
 		catch (RuntimeException e) {
 			return "The assetType name must be unique.";
@@ -433,7 +433,7 @@ public class AssetPlusController {
       	if (assetType == null) {
 			return null;
 		}
-		return new TOAssetType(assetType.getName(), assetType.getExpectedLifeSpan(), assetType.getImage());
+		return new TOAssetType(assetType.getName(), assetType.getExpectedLifeSpan(), assetType.getImage(), assetType.getVisible());
     }
 
 	private static List<TOAssetType> convertToTOAssetType(List<AssetType> assetTypeList) {

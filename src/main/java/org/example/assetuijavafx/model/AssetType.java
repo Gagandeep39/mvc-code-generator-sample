@@ -18,15 +18,17 @@ public class AssetType {
     private String name;
     private int expectedLifeSpan;
     private String image;
+    private boolean visible;
     private List<SpecificAsset> specificAssets;
 
     public AssetType() {}
 
 
-    public AssetType(String aName, int aExpectedLifeSpan, String aImage, AssetPlus aAssetPlus)
+    public AssetType(String aName, int aExpectedLifeSpan, String aImage, boolean aVisible,  AssetPlus aAssetPlus)
     {
         expectedLifeSpan = aExpectedLifeSpan;
         image = aImage;
+        visible = aVisible;
         if (!setName(aName))
         {
             throw new RuntimeException("Cannot create due to duplicate name. See http://manual.umple.org?RE003ViolationofUniqueness.html");
@@ -45,6 +47,14 @@ public class AssetType {
 
     public static void setAssettypesByName(Map<String, AssetType> assettypesByName) {
         AssetType.assettypesByName = assettypesByName;
+    }
+
+    public boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public static void addAssetType(AssetType assetType) {
