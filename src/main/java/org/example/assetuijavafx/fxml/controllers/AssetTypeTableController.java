@@ -16,9 +16,9 @@ import javafx.stage.Stage;
 import org.example.assetuijavafx.AssetPlusApplication;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
-import org.example.assetuijavafx.models.AssetPlus;
-import org.example.assetuijavafx.models.AssetType;
-import org.example.assetuijavafx.models.TOAssetType;
+import org.example.assetuijavafx.model.AssetPlus;
+import org.example.assetuijavafx.model.AssetType;
+import org.example.assetuijavafx.model.TOAssetType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.example.assetuijavafx.AssetPlusApplication.PACKAGE_ID;
-import static org.example.assetuijavafx.models.AssetType.getAssettypesByName;
+import static org.example.assetuijavafx.model.AssetType.getAssettypesByName;
 
 public class AssetTypeTableController implements Initializable {
 

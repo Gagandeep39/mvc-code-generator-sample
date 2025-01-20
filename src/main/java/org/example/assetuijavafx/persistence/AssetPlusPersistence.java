@@ -1,7 +1,7 @@
 package org.example.assetuijavafx.persistence;
 
 import org.example.assetuijavafx.AssetPlusApplication;
-import org.example.assetuijavafx.models.AssetPlus;
+import org.example.assetuijavafx.model.AssetPlus;
 
 import java.lang.reflect.Field;
 

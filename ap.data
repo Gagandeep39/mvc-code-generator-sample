@@ -19,7 +19,18 @@
       }
     ],
     "maintenanceTickets": [
-      ""
+      {
+        "MaintenanceTicket": {
+          "id": 1001,
+          "raisedOnDate": "2025-01-14",
+          "description": "cdvfbgh",
+          "timeToResolve": "LessThanADay",
+          "priority": "Normal",
+          "assetPlus": {
+            "@reference": "../../.."
+          }
+        }
+      }
     ]
   }
 }

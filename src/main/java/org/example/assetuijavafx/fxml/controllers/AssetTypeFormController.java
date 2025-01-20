@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.controllers.AssetPlusController;
-import org.example.assetuijavafx.models.TOAssetType;
+import org.example.assetuijavafx.model.TOAssetType;
 
 public class AssetTypeFormController {
     @FXML

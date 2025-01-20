@@ -1,4 +1,4 @@
-package org.example.assetuijavafx.models;
+package org.example.assetuijavafx.model;
 
 import java.sql.Date;
 import java.util.HashMap;

@@ -1,12 +1,12 @@
 package org.example.assetuijavafx.controllers;
 
 import org.example.assetuijavafx.AssetPlusApplication;
-import org.example.assetuijavafx.models.*;
+import org.example.assetuijavafx.model.*;
 import org.example.assetuijavafx.persistence.AssetPlusPersistence;
-import org.example.assetuijavafx.models.AssetPlus.*;
-import org.example.assetuijavafx.models.MaintenanceTicket.*;
-import org.example.assetuijavafx.models.SpecificAsset.*;
-import org.example.assetuijavafx.models.AssetType.*;
+import org.example.assetuijavafx.model.AssetPlus.*;
+import org.example.assetuijavafx.model.MaintenanceTicket.*;
+import org.example.assetuijavafx.model.SpecificAsset.*;
+import org.example.assetuijavafx.model.AssetType.*;
 
 import java.sql.Date;
 import java.util.ArrayList;

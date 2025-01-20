@@ -1,4 +1,4 @@
-package org.example.assetuijavafx.models;
+package org.example.assetuijavafx.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;

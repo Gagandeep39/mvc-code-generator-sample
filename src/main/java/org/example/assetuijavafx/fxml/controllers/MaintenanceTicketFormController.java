@@ -7,8 +7,8 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.*;
-import org.example.assetuijavafx.models.MaintenanceTicket;
-import org.example.assetuijavafx.models.MaintenanceTicket.*;
+import org.example.assetuijavafx.model.MaintenanceTicket;
+import org.example.assetuijavafx.model.MaintenanceTicket.*;
 
 import java.net.URL;
 import java.sql.Date;
@@ -55,6 +55,7 @@ public class MaintenanceTicketFormController implements Initializable {
     	inputFieldDescription.setText(maintenanceTicket.getDescription());
     	choiceBoxTimeToResolve.setValue(maintenanceTicket.getTimeToResolve());
     	choiceBoxPriorityLevel.setValue(maintenanceTicket.getPriority());
+		inputFieldId.setDisable(true);
         System.out.println("Preloaded MaintenanceTicket data");
     }
 

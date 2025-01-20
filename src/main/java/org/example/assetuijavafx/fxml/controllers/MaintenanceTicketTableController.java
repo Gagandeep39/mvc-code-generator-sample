@@ -14,8 +14,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
-import org.example.assetuijavafx.models.MaintenanceTicket;
-import org.example.assetuijavafx.models.MaintenanceTicket.*;
+import org.example.assetuijavafx.model.MaintenanceTicket;
+import org.example.assetuijavafx.model.MaintenanceTicket.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,7 +23,7 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 
 import static org.example.assetuijavafx.AssetPlusApplication.PACKAGE_ID;
-import static org.example.assetuijavafx.models.MaintenanceTicket.getMaintenanceticketsById;
+import static org.example.assetuijavafx.model.MaintenanceTicket.getMaintenanceticketsById;
 
 
 public class MaintenanceTicketTableController implements Initializable  {

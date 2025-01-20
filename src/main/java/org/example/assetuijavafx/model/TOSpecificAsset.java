@@ -1,7 +1,7 @@
 /*PLEASE DO NOT EDIT THIS CODE*/
 /*This code was generated using the UMPLE 1.35.0.7523.c616a4dce modeling language!*/
 
-package org.example.assetuijavafx.models;
+package org.example.assetuijavafx.model;
 import java.sql.Date;
 
 // line 13 "../../../../../../model.ump"

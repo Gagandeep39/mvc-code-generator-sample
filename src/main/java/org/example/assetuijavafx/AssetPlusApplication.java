@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.assetuijavafx.models.AssetPlus;
+import org.example.assetuijavafx.model.AssetPlus;
 import org.example.assetuijavafx.persistence.AssetPlusPersistence;
 
 import java.io.IOException;
