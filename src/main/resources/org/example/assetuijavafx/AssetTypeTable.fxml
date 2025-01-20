@@ -10,6 +10,7 @@
             <TableColumn fx:id="columnName" prefWidth="75.0" text="name"/>
             <TableColumn fx:id="columnExpectedLifeSpan" prefWidth="75.0" text="expectedLifeSpan"/>
             <TableColumn fx:id="columnImage" prefWidth="75.0" text="image"/>
+            <TableColumn fx:id="columnVisible" prefWidth="75.0" text="visible"/>
             <TableColumn fx:id="columnUpdate" prefWidth="75.0" text="Update" style="-fx-alignment: center"/>
             <TableColumn fx:id="columnDelete" prefWidth="75.0" text="Delete" style="-fx-alignment: center"/>
         </columns>

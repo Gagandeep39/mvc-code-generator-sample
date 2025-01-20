@@ -41,6 +41,9 @@ public class AssetTypeTableController implements Initializable {
     private TableColumn<TOAssetType, String> columnName;
 
     @FXML
+    private TableColumn<TOAssetType, String> columnVisible;
+
+    @FXML
     private TableColumn<TOAssetType, Button> columnDelete;
 
     @FXML
@@ -64,6 +67,7 @@ public class AssetTypeTableController implements Initializable {
         columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnExpectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
         columnImage.setCellValueFactory(new PropertyValueFactory<>("image"));
+        columnVisible.setCellValueFactory(new PropertyValueFactory<>("visible"));
         columnUpdate.setCellFactory(column -> new ButtonCell<>("Update", this::updateAssetType));
         columnDelete.setCellFactory(column -> new ButtonCell<>("Delete", this::showDialogDeleteAssetType));
         table.setItems(list);
