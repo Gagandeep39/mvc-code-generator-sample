@@ -72,7 +72,7 @@ public class AssetTypeFormController {
             // Validate Controller response
             if (!savedStatus.isEmpty()) throw new InvalidInputException(savedStatus);
             else {
-                textError.setText("Successfully saved item");
+                textError.setText("Successfully saved item. Redirecting back to table...");
                 FormHelper.triggerAfterDelay(() -> buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY")), 2);
             }
 

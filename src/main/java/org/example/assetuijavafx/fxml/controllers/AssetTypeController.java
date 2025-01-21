@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.TreeItem;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.*;
 import org.controlsfx.control.BreadCrumbBar;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.TOAssetType;
@@ -22,32 +22,32 @@ public class AssetTypeController implements Initializable {
     @FXML
     public BreadCrumbBar<String> breadCrumbBar;
     @FXML
-    public FlowPane rootPane;
+    public VBox parentContainer, childContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         rootItem.getChildren().add(addItem);
         initializeBreadcrumbNavigation();
-        rootPane.addEventHandler(PageSwitchEvent.PAGE_SWITCH, this::changePage);
-        rootPane.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+        parentContainer.addEventHandler(PageSwitchEvent.PAGE_SWITCH, this::changePage);
+        parentContainer.fireEvent(new PageSwitchEvent<>("DISPLAY"));
     }
 
     public void initializeBreadcrumbNavigation() {
         breadCrumbBar.setOnCrumbAction(event -> {
             switch (event.getSelectedCrumb().getValue()) {
                 case "Add AssetType":
-                    rootPane.fireEvent(new PageSwitchEvent<>("ADD"));
+                    parentContainer.fireEvent(new PageSwitchEvent<>("ADD"));
                     break;
                 case "AssetType":
-                    rootPane.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+                    parentContainer.fireEvent(new PageSwitchEvent<>("DISPLAY"));
                     break;
             }
         });
     }
 
     public void changePage(PageSwitchEvent<TOAssetType> event) {
-        if (rootPane.getChildren().size() > 1) {
-            rootPane.getChildren().removeLast();
+        if (!childContainer.getChildren().isEmpty()) {
+            childContainer.getChildren().clear();
         }
         try {
             FXMLLoader loader;
@@ -57,19 +57,19 @@ public class AssetTypeController implements Initializable {
                     breadCrumbBar.setSelectedCrumb(rootItem);
                     loader = new FXMLLoader(getClass().getResource(PACKAGE_ID.concat("AssetTypeTable.fxml")));
                     child = loader.load();
-                    rootPane.getChildren().add(child);
+                    childContainer.getChildren().add(child);
                     break;
                 case "ADD":
                     breadCrumbBar.setSelectedCrumb(addItem);
                     loader = new FXMLLoader(getClass().getResource(PACKAGE_ID.concat("AssetTypeForm.fxml")));
                     child = loader.load();
-                    rootPane.getChildren().add(child);
+                    childContainer.getChildren().add(child);
                     break;
                 case "UPDATE":
                     breadCrumbBar.setSelectedCrumb(addItem);
                     loader = new FXMLLoader(getClass().getResource(PACKAGE_ID.concat("AssetTypeForm.fxml")));
                     child = loader.load();
-                    rootPane.getChildren().add(child);
+                    childContainer.getChildren().add(child);
                     AssetTypeFormController controller = loader.getController();
                     controller.setData(event.getData());
                     break;

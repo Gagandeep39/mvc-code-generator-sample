@@ -2,18 +2,19 @@
 
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.assetuijavafx.fxml.controllers.AssetPlusController">
-    <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="600.0" tabMaxWidth="800.0">
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.assetuijavafx.fxml.controllers.AssetPlusController">
+    <TabPane tabClosingPolicy="UNAVAILABLE">
         <Tab text="AssetType">
-            <fx:include source="AssetType.fxml" />
+            <fx:include source="AssetType.fxml"/>
         </Tab>
         <Tab text="SpecificAsset">
-            <fx:include source="SpecificAsset.fxml" />
+            <fx:include source="SpecificAsset.fxml"/>
         </Tab>
         <Tab text="MaintenanceTicket">
-            <fx:include source="MaintenanceTicket.fxml" />
+            <fx:include source="MaintenanceTicket.fxml"/>
         </Tab>
     </TabPane>
-</Pane>
+</VBox>
