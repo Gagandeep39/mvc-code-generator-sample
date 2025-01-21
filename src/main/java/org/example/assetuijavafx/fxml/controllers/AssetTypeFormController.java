@@ -5,11 +5,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.FormExceptionHandler;
+import org.example.assetuijavafx.fxml.utils.FormHelper;
 import org.example.assetuijavafx.fxml.utils.InvalidInputException;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.TOAssetType;
+
+import java.util.Timer;
 
 import static org.example.assetuijavafx.fxml.layouts.AlertWindow.showSuccessAlert;
 
@@ -28,6 +32,9 @@ public class AssetTypeFormController {
 
     @FXML
     private CheckBox checkboxVisible;
+
+    @FXML
+    private Text textError;
 
     private TOAssetType currentAssetType;
 
@@ -65,12 +72,12 @@ public class AssetTypeFormController {
             // Validate Controller response
             if (!savedStatus.isEmpty()) throw new InvalidInputException(savedStatus);
             else {
-                showSuccessAlert("Successfully saved item");
-                buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+                textError.setText("Successfully saved item");
+                FormHelper.triggerAfterDelay(() -> buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY")), 2);
             }
 
         } catch (RuntimeException e) {
-            FormExceptionHandler.handleException(e);
+            textError.setText(FormHelper.formatTextMessage(e));
         }
     }
 
