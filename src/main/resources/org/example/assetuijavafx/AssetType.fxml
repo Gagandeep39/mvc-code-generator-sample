@@ -3,13 +3,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.FlowPane?>
+<?import org.controlsfx.control.BreadCrumbBar?>
 <FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL"
           prefWrapLength="720.0" vgap="16.0" xmlns="http://javafx.com/javafx/11.0.14-internal"
           xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="org.example.assetuijavafx.fxml.controllers.AssetTypeController" fx:id="root">
+          fx:controller="org.example.assetuijavafx.fxml.controllers.AssetTypeController"
+          fx:id="rootPane">
     <children>
-        <Button mnemonicParsing="false" onAction="#onAddAssetType" text="Add AssetType"/>
-        <fx:include source="AssetTypeTable.fxml" fx:id="table"/>
+        <BreadCrumbBar fx:id="breadCrumbBar" prefWidth="Infinity" />
     </children>
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>

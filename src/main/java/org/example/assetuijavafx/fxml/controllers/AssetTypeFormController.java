@@ -5,9 +5,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.example.assetuijavafx.controllers.AssetPlusController;
+import org.example.assetuijavafx.fxml.utils.FormExceptionHandler;
+import org.example.assetuijavafx.fxml.utils.InvalidInputException;
+import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.TOAssetType;
+
+import static org.example.assetuijavafx.fxml.layouts.AlertWindow.showSuccessAlert;
 
 public class AssetTypeFormController {
     @FXML
@@ -36,26 +40,39 @@ public class AssetTypeFormController {
         System.out.println("Triggered onSave");
     }
 
+    public void onCancel(ActionEvent actionEvent) {
+        buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+    }
+
     @FXML
     private void onSave(ActionEvent event) {
+        try {
+            String name = inputFieldName.getText();
+            int expectedLifeSpan = Integer.parseInt(inputFieldExpectedLifeSpan.getText());
+            String image = inputFieldImage.getText();
+            boolean visible = checkboxVisible.isSelected();
+            String savedStatus;
+            if (currentAssetType != null) {
+                savedStatus = AssetPlusController.updateAssetType(
+                        name, name, expectedLifeSpan, image
+                );
+            } else {
+                savedStatus = AssetPlusController.addAssetType(
+                        name, expectedLifeSpan, image, visible
+                );
+            }
 
-        // Perform Actual mapping
-        String name = inputFieldName.getText();
-        String image = inputFieldImage.getText();
-        int expectedLifeSpan = Integer.parseInt(inputFieldExpectedLifeSpan.getText());
-        boolean visible = checkboxVisible.isSelected();
+            // Validate Controller response
+            if (!savedStatus.isEmpty()) throw new InvalidInputException(savedStatus);
+            else {
+                showSuccessAlert("Successfully saved item");
+                buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+            }
 
-        if (currentAssetType != null) {
-            AssetPlusController.updateAssetType(name, name, expectedLifeSpan, image);
-        } else {
-            AssetPlusController.addAssetType(name, expectedLifeSpan, image, visible);
+        } catch (RuntimeException e) {
+            FormExceptionHandler.handleException(e);
         }
-        onCancel(event);
     }
 
-    @FXML
-    private void onCancel(ActionEvent event) {
-        Stage stage = (Stage) buttonCancel.getScene().getWindow();
-        stage.close();
-    }
+
 }

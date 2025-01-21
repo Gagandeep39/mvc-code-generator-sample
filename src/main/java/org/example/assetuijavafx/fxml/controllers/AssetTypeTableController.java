@@ -2,6 +2,7 @@ package org.example.assetuijavafx.fxml.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 import org.example.assetuijavafx.AssetPlusApplication;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
+import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.AssetPlus;
 import org.example.assetuijavafx.model.AssetType;
 import org.example.assetuijavafx.model.TOAssetType;
@@ -27,7 +29,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.example.assetuijavafx.AssetPlusApplication.PACKAGE_ID;
-import static org.example.assetuijavafx.model.AssetType.getAssettypesByName;
 
 public class AssetTypeTableController implements Initializable {
 
@@ -74,19 +75,7 @@ public class AssetTypeTableController implements Initializable {
     }
 
     private void updateAssetType(TOAssetType assetType) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "AssetTypeForm.fxml"));
-            Parent parent = fxmlLoader.load();
-            AssetTypeFormController controller = fxmlLoader.getController();
-            controller.setData(assetType);
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(parent));
-            stage.showAndWait();
-            initializeTable();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            table.fireEvent(new PageSwitchEvent<>("UPDATE", assetType));
     }
 
     private void showDialogDeleteAssetType(TOAssetType assetType) {
@@ -111,4 +100,7 @@ public class AssetTypeTableController implements Initializable {
         AssetPlusController.removeAssetType(assetType.getName());
     }
 
+    public void onAddAssetType(ActionEvent event) {
+        table.fireEvent(new PageSwitchEvent<>("ADD"));
+    }
 }
