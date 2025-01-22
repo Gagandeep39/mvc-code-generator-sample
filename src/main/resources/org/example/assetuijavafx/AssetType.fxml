@@ -8,10 +8,8 @@
       fx:id="parentContainer"
       spacing="16">
     <children>
-        <BreadCrumbBar fx:id="breadCrumbBar" prefWidth="Infinity"/>
-        <VBox fx:id="childContainer">
-            <fx:include source="AssetTypeTable.fxml"/>
-        </VBox>
+        <BreadCrumbBar fx:id="breadCrumbBar"/>
+        <VBox fx:id="childContainer"/>
     </children>
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>

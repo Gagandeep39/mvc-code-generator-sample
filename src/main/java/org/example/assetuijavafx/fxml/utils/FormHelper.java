@@ -1,12 +1,7 @@
 package org.example.assetuijavafx.fxml.utils;
 
 import javafx.animation.PauseTransition;
-import javafx.scene.control.Alert;
 import javafx.util.Duration;
-
-import java.util.function.Consumer;
-
-import static org.example.assetuijavafx.fxml.layouts.AlertWindow.showAlert;
 
 public class FormHelper {
 
