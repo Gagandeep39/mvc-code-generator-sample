@@ -5,7 +5,7 @@
 <?import org.controlsfx.control.BreadCrumbBar?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.assetuijavafx.fxml.controllers.AssetTypeController"
-      fx:id="rootPane"
+      fx:id="parentContainer"
       spacing="16">
     <children>
         <BreadCrumbBar fx:id="breadCrumbBar" prefWidth="Infinity"/>
