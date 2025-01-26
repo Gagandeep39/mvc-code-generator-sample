@@ -3,8 +3,8 @@
 
 package org.example.assetuijavafx.model;
 
-// line 21 "../../../../../../model.ump"
-// line 43 "../../../../../../model.ump"
+// line 22 "../../../../../../model.ump"
+// line 45 "../../../../../../model.ump"
 public class TOAssetType
 {
 
@@ -30,14 +30,6 @@ public class TOAssetType
     visible = aVisible;
   }
 
-  public boolean getVisible() {
-    return visible;
-  }
-
-  public void setVisible(boolean visible) {
-    this.visible = visible;
-  }
-
   //------------------------
   // INTERFACE
   //------------------------
@@ -57,6 +49,16 @@ public class TOAssetType
     return image;
   }
 
+  public boolean getVisible()
+  {
+    return visible;
+  }
+  /* Code from template attribute_IsBoolean */
+  public boolean isVisible()
+  {
+    return visible;
+  }
+
   public void delete()
   {}
 
@@ -66,6 +68,7 @@ public class TOAssetType
     return super.toString() + "["+
             "name" + ":" + getName()+ "," +
             "expectedLifeSpan" + ":" + getExpectedLifeSpan()+ "," +
-            "image" + ":" + getImage()+ "]";
+            "image" + ":" + getImage()+ "," +
+            "visible" + ":" + getVisible()+ "]";
   }
 }

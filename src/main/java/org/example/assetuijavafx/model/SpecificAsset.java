@@ -20,6 +20,7 @@ public class SpecificAsset {
     private int roomNumber;
     private Date purchaseDate;
     private AssetPlus assetPlus;
+    private AssetType assetType;
 
     public AssetPlus getAssetPlus() {
         return assetPlus;
@@ -28,7 +29,7 @@ public class SpecificAsset {
 
     public SpecificAsset() {}
 
-    public SpecificAsset(int aAssetNumber, int aFloorNumber, int aRoomNumber, Date aPurchaseDate, AssetPlus aAssetPlus)
+    public SpecificAsset(int aAssetNumber, int aFloorNumber, int aRoomNumber, Date aPurchaseDate, AssetPlus aAssetPlus, AssetType aAssetType)
     {
         floorNumber = aFloorNumber;
         roomNumber = aRoomNumber;
@@ -41,6 +42,11 @@ public class SpecificAsset {
         if (!didAddAssetPlus)
         {
             throw new RuntimeException("Unable to create specificAsset due to assetPlus. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+        }
+        boolean didAddAssetType = setAssetType(aAssetType);
+        if (!didAddAssetType)
+        {
+            throw new RuntimeException("Unable to create specificAsset due to assetType. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
         }
     }
 
@@ -151,4 +157,30 @@ public class SpecificAsset {
         wasSet = true;
         return wasSet;
     }
+
+    public AssetType getAssetType()
+    {
+        return assetType;
+    }
+
+    /* Code from template association_SetOneToMany */
+    public boolean setAssetType(AssetType aAssetType)
+    {
+        boolean wasSet = false;
+        if (aAssetType == null)
+        {
+            return wasSet;
+        }
+
+        AssetType existingAssetType = assetType;
+        assetType = aAssetType;
+        if (existingAssetType != null && !existingAssetType.equals(aAssetType))
+        {
+            existingAssetType.removeSpecificAsset(this);
+        }
+        assetType.addSpecificAsset(this);
+        wasSet = true;
+        return wasSet;
+    }
+
 }

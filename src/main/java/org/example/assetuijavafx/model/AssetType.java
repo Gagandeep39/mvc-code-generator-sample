@@ -161,4 +161,34 @@ public class AssetType {
             assettypesByName.put(t.getName(), t);
         }
     }
+
+    public boolean removeSpecificAsset(SpecificAsset aSpecificAsset)
+    {
+        boolean wasRemoved = false;
+        //Unable to remove aSpecificAsset, as it must always have a assetType
+        if (!this.equals(aSpecificAsset.getAssetType()))
+        {
+            specificAssets.remove(aSpecificAsset);
+            wasRemoved = true;
+        }
+        return wasRemoved;
+    }
+
+    public boolean addSpecificAsset(SpecificAsset aSpecificAsset)
+    {
+        boolean wasAdded = false;
+        if (specificAssets.contains(aSpecificAsset)) { return false; }
+        AssetType existingAssetType = aSpecificAsset.getAssetType();
+        boolean isNewAssetType = existingAssetType != null && !this.equals(existingAssetType);
+        if (isNewAssetType)
+        {
+            aSpecificAsset.setAssetType(this);
+        }
+        else
+        {
+            specificAssets.add(aSpecificAsset);
+        }
+        wasAdded = true;
+        return wasAdded;
+    }
 }

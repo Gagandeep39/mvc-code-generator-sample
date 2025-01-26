@@ -2,8 +2,11 @@ package org.example.assetuijavafx.controllers;
 
 import org.example.assetuijavafx.application.AssetPlusApplication;
 import org.example.assetuijavafx.model.*;
-import org.example.assetuijavafx.model.MaintenanceTicket.*;
 import org.example.assetuijavafx.persistence.AssetPlusPersistence;
+import org.example.assetuijavafx.model.AssetPlus.*;
+import org.example.assetuijavafx.model.MaintenanceTicket.*;
+import org.example.assetuijavafx.model.SpecificAsset.*;
+import org.example.assetuijavafx.model.AssetType.*;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -156,7 +159,7 @@ public class AssetPlusController {
 	}
 	
 
-	public static String addSpecificAsset(int assetNumber, int floorNumber, int roomNumber, Date purchaseDate) {
+	public static String addSpecificAsset(int assetNumber, int floorNumber, int roomNumber, Date purchaseDate, String assetTypeName) {
 		
 		AssetPlus root = AssetPlusApplication.getAssetPlus();
 		
@@ -172,8 +175,16 @@ public class AssetPlusController {
 			return "The room number must be greater than or equal to -1.";
 		}
 	
+		AssetType assetType;
 		try {
-			new SpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate, root);
+			assetType = AssetType.getWithName(assetTypeName);
+		}
+		catch (RuntimeException e) {
+			return "The assetType does not exist.";
+		}
+	
+		try {
+			new SpecificAsset(assetNumber, floorNumber, roomNumber, purchaseDate, root, assetType);
 		}
 		catch (RuntimeException e) {
 			return "The specificAsset assetNumber must be unique.";
@@ -190,7 +201,7 @@ public class AssetPlusController {
 	}
 	
 
-	public static String updateSpecificAsset(int keyAssetNumber, int assetNumber, int floorNumber, int roomNumber, Date purchaseDate) {
+	public static String updateSpecificAsset(int keyAssetNumber, int assetNumber, int floorNumber, int roomNumber, Date purchaseDate, String assetTypeName) {
 		
 		if (!(assetNumber >= 1)) {
 			return "The asset number must be greater than or equal to 1.";
@@ -214,6 +225,14 @@ public class AssetPlusController {
 			specificAsset.setFloorNumber(floorNumber);
 			specificAsset.setRoomNumber(roomNumber);
 			specificAsset.setPurchaseDate(purchaseDate);
+			AssetType assetType;
+			try {
+				assetType = AssetType.getWithName(assetTypeName);
+			}
+			catch (RuntimeException e) {
+				return "The assetType does not exist.";
+			}
+			specificAsset.setAssetType(assetType);
 		}
 		catch (RuntimeException e) {
 			return e.getMessage();
@@ -414,7 +433,7 @@ public class AssetPlusController {
       	if (specificAsset == null) {
 			return null;
 		}
-		return new TOSpecificAsset(specificAsset.getAssetNumber(), specificAsset.getFloorNumber(), specificAsset.getRoomNumber(), specificAsset.getPurchaseDate());
+		return new TOSpecificAsset(specificAsset.getAssetNumber(), specificAsset.getFloorNumber(), specificAsset.getRoomNumber(), specificAsset.getPurchaseDate(), convertToTOAssetType(specificAsset.getAssetType()));
     }
 
 	private static List<TOSpecificAsset> convertToTOSpecificAsset(List<SpecificAsset> specificAssetList) {
