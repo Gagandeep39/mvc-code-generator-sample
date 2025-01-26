@@ -1,9 +1,6 @@
 package org.example.assetuijavafx.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AssetType {
 
@@ -112,9 +109,6 @@ public class AssetType {
         this.image = image;
     }
 
-    public List<SpecificAsset> getSpecificAssets() {
-        return specificAssets;
-    }
 
     public void setSpecificAssets(List<SpecificAsset> specificAssets) {
         this.specificAssets = specificAssets;
@@ -191,4 +185,18 @@ public class AssetType {
         wasAdded = true;
         return wasAdded;
     }
+
+    /* Code from template association_GetMany */
+    public SpecificAsset getSpecificAsset(int index)
+    {
+        SpecificAsset aSpecificAsset = specificAssets.get(index);
+        return aSpecificAsset;
+    }
+
+    public List<SpecificAsset> getSpecificAssets()
+    {
+        List<SpecificAsset> newSpecificAssets = Collections.unmodifiableList(specificAssets);
+        return newSpecificAssets;
+    }
+
 }

@@ -4,8 +4,8 @@
 package org.example.assetuijavafx.model;
 import java.sql.Date;
 
-// line 13 "../../../../../../model.ump"
-// line 40 "../../../../../../model.ump"
+// line 13 "../../../../../model.ump"
+// line 41 "../../../../../model.ump"
 public class TOSpecificAsset
 {
 
