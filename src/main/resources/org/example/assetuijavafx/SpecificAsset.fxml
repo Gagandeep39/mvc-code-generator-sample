@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetController"
-            prefHeight="400.0" prefWidth="600.0">
-    <Label text="Specific Asset" />
-</AnchorPane>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.BreadCrumbBar?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetController"
+      fx:id="parentContainer"
+      spacing="16">
+    <children>
+        <BreadCrumbBar fx:id="breadCrumbBar"/>
+        <VBox fx:id="childContainer"/>
+    </children>
+    <padding>
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+    </padding>
+</VBox>

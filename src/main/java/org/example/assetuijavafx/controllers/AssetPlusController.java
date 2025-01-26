@@ -1,12 +1,9 @@
 package org.example.assetuijavafx.controllers;
 
-import org.example.assetuijavafx.AssetPlusApplication;
+import org.example.assetuijavafx.application.AssetPlusApplication;
 import org.example.assetuijavafx.model.*;
-import org.example.assetuijavafx.persistence.AssetPlusPersistence;
-import org.example.assetuijavafx.model.AssetPlus.*;
 import org.example.assetuijavafx.model.MaintenanceTicket.*;
-import org.example.assetuijavafx.model.SpecificAsset.*;
-import org.example.assetuijavafx.model.AssetType.*;
+import org.example.assetuijavafx.persistence.AssetPlusPersistence;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -65,7 +62,7 @@ public class AssetPlusController {
 	}
 	
 
-	public static String updateAssetType(String keyName, String name, int expectedLifeSpan, String image) {
+	public static String updateAssetType(String keyName, String name, int expectedLifeSpan, String image, boolean visible) {
 		
 		if (!(expectedLifeSpan > 0)) {
 			return "The expected life span must be greater than 0.";
@@ -80,6 +77,7 @@ public class AssetPlusController {
 			assetType.setName(name);
 			assetType.setExpectedLifeSpan(expectedLifeSpan);
 			assetType.setImage(image);
+			assetType.setVisible(visible);
 		}
 		catch (RuntimeException e) {
 			return e.getMessage();

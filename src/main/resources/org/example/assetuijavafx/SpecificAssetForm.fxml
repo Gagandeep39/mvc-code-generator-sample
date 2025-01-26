@@ -6,7 +6,7 @@
 <?import javafx.scene.text.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" alignment="CENTER" spacing="16.0"
-	fx:controller="org.example.assetuijavafx.fxml.controllers.AssetTypeFormController">
+	fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetFormController">
 		<children>
 			<GridPane hgap="12.0" vgap="12.0" maxWidth="400">
 				<columnConstraints>
@@ -20,14 +20,14 @@
 					<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 				</rowConstraints>
 				<children>
-					<Label text="name" GridPane.rowIndex="0" />
-					<TextField fx:id="inputFieldName" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-					<Label text="expectedLifeSpan" GridPane.rowIndex="1" />
-					<TextField fx:id="inputFieldExpectedLifeSpan" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-					<Label text="visible" GridPane.rowIndex="3" />
-					<CheckBox fx:id="checkBoxVisible" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-					<Label text="image" GridPane.rowIndex="2" />
-					<TextField fx:id="inputFieldImage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+					<Label text="assetNumber" GridPane.rowIndex="0" />
+					<TextField fx:id="inputFieldAssetNumber" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+					<Label text="floorNumber" GridPane.rowIndex="1" />
+					<TextField fx:id="inputFieldFloorNumber" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+					<Label text="roomNumber" GridPane.rowIndex="2" />
+					<TextField fx:id="inputFieldRoomNumber" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+					<Label text="purchaseDate" GridPane.rowIndex="3" />
+					<DatePicker fx:id="inputFieldPurchaseDate" maxWidth="Infinity" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 				</children>
 			</GridPane>
 			<Text fx:id="textError"/>

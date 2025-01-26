@@ -1,96 +1,91 @@
 package org.example.assetuijavafx.fxml.controllers;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.collections.*;
+import javafx.event.ActionEvent;
+import javafx.fxml.*;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import org.example.assetuijavafx.fxml.layouts.ButtonCell;
+import javafx.stage.*;
+import javafx.scene.*;
+import javafx.scene.layout.*;
+import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.model.MaintenanceTicket;
+import org.example.assetuijavafx.model.TOMaintenanceTicket;
+ // Handles enum values and other imports
 import org.example.assetuijavafx.model.MaintenanceTicket.*;
+import org.example.assetuijavafx.fxml.layouts.ButtonCell;
+import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.util.ResourceBundle;
+import java.util.*;
 
-import static org.example.assetuijavafx.AssetPlusApplication.PACKAGE_ID;
-import static org.example.assetuijavafx.model.MaintenanceTicket.getMaintenanceticketsById;
-
+import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
 public class MaintenanceTicketTableController implements Initializable  {
 
+
+    @FXML
+    public VBox parentContainer;
 	@FXML
-    private TableColumn<MaintenanceTicket, Integer> columnid;
+	private TableColumn<TOMaintenanceTicket, Integer> columnId;
 	@FXML
-    private TableColumn<MaintenanceTicket, Date> columnraisedOnDate;
+	private TableColumn<TOMaintenanceTicket, Date> columnRaisedOnDate;
 	@FXML
-    private TableColumn<MaintenanceTicket, String> columndescription;
+	private TableColumn<TOMaintenanceTicket, String> columnDescription;
 	@FXML
-    private TableColumn<MaintenanceTicket, TimeEstimate> columntimeToResolve;
+	private TableColumn<TOMaintenanceTicket, TimeEstimate> columnTimeToResolve;
 	@FXML
-    private TableColumn<MaintenanceTicket, PriorityLevel> columnpriority;
+	private TableColumn<TOMaintenanceTicket, PriorityLevel> columnPriority;
 	
 	
-    @FXML
-    private TableColumn<MaintenanceTicket, Button> columnDelete;
+	@FXML
+	private TableColumn<TOMaintenanceTicket, Button> columnDelete;
 
-    @FXML
-    private TableColumn<MaintenanceTicket, Button> columnUpdate;
+	@FXML
+	private TableColumn<TOMaintenanceTicket, Button> columnUpdate;
 
-    @FXML
-    private TableView<MaintenanceTicket> table;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeTable();
-    }
+	@FXML
+	private TableView<TOMaintenanceTicket> table;
 
     public void initializeTable() {
-        ObservableList<MaintenanceTicket> list = FXCollections.observableArrayList(getMaintenanceticketsById().values());
+		List<TOMaintenanceTicket> toList = AssetPlusController.getMaintenanceTicketsOfAssetPlus();
+        if (toList == null) {
+            toList = Collections.emptyList();
+        }
+        ObservableList<TOMaintenanceTicket> list = FXCollections.observableArrayList(toList);
 
-		columnid.setCellValueFactory(new PropertyValueFactory<>("id"));
-		columnraisedOnDate.setCellValueFactory(new PropertyValueFactory<>("raisedOnDate"));
-		columndescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-		columntimeToResolve.setCellValueFactory(new PropertyValueFactory<>("timeToResolve"));
-		columnpriority.setCellValueFactory(new PropertyValueFactory<>("priority"));
+		columnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		columnRaisedOnDate.setCellValueFactory(new PropertyValueFactory<>("raisedOnDate"));
+		columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+		columnTimeToResolve.setCellValueFactory(new PropertyValueFactory<>("timeToResolve"));
+		columnPriority.setCellValueFactory(new PropertyValueFactory<>("priority"));
 
         columnUpdate.setCellFactory(column -> new ButtonCell<>("Update", this::updateMaintenanceTicket));
         columnDelete.setCellFactory(column -> new ButtonCell<>("Delete", this::showDialogDeleteMaintenanceTicket));
         table.setItems(list);
     }
 
-
-    private void updateMaintenanceTicket(MaintenanceTicket maintenanceTicket) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "MaintenanceTicketForm.fxml"));
-            Parent parent = fxmlLoader.load();
-            MaintenanceTicketFormController controller = fxmlLoader.getController();
-            controller.setData(maintenanceTicket);
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(parent));
-            stage.showAndWait();
-            initializeTable();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+		initializeTable();
     }
 
-    private void showDialogDeleteMaintenanceTicket(MaintenanceTicket maintenanceTicket) {
+    private void updateMaintenanceTicket(TOMaintenanceTicket maintenanceTicket) {
+		parentContainer.fireEvent(new PageSwitchEvent<>("UPDATE", maintenanceTicket));
+    }
+
+    public void onAddMaintenanceTicket(ActionEvent event) {
+        parentContainer.fireEvent(new PageSwitchEvent<>("ADD"));
+    }
+
+    private void showDialogDeleteMaintenanceTicket(TOMaintenanceTicket maintenanceTicket) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "DeleteDialog.fxml"));
             Parent parent = fxmlLoader.load();
             // Get controller
-            DeleteDialogController<MaintenanceTicket> controller = fxmlLoader.getController();
+            DeleteDialogController<TOMaintenanceTicket> controller = fxmlLoader.getController();
             controller.setAction(a -> deleteMaintenanceTicket(maintenanceTicket));
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -102,9 +97,9 @@ public class MaintenanceTicketTableController implements Initializable  {
         }
     }
 
-    private void deleteMaintenanceTicket(MaintenanceTicket maintenanceTicket) {
+    private void deleteMaintenanceTicket(TOMaintenanceTicket maintenanceTicket) {
+        AssetPlusController.removeMaintenanceTicket(maintenanceTicket.getId());
         System.out.println("Deleted MaintenanceTicket Successfully");
-        maintenanceTicket.delete();
     }
 
 }

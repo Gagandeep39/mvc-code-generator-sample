@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.assetuijavafx.fxml.controllers.AssetPlusController">
-    <TabPane tabClosingPolicy="UNAVAILABLE">
-        <Tab text="AssetType">
-            <fx:include source="AssetType.fxml"/>
-        </Tab>
-        <Tab text="SpecificAsset">
-            <fx:include source="SpecificAsset.fxml"/>
-        </Tab>
-        <Tab text="MaintenanceTicket">
-            <fx:include source="MaintenanceTicket.fxml"/>
-        </Tab>
-    </TabPane>
+<VBox xmlns:fx="http://javafx.com/fxml" 
+	  fx:controller="org.example.assetuijavafx.fxml.controllers.AssetPlusController">
+	<TabPane tabClosingPolicy="UNAVAILABLE">
+		<tabs>
+			<Tab text="AssetType">
+				<fx:include source="AssetType.fxml" fx:id="assetTypes"/>
+			</Tab>
+			<Tab text="SpecificAsset">
+				<fx:include source="SpecificAsset.fxml" fx:id="specificAssets"/>
+			</Tab>
+		</tabs>
+	</TabPane>
 </VBox>

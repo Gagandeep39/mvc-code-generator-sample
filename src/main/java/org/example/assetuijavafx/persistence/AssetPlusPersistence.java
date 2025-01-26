@@ -1,6 +1,6 @@
 package org.example.assetuijavafx.persistence;
 
-import org.example.assetuijavafx.AssetPlusApplication;
+import org.example.assetuijavafx.application.AssetPlusApplication;
 import org.example.assetuijavafx.model.AssetPlus;
 
 import java.lang.reflect.Field;
@@ -9,7 +9,7 @@ public class AssetPlusPersistence {
 
     //The following fields and setFilename method deal with the json file location.
     private static String filename = "ap.data";
-    private static final JsonSerializer serializer = new JsonSerializer(AssetPlusApplication.PACKAGE_NAME);
+    private static final JsonSerializer serializer = new JsonSerializer("org.example.assetuijavafx");
 
     public static void setFilename(String filename) {
         AssetPlusPersistence.filename = filename;
@@ -20,23 +20,23 @@ public class AssetPlusPersistence {
         save(AssetPlusApplication.getAssetPlus());
     }
 
-    public static void save(AssetPlus ap) {
-        serializer.serialize(ap, filename);
+    public static void save(AssetPlus root) {
+        serializer.serialize(root, filename);
     }
 
     //This method is utilized to load the AssetPlus data back in upon restarting the application.
     public static AssetPlus load() {
-        var ap = (AssetPlus) serializer.deserialize(filename);
+        var root = (AssetPlus) serializer.deserialize(filename);
 
-        if (ap == null || hasAnyNullAttribute(ap)) {
-            ap = new AssetPlus();
+        if (root == null || hasAnyNullAttribute(root)) {
+            root = new AssetPlus();
         } else {
-            ap.reinitialize();
-            System.out.println(ap.getAssetTypes().size());
+            root.reinitialize();
         }
-        return ap;
+        return root;
     }
 
+	// Checks if any attribute of root is null
     private static boolean hasAnyNullAttribute(Object obj) {
         if (obj == null) {
             return true;

@@ -1,32 +1,24 @@
 package org.example.assetuijavafx.fxml.controllers;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.control.TreeItem;
-import javafx.scene.layout.VBox;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import org.controlsfx.control.BreadCrumbBar;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.TOAssetType;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
-import static org.example.assetuijavafx.AssetPlusApplication.PACKAGE_ID;
+import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
 public class AssetTypeController implements Initializable {
 
     private final TreeItem<String> rootItem = new TreeItem<>("AssetType");
     private final TreeItem<String> addItem = new TreeItem<>("Add AssetType");
     private final TreeItem<String> updateItem = new TreeItem<>("Update AssetType");
-    private final Map<String, String> pageToFxmlMap = Map.of(
-            "DISPLAY", "AssetTypeTable.fxml",
-            "ADD", "AssetTypeForm.fxml",
-            "UPDATE", "AssetTypeForm.fxml"
-    );
+    private final Map<String, String> pageToFxmlMap = Map.of("DISPLAY", "AssetTypeTable.fxml" , "ADD", "AssetTypeForm.fxml", "UPDATE", "AssetTypeForm.fxml");
 
     @FXML
     public BreadCrumbBar<String> breadCrumbBar;
@@ -35,7 +27,8 @@ public class AssetTypeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        rootItem.getChildren().addAll(Arrays.asList(addItem, updateItem));
+        rootItem.getChildren().add(addItem);
+        rootItem.getChildren().add(updateItem);
         initializeBreadcrumbNavigation();
         parentContainer.addEventHandler(PageSwitchEvent.PAGE_SWITCH, this::changePage);
         parentContainer.fireEvent(new PageSwitchEvent<>("DISPLAY"));
@@ -76,4 +69,5 @@ public class AssetTypeController implements Initializable {
         }
 
     }
+
 }

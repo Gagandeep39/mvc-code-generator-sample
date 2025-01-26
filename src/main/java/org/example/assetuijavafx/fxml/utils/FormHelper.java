@@ -16,7 +16,7 @@ public class FormHelper {
     public static void triggerAfterDelay(Runnable action, int delay) {
         PauseTransition pause = new PauseTransition(Duration.seconds(delay));
         pause.setOnFinished(event -> {
-            // Trigger the event after 2 seconds
+            // Trigger the event after input seconds
             action.run();
         });
         pause.play();

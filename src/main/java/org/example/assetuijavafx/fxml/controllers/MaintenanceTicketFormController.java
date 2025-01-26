@@ -4,58 +4,58 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.text.Text;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.*;
-import org.example.assetuijavafx.model.MaintenanceTicket;
+import org.example.assetuijavafx.model.TOMaintenanceTicket;
+ // Handles enum values and other imports
 import org.example.assetuijavafx.model.MaintenanceTicket.*;
 
 import java.net.URL;
 import java.sql.Date;
 import java.util.ResourceBundle;
 
-import static org.example.assetuijavafx.fxml.layouts.AlertWindow.*;
-
 public class MaintenanceTicketFormController implements Initializable {
-
-	AssetPlusController assetPlusController;
 
 	@FXML
 	private TextField inputFieldId;
 	@FXML
-    private DatePicker inputFieldRaisedOnDate;
+	private DatePicker inputFieldRaisedOnDate;
 	@FXML
 	private TextField inputFieldDescription;
-//	@FXML
-//	private TextField inputFieldTimeToResolve;
 	@FXML
 	private ChoiceBox<TimeEstimate> choiceBoxTimeToResolve;
-//	@FXML
-//	private TextField inputFieldPriority;
 	@FXML
-	private ChoiceBox<PriorityLevel> choiceBoxPriorityLevel;
+	private ChoiceBox<PriorityLevel> choiceBoxPriority;
 
     @FXML
     private Button buttonCancel;
 
-    private MaintenanceTicket currentMaintenanceTicket;
+    @FXML
+    private Text textError;
 
+    private TOMaintenanceTicket currentMaintenanceTicket;
 
+	
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		
 		choiceBoxTimeToResolve.getItems().addAll(TimeEstimate.values());
-		choiceBoxPriorityLevel.getItems().addAll(PriorityLevel.values());
+		choiceBoxPriority.getItems().addAll(PriorityLevel.values());
 	}
 
-    public void setData(MaintenanceTicket maintenanceTicket) {
+    public void setData(TOMaintenanceTicket maintenanceTicket) {
         this.currentMaintenanceTicket = maintenanceTicket;
 
     	inputFieldId.setText(String.valueOf(maintenanceTicket.getId()));
     	inputFieldRaisedOnDate.setValue(maintenanceTicket.getRaisedOnDate().toLocalDate());
     	inputFieldDescription.setText(maintenanceTicket.getDescription());
-    	choiceBoxTimeToResolve.setValue(maintenanceTicket.getTimeToResolve());
-    	choiceBoxPriorityLevel.setValue(maintenanceTicket.getPriority());
+		choiceBoxTimeToResolve.setValue(TimeEstimate.valueOf(maintenanceTicket.getTimeToResolve()));
+		choiceBoxPriority.setValue(PriorityLevel.valueOf(maintenanceTicket.getPriority()));
+
+		// Mark Key field as Disabled
 		inputFieldId.setDisable(true);
+
         System.out.println("Preloaded MaintenanceTicket data");
     }
 
@@ -66,25 +66,32 @@ public class MaintenanceTicketFormController implements Initializable {
 			Date raisedOnDate = Date.valueOf(inputFieldRaisedOnDate.getValue());
 			String description = inputFieldDescription.getText();
 			TimeEstimate timeToResolve = choiceBoxTimeToResolve.getValue();
-			PriorityLevel priority = choiceBoxPriorityLevel.getValue();
+			PriorityLevel priority = choiceBoxPriority.getValue();
 			String savedStatus;
 			if (currentMaintenanceTicket != null) {
-				savedStatus = AssetPlusController.updateMaintenanceTicket(id, id, raisedOnDate, description, timeToResolve.toString(), priority.toString());
+        	    savedStatus = AssetPlusController.updateMaintenanceTicket(
+					id, id, raisedOnDate, description, timeToResolve.toString(), priority.toString()
+				);
 			} else {
-				savedStatus = AssetPlusController.addMaintenanceTicket(id, raisedOnDate, description, timeToResolve.toString(), priority.toString());
+        	    savedStatus = AssetPlusController.addMaintenanceTicket(
+					id, raisedOnDate, description, timeToResolve.toString(), priority.toString()
+				);
 			}
+
+			// Validate Controller response
 			if (!savedStatus.isEmpty()) throw new InvalidInputException(savedStatus);
-			else showSuccessAlert("Successfully saved item");
+			else {
+                textError.setText("Successfully saved item. Redirecting back to table...");
+                FormHelper.triggerAfterDelay(() -> buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY")), 2);
+			}
+
 		} catch (RuntimeException e) {
-			FormExceptionHandler.handleException(e);
+            textError.setText(FormHelper.formatTextMessage(e));
 		}
-        onCancel(event);
     }
 
-    @FXML
-    private void onCancel(ActionEvent event) {
-        Stage stage = (Stage) buttonCancel.getScene().getWindow();
-        stage.close();
+    public void onCancel(ActionEvent actionEvent) {
+        buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY"));
     }
 
 }

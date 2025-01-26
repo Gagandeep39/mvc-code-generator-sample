@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL"
-          prefWrapLength="720.0" vgap="16.0" xmlns="http://javafx.com/javafx/11.0.14-internal"
-          xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="org.example.assetuijavafx.fxml.controllers.MaintenanceTicketController" fx:id="root">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.BreadCrumbBar?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.assetuijavafx.fxml.controllers.MaintenanceTicketController"
+      fx:id="parentContainer"
+      spacing="16">
     <children>
-		<Button mnemonicParsing="false" onAction="#onAddMaintenanceTicket" text="Add MaintenanceTicket"/>
-        <fx:include source="MaintenanceTicketTable.fxml" fx:id="table"/>
+        <BreadCrumbBar fx:id="breadCrumbBar"/>
+        <VBox fx:id="childContainer"/>
     </children>
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
     </padding>
-</FlowPane>
+</VBox>

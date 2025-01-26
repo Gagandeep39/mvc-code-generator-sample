@@ -10,7 +10,7 @@ public class ButtonCell<S> extends TableCell<S, Button> {
     private final Button button;
     private final Consumer<S> action;
 
-    public ButtonCell(String buttonText,  Consumer<S> action) {
+    public ButtonCell(String buttonText, Consumer<S> action) {
         this.button = new Button(buttonText);
         this.action = action;
     }

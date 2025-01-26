@@ -3,17 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
-	fx:controller="org.example.assetuijavafx.fxml.controllers.AssetTypeTableController"
+	fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetTableController"
 	fx:id="parentContainer"	
 	spacing="16">
 	
-    <Button text="Add AssetType" onAction="#onAddAssetType"/>
+    <Button text="Add SpecificAsset" onAction="#onAddSpecificAsset"/>
     <TableView fx:id="table">
         <columns>
-			<TableColumn fx:id="columnName" prefWidth="75.0" text="name"/>
-			<TableColumn fx:id="columnExpectedLifeSpan" prefWidth="75.0" text="expectedLifeSpan"/>
-			<TableColumn fx:id="columnVisible" prefWidth="75.0" text="visible"/>
-			<TableColumn fx:id="columnImage" prefWidth="75.0" text="image"/>
+			<TableColumn fx:id="columnAssetNumber" prefWidth="75.0" text="assetNumber"/>
+			<TableColumn fx:id="columnFloorNumber" prefWidth="75.0" text="floorNumber"/>
+			<TableColumn fx:id="columnRoomNumber" prefWidth="75.0" text="roomNumber"/>
+			<TableColumn fx:id="columnPurchaseDate" prefWidth="75.0" text="purchaseDate"/>
             <TableColumn fx:id="columnUpdate" prefWidth="75.0" text="Update" style="-fx-alignment: center"/>
             <TableColumn fx:id="columnDelete" prefWidth="75.0" text="Delete" style="-fx-alignment: center"/>
         </columns>

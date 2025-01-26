@@ -1,32 +1,73 @@
 package org.example.assetuijavafx.fxml.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.fxml.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import org.controlsfx.control.BreadCrumbBar;
+import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
+import org.example.assetuijavafx.model.TOMaintenanceTicket;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.*;
 
-import static org.example.assetuijavafx.AssetPlusApplication.PACKAGE_ID;
+import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
-public class MaintenanceTicketController {
+public class MaintenanceTicketController implements Initializable {
+
+    private final TreeItem<String> rootItem = new TreeItem<>("MaintenanceTicket");
+    private final TreeItem<String> addItem = new TreeItem<>("Add MaintenanceTicket");
+    private final TreeItem<String> updateItem = new TreeItem<>("Update MaintenanceTicket");
+    private final Map<String, String> pageToFxmlMap = Map.of("DISPLAY", "MaintenanceTicketTable.fxml" , "ADD", "MaintenanceTicketForm.fxml", "UPDATE", "MaintenanceTicketForm.fxml");
 
     @FXML
-    private MaintenanceTicketTableController tableController;
-
+    public BreadCrumbBar<String> breadCrumbBar;
     @FXML
-    private void onAddMaintenanceTicket(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "MaintenanceTicketForm.fxml"));
-        Parent parent = fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(parent));
-        stage.showAndWait();
-        tableController.initializeTable();
+    public VBox parentContainer, childContainer;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        rootItem.getChildren().add(addItem);
+        rootItem.getChildren().add(updateItem);
+        initializeBreadcrumbNavigation();
+        parentContainer.addEventHandler(PageSwitchEvent.PAGE_SWITCH, this::changePage);
+        parentContainer.fireEvent(new PageSwitchEvent<>("DISPLAY"));
     }
 
+    public void initializeBreadcrumbNavigation() {
+        breadCrumbBar.setOnCrumbAction(event -> {
+            if (event.getSelectedCrumb().getValue().equals("MaintenanceTicket")) {
+                parentContainer.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+            }
+        });
+    }
+
+    public <T> void changePage(PageSwitchEvent<T> event) {
+        if (!childContainer.getChildren().isEmpty()) {
+            childContainer.getChildren().clear();
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(PACKAGE_ID.concat(pageToFxmlMap.get(event.getPage()))));
+            Parent child = loader.load();
+            childContainer.getChildren().add(child);
+            switch (event.getPage()) {
+                case "DISPLAY":
+                    breadCrumbBar.setSelectedCrumb(rootItem);
+                    break;
+                case "ADD":
+                    breadCrumbBar.setSelectedCrumb(addItem);
+                    break;
+                case "UPDATE":
+                    breadCrumbBar.setSelectedCrumb(updateItem);
+                    MaintenanceTicketFormController controller = loader.getController();
+                    controller.setData((TOMaintenanceTicket) event.getData());
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

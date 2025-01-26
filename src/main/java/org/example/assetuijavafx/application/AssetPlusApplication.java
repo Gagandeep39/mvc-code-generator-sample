@@ -1,4 +1,4 @@
-package org.example.assetuijavafx;
+package org.example.assetuijavafx.application;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,21 +11,20 @@ import java.io.IOException;
 
 public class AssetPlusApplication extends Application {
 
-    private static AssetPlus assetPlus;
+    private static AssetPlus root;
     public static final String PACKAGE_ID = "/org/example/assetuijavafx/";
-    public static final String PACKAGE_NAME = AssetPlusApplication.class.getPackage().getName();
 
     public static AssetPlus getAssetPlus() {
-        if (assetPlus == null) {
-            assetPlus = AssetPlusPersistence.load();
+        if (root == null) {
+            root = AssetPlusPersistence.load();
         }
-        return assetPlus;
+        return root;
     }
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AssetPlusApplication.class.getResource("AssetPlus.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 960, 540);
+        FXMLLoader fxmlLoader = new FXMLLoader(AssetPlusApplication.class.getResource(PACKAGE_ID.concat("AssetPlus.fxml")));
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("AssetPlus");
         stage.setScene(scene);
         stage.show();
