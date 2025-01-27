@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.AssetType;
+import org.example.assetuijavafx.model.NavigationState;
 import org.example.assetuijavafx.model.TOAssetType;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class AssetTypeDisplayController implements Initializable {
     }
 
     public void onAddAssetType(ActionEvent event) {
-        parentContainer.fireEvent(new PageSwitchEvent<>("ADD"));
+        parentContainer.fireEvent(new PageSwitchEvent(new NavigationState<>("Add AssetType", "ADD", "AssetTypeForm.fxml")));
     }
 
     public FXMLLoader loadFXML() {

@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import org.controlsfx.control.BreadCrumbBar;
 import org.example.assetuijavafx.fxml.utils.PageHelper;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
+import org.example.assetuijavafx.model.NavigationState;
 import org.example.assetuijavafx.model.TOSpecificAsset;
 
 import java.net.URL;
@@ -16,68 +17,92 @@ import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE
 
 public class SpecificAssetController implements Initializable {
 
-    private final TreeItem<String> rootItem = new TreeItem<>("SpecificAsset");
-    private final TreeItem<String> addItem = new TreeItem<>("Add SpecificAsset");
-    private final TreeItem<String> updateItem = new TreeItem<>("Update SpecificAsset");
-    private final Map<String, String> pageToFxmlMap = Map.of(
-            "DISPLAY", "SpecificAssetDisplay.fxml" ,
-            "ADD", "SpecificAssetForm.fxml",
-            "UPDATE", "SpecificAssetForm.fxml",
-            "REDIRECT", "AssetTypeDisplay.fxml"); // TODO Update this logic as page would be dynamic
-
-
-
-
     @FXML
     public BreadCrumbBar<String> breadCrumbBar;
+
+    TreeItem<String> root = new TreeItem<>("SpecificAsset");
     @FXML
     public VBox parentContainer, childContainer;
 
+    private final ArrayList<NavigationState<?>> navigationStack = new ArrayList<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        rootItem.getChildren().add(addItem);
-        rootItem.getChildren().add(updateItem);
         initializeBreadcrumbNavigation();
         parentContainer.addEventHandler(PageSwitchEvent.PAGE_SWITCH, this::changePage);
-        parentContainer.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+        parentContainer.fireEvent(new PageSwitchEvent(
+                new NavigationState<>("SpecificAsset",
+                "DISPLAY",
+                "SpecificAssetDisplay.fxml")));
     }
 
     public void initializeBreadcrumbNavigation() {
         breadCrumbBar.setOnCrumbAction(event -> {
-            if (event.getSelectedCrumb().getValue().equals("SpecificAsset")) {
-                parentContainer.fireEvent(new PageSwitchEvent<>("DISPLAY"));
-            }
+            int depth = getCrumbDepth(event.getSelectedCrumb());
+            navigationStack.subList(depth+1, navigationStack.size()).clear();
+            parentContainer.fireEvent(new PageSwitchEvent(navigationStack.get(depth)));
         });
     }
 
-    public <T> void changePage(PageSwitchEvent<T> event) {
+    private int getCrumbDepth(TreeItem<String> item) {
+        int depth = 0;
+        while (item.getParent() != null) {
+            depth++;
+            item = item.getParent();
+        }
+        return depth;
+    }
+
+    public void changePage(PageSwitchEvent event) {
         if (!childContainer.getChildren().isEmpty()) {
             childContainer.getChildren().clear();
         }
-
+        NavigationState<?> navigationState = event.getNavigationState();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(PACKAGE_ID.concat(pageToFxmlMap.get(event.getPage()))));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(PACKAGE_ID.concat(navigationState.getPageName())));
             Parent child = loader.load();
             childContainer.getChildren().add(child);
-            switch (event.getPage()) {
+
+            if (!navigationStack.isEmpty() && navigationStack.getLast().getFeature().contains("REDIRECT") && navigationState.getFeature().equals("UPDATE"))
+                navigationState.setFeature("REDIRECT_UPDATE");
+
+            navigationStack.add(navigationState);
+
+
+            switch (navigationState.getFeature()) {
                 case "DISPLAY":
-                    breadCrumbBar.setSelectedCrumb(rootItem);
+                    breadCrumbBar.setSelectedCrumb(root);
                     break;
                 case "ADD":
+                    TreeItem<String> addItem = new TreeItem<>(navigationState.getTitle());
+                    root.getChildren().add(addItem);
                     breadCrumbBar.setSelectedCrumb(addItem);
                     break;
                 case "UPDATE":
+                    TreeItem<String> updateItem = new TreeItem<>(navigationState.getTitle());
+                    root.getChildren().add(updateItem);
                     breadCrumbBar.setSelectedCrumb(updateItem);
                     SpecificAssetFormController controller = loader.getController();
-                    controller.setData((TOSpecificAsset) event.getData());
+                    controller.setData((TOSpecificAsset) navigationState.getData());
                     break;
-                case "REDIRECT":
-                    String pageName = PageHelper.formatPageName(event.getData());
-                    TreeItem<String> redirect = new TreeItem<>(pageName);
-                    AssetTypeDisplayController controller2 = loader.getController();
-                    controller2.setData("1", event.getData());
-                    breadCrumbBar.getSelectedCrumb().getChildren().add(redirect);
-                    breadCrumbBar.setSelectedCrumb(redirect);
+                case "REDIRECT_DISPLAY":
+                    TreeItem<String> redirectItem = new TreeItem<>(navigationState.getTitle());
+                    breadCrumbBar.getSelectedCrumb().getChildren().add(redirectItem);
+                    breadCrumbBar.setSelectedCrumb(redirectItem);
+                    Object redirectController = loader.getController();
+                    redirectController.getClass()
+                            .getMethod("setData", String.class, Object.class)
+                            .invoke(redirectController, navigationState.getMultiplicity(), navigationState.getData());
+                    break;
+                case "REDIRECT_UPDATE":
+                    TreeItem<String> redirectUpdateItem = new TreeItem<>(navigationState.getTitle());
+                    breadCrumbBar.getSelectedCrumb().getChildren().add(redirectUpdateItem);
+                    breadCrumbBar.setSelectedCrumb(redirectUpdateItem);
+                    Object redirectUpdateController = loader.getController();
+                    Class<?> parameterType = navigationState.getData().getClass();
+                    redirectUpdateController.getClass()
+                            .getMethod("setData", parameterType)
+                            .invoke(redirectUpdateController, navigationState.getData());
                     break;
             }
         } catch (Exception e) {

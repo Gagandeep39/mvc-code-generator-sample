@@ -9,10 +9,8 @@ import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import org.example.assetuijavafx.controllers.AssetPlusController;
-import org.example.assetuijavafx.model.SpecificAsset;
-import org.example.assetuijavafx.model.TOAssetType;
-import org.example.assetuijavafx.model.TOSpecificAsset;
- // Handles enum values and other imports
+import org.example.assetuijavafx.model.*;
+// Handles enum values and other imports
 import org.example.assetuijavafx.model.SpecificAsset.*;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
@@ -85,11 +83,16 @@ public class SpecificAssetTableController implements Initializable  {
 
 
     public void redirectToAssetType(TOSpecificAsset specificAsset) {
-        parentContainer.fireEvent(new PageSwitchEvent<>("REDIRECT", specificAsset.getAssetType()));
+        NavigationState<TOAssetType> state = new NavigationState<>("AssetType", "REDIRECT_DISPLAY", "AssetTypeDisplay.fxml");
+        state.setMultiplicity("1");
+        state.setData(specificAsset.getAssetType());
+        parentContainer.fireEvent(new PageSwitchEvent(state));
     }
 
     private void updateSpecificAsset(TOSpecificAsset specificAsset) {
-		parentContainer.fireEvent(new PageSwitchEvent<>("UPDATE", specificAsset));
+        NavigationState<TOSpecificAsset> state = new NavigationState<>("Update SpecificAsset", "UPDATE", "SpecificAssetForm.fxml");
+        state.setData(specificAsset);
+		parentContainer.fireEvent(new PageSwitchEvent(state));
     }
 
     private void showDialogDeleteSpecificAsset(TOSpecificAsset specificAsset) {

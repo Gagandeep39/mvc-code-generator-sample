@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
+import org.example.assetuijavafx.model.NavigationState;
 import org.example.assetuijavafx.model.TOAssetType;
 
 import java.net.URL;
@@ -48,7 +49,9 @@ public class AssetTypeTableOneController  implements Initializable {
 
     @FXML
     public void updateAssetType(ActionEvent event) {
-        buttonUpdate.fireEvent(new PageSwitchEvent<>("UPDATE", assetType));
+        NavigationState<TOAssetType> state = new NavigationState("Update AssetType", "UPDATE", "AssetTypeForm.fxml");
+        state.setData(assetType);
+        buttonUpdate.fireEvent(new PageSwitchEvent(state));
     }
 
 

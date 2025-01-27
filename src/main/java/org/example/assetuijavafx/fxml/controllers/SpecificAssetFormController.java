@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.*;
+import org.example.assetuijavafx.model.NavigationState;
 import org.example.assetuijavafx.model.TOSpecificAsset;
  // Handles enum values and other imports
 import org.example.assetuijavafx.model.SpecificAsset.*;
@@ -76,7 +77,9 @@ public class SpecificAssetFormController implements Initializable {
 			if (!savedStatus.isEmpty()) throw new InvalidInputException(savedStatus);
 			else {
                 textError.setText("Successfully saved item. Redirecting back to table...");
-                FormHelper.triggerAfterDelay(() -> buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY")), 2);
+                FormHelper.triggerAfterDelay(() -> buttonCancel.fireEvent(new PageSwitchEvent(
+						new NavigationState<>("SpecificAsset", "DISPLAY", "SpecificAssetDisplay.fxml")
+				)), 2);
 			}
 
 		} catch (RuntimeException e) {
@@ -85,7 +88,9 @@ public class SpecificAssetFormController implements Initializable {
     }
 
     public void onCancel(ActionEvent actionEvent) {
-        buttonCancel.fireEvent(new PageSwitchEvent<>("DISPLAY"));
+        buttonCancel.fireEvent(new PageSwitchEvent(
+				new NavigationState<>("SpecificAsset", "DISPLAY", "SpecificAssetDisplay.fxml")
+		));
     }
 
 }

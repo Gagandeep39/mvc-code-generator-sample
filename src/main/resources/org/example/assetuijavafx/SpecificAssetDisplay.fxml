@@ -6,13 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.text.Text?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:id="parentContainer"
       fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetDisplayController"
       spacing="16">
-    <Text text="axscvgbhjmk" />
     <Button fx:id="buttonAdd" text="Add SpecificAsset" onAction="#onAddSpecificAsset"/>
     <VBox fx:id="childContainer" />
 </VBox>

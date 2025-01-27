@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
+import org.example.assetuijavafx.model.NavigationState;
 import org.example.assetuijavafx.model.TOAssetType;
 import org.example.assetuijavafx.model.TOSpecificAsset;
 
@@ -37,7 +38,9 @@ public class SpecificAssetDisplayController implements Initializable {
     }
 
     public void onAddSpecificAsset(ActionEvent event) {
-        parentContainer.fireEvent(new PageSwitchEvent<>("ADD"));
+        parentContainer.fireEvent(new PageSwitchEvent(
+                new NavigationState<>("Add SpecificAsset", "ADD", "SpecificAssetForm.fxml")
+        ));
     }
 
     public FXMLLoader loadFXML() {

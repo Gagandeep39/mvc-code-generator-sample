@@ -2,54 +2,22 @@ package org.example.assetuijavafx.fxml.utils;
 
 import javafx.event.Event;
 import javafx.event.EventType;
+import org.example.assetuijavafx.model.NavigationState;
 
 /**
  * A custom event class to signal a page switch event in a JavaFX application.
  */
-public class PageSwitchEvent<T> extends Event {
+public class PageSwitchEvent extends Event {
 
     public static final EventType<PageSwitchEvent> PAGE_SWITCH = new EventType<>(Event.ANY, "PAGE_SWITCH");
-    private final String page;
-    private final T data;
+    private NavigationState<?> navigationState = null;
 
-    /**
-     * Creates a new PageSwitchEvent instance with the specified page and data.
-     *
-     * @param page the name of the page being switched to
-     * @param data any data associated with the page switch event
-     */
-    public PageSwitchEvent(String page, T data) {
+    public PageSwitchEvent(NavigationState<?> state) {
         super(PAGE_SWITCH);
-        this.page = page;
-        this.data = data;
+        navigationState = state;
     }
 
-    /**
-     * Creates a new PageSwitchEvent instance with the specified page and null data.
-     * Use this constructor when no data needs to be passed.
-     *
-     * @param page the name of the page being switched to
-     */
-    public PageSwitchEvent(String page) {
-        this(page, null);
+    public NavigationState<?> getNavigationState() {
+        return navigationState;
     }
-
-    /**
-     * Gets the name of the page being switched to.
-     *
-     * @return the page name
-     */
-    public String getPage() {
-        return page;
-    }
-
-    /**
-     * Gets the data associated with the page switch event.
-     *
-     * @return the event data, or null if no data was provided
-     */
-    public T getData() {
-        return data;
-    }
-
 }

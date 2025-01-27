@@ -9,13 +9,11 @@ import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import org.example.assetuijavafx.controllers.AssetPlusController;
-import org.example.assetuijavafx.model.AssetType;
-import org.example.assetuijavafx.model.TOAssetType;
- // Handles enum values and other imports
+import org.example.assetuijavafx.model.*;
+// Handles enum values and other imports
 import org.example.assetuijavafx.model.AssetType.*;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
-import org.example.assetuijavafx.model.TOSpecificAsset;
 
 import java.io.IOException;
 import java.net.URL;
@@ -73,18 +71,23 @@ public class AssetTypeTableController implements Initializable  {
         columnExpectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
         columnVisible.setCellValueFactory(new PropertyValueFactory<>("visible"));
         columnImage.setCellValueFactory(new PropertyValueFactory<>("image"));
-        columnSpecificAssets.setCellFactory(column -> new ButtonCell<>("Details", this::redirectToAssetType));
+        columnSpecificAssets.setCellFactory(column -> new ButtonCell<>("Details", this::redirectToSpecificAssets));
         columnUpdate.setCellFactory(column -> new ButtonCell<>("Update", this::updateAssetType));
         columnDelete.setCellFactory(column -> new ButtonCell<>("Delete", this::showDialogDeleteAssetType));
         table.setItems(list);
     }
 
-    public void redirectToAssetType(TOAssetType assetType) {
-        parentContainer.fireEvent(new PageSwitchEvent<>("REDIRECT", assetType.getSpecificAssets()));
+    public void redirectToSpecificAssets(TOAssetType assetType) {
+        NavigationState<List<TOSpecificAsset>> state = new NavigationState<>("SpecificAssets", "REDIRECT_DISPLAY", "SpecificAssetDisplay.fxml");
+        state.setMultiplicity("*");
+        state.setData(assetType.getSpecificAssets());
+        parentContainer.fireEvent(new PageSwitchEvent(state));
     }
 
     protected void updateAssetType(TOAssetType assetType) {
-        parentContainer.fireEvent(new PageSwitchEvent<>("UPDATE", assetType));
+        NavigationState<TOAssetType> state = new NavigationState<>("Update AssetType", "UPDATE", "AssetTypeForm.fxml");
+        state.setData(assetType);
+        parentContainer.fireEvent(new PageSwitchEvent(state));
     }
 
     protected void showDialogDeleteAssetType(TOAssetType assetType) {
