@@ -15,6 +15,7 @@ import org.example.assetuijavafx.model.TOAssetType;
 import org.example.assetuijavafx.model.AssetType.*;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
+import org.example.assetuijavafx.model.TOSpecificAsset;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,9 +26,9 @@ import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE
 
 public class AssetTypeTableController implements Initializable  {
 
-
     @FXML
-    public VBox parentContainer;
+    private VBox parentContainer;
+
 	@FXML
 	private TableColumn<TOAssetType, String> columnName;
 	@FXML
@@ -36,8 +37,9 @@ public class AssetTypeTableController implements Initializable  {
 	private TableColumn<TOAssetType, Boolean> columnVisible;
 	@FXML
 	private TableColumn<TOAssetType, String> columnImage;
-	
-	
+
+    @FXML
+    private TableColumn<TOAssetType, Button> columnSpecificAssets;
 	@FXML
 	private TableColumn<TOAssetType, Button> columnDelete;
 
@@ -47,37 +49,45 @@ public class AssetTypeTableController implements Initializable  {
 	@FXML
 	private TableView<TOAssetType> table;
 
-    public void initializeTable() {
-		List<TOAssetType> toList = AssetPlusController.getAssetTypesOfAssetPlus();
-        if (toList == null) {
-            toList = Collections.emptyList();
+    public List<TOAssetType> assetTypeList;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        assetTypeList = AssetPlusController.getAssetTypesOfAssetPlus();
+        if (assetTypeList == null) {
+            assetTypeList = Collections.emptyList();
         }
-        ObservableList<TOAssetType> list = FXCollections.observableArrayList(toList);
+//        System.out.println(assetTypeList.stream().findFirst().get().getSpecificAssets());
+        populateData();
+    }
 
-		columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-		columnExpectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
-		columnVisible.setCellValueFactory(new PropertyValueFactory<>("visible"));
-		columnImage.setCellValueFactory(new PropertyValueFactory<>("image"));
+    public void setData(List<TOAssetType> assetTypeList) {
+        this.assetTypeList = assetTypeList;
+        populateData();
+    }
 
+    public void populateData() {
+        ObservableList<TOAssetType> list = FXCollections.observableArrayList(assetTypeList);
+
+        columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnExpectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
+        columnVisible.setCellValueFactory(new PropertyValueFactory<>("visible"));
+        columnImage.setCellValueFactory(new PropertyValueFactory<>("image"));
+        columnSpecificAssets.setCellFactory(column -> new ButtonCell<>("Details", this::redirectToAssetType));
         columnUpdate.setCellFactory(column -> new ButtonCell<>("Update", this::updateAssetType));
         columnDelete.setCellFactory(column -> new ButtonCell<>("Delete", this::showDialogDeleteAssetType));
         table.setItems(list);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-		initializeTable();
+    public void redirectToAssetType(TOAssetType assetType) {
+        parentContainer.fireEvent(new PageSwitchEvent<>("REDIRECT", assetType.getSpecificAssets()));
     }
 
-    private void updateAssetType(TOAssetType assetType) {
-		parentContainer.fireEvent(new PageSwitchEvent<>("UPDATE", assetType));
+    protected void updateAssetType(TOAssetType assetType) {
+        parentContainer.fireEvent(new PageSwitchEvent<>("UPDATE", assetType));
     }
 
-    public void onAddAssetType(ActionEvent event) {
-        parentContainer.fireEvent(new PageSwitchEvent<>("ADD"));
-    }
-
-    private void showDialogDeleteAssetType(TOAssetType assetType) {
+    protected void showDialogDeleteAssetType(TOAssetType assetType) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(PACKAGE_ID + "DeleteDialog.fxml"));
             Parent parent = fxmlLoader.load();
@@ -88,7 +98,7 @@ public class AssetTypeTableController implements Initializable  {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(parent));
             stage.showAndWait();
-            initializeTable();
+            populateData();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,6 +5,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.controlsfx.control.BreadCrumbBar;
+import org.example.assetuijavafx.fxml.utils.PageHelper;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.TOAssetType;
 
@@ -18,7 +19,11 @@ public class AssetTypeController implements Initializable {
     private final TreeItem<String> rootItem = new TreeItem<>("AssetType");
     private final TreeItem<String> addItem = new TreeItem<>("Add AssetType");
     private final TreeItem<String> updateItem = new TreeItem<>("Update AssetType");
-    private final Map<String, String> pageToFxmlMap = Map.of("DISPLAY", "AssetTypeTable.fxml" , "ADD", "AssetTypeForm.fxml", "UPDATE", "AssetTypeForm.fxml");
+    private final Map<String, String> pageToFxmlMap = Map.of(
+            "DISPLAY", "AssetTypeDisplay.fxml" ,
+            "ADD", "AssetTypeForm.fxml",
+            "UPDATE", "AssetTypeForm.fxml",
+            "REDIRECT", "SpecificAssetDisplay.fxml");
 
     @FXML
     public BreadCrumbBar<String> breadCrumbBar;
@@ -63,6 +68,13 @@ public class AssetTypeController implements Initializable {
                     AssetTypeFormController controller = loader.getController();
                     controller.setData((TOAssetType) event.getData());
                     break;
+                case "REDIRECT":
+                    System.out.println(event.getData());
+                    TreeItem<String> redirect = new TreeItem<>("SpecificAsset");
+                    SpecificAssetDisplayController controller2 = loader.getController();
+                    controller2.setData("*", event.getData());
+                    breadCrumbBar.getSelectedCrumb().getChildren().add(redirect);
+                    breadCrumbBar.setSelectedCrumb(redirect);
             }
         } catch (Exception e) {
             e.printStackTrace();

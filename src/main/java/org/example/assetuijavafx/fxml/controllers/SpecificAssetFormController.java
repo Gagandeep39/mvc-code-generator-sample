@@ -64,11 +64,11 @@ public class SpecificAssetFormController implements Initializable {
 			String savedStatus;
 			if (currentSpecificAsset != null) {
         	    savedStatus = AssetPlusController.updateSpecificAsset(
-					assetNumber, assetNumber, floorNumber, roomNumber, purchaseDate, null
+					assetNumber, assetNumber, floorNumber, roomNumber, purchaseDate, "checkbox"
 				);
 			} else {
         	    savedStatus = AssetPlusController.addSpecificAsset(
-					assetNumber, floorNumber, roomNumber, purchaseDate, null
+					assetNumber, floorNumber, roomNumber, purchaseDate, "checkbox"
 				);
 			}
 

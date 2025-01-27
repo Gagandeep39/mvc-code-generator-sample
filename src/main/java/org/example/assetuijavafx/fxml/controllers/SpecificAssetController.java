@@ -5,6 +5,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.controlsfx.control.BreadCrumbBar;
+import org.example.assetuijavafx.fxml.utils.PageHelper;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.TOSpecificAsset;
 
@@ -18,7 +19,14 @@ public class SpecificAssetController implements Initializable {
     private final TreeItem<String> rootItem = new TreeItem<>("SpecificAsset");
     private final TreeItem<String> addItem = new TreeItem<>("Add SpecificAsset");
     private final TreeItem<String> updateItem = new TreeItem<>("Update SpecificAsset");
-    private final Map<String, String> pageToFxmlMap = Map.of("DISPLAY", "SpecificAssetTable.fxml" , "ADD", "SpecificAssetForm.fxml", "UPDATE", "SpecificAssetForm.fxml");
+    private final Map<String, String> pageToFxmlMap = Map.of(
+            "DISPLAY", "SpecificAssetDisplay.fxml" ,
+            "ADD", "SpecificAssetForm.fxml",
+            "UPDATE", "SpecificAssetForm.fxml",
+            "REDIRECT", "AssetTypeDisplay.fxml"); // TODO Update this logic as page would be dynamic
+
+
+
 
     @FXML
     public BreadCrumbBar<String> breadCrumbBar;
@@ -62,6 +70,14 @@ public class SpecificAssetController implements Initializable {
                     breadCrumbBar.setSelectedCrumb(updateItem);
                     SpecificAssetFormController controller = loader.getController();
                     controller.setData((TOSpecificAsset) event.getData());
+                    break;
+                case "REDIRECT":
+                    String pageName = PageHelper.formatPageName(event.getData());
+                    TreeItem<String> redirect = new TreeItem<>(pageName);
+                    AssetTypeDisplayController controller2 = loader.getController();
+                    controller2.setData("1", event.getData());
+                    breadCrumbBar.getSelectedCrumb().getChildren().add(redirect);
+                    breadCrumbBar.setSelectedCrumb(redirect);
                     break;
             }
         } catch (Exception e) {

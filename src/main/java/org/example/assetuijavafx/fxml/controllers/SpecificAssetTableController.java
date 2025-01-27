@@ -10,6 +10,7 @@ import javafx.scene.*;
 import javafx.scene.layout.*;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.model.SpecificAsset;
+import org.example.assetuijavafx.model.TOAssetType;
 import org.example.assetuijavafx.model.TOSpecificAsset;
  // Handles enum values and other imports
 import org.example.assetuijavafx.model.SpecificAsset.*;
@@ -36,7 +37,9 @@ public class SpecificAssetTableController implements Initializable  {
 	private TableColumn<TOSpecificAsset, Integer> columnRoomNumber;
 	@FXML
 	private TableColumn<TOSpecificAsset, Date> columnPurchaseDate;
-	
+
+    @FXML
+    private TableColumn<TOSpecificAsset, Button> columnDetailsAssetType;
 	
 	@FXML
 	private TableColumn<TOSpecificAsset, Button> columnDelete;
@@ -47,34 +50,46 @@ public class SpecificAssetTableController implements Initializable  {
 	@FXML
 	private TableView<TOSpecificAsset> table;
 
-    public void initializeTable() {
-		List<TOSpecificAsset> toList = AssetPlusController.getSpecificAssetsOfAssetPlus();
-        if (toList == null) {
-            toList = Collections.emptyList();
+    private List<TOSpecificAsset> specificAssetList;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        specificAssetList = AssetPlusController.getSpecificAssetsOfAssetPlus();
+        if (specificAssetList == null) {
+            specificAssetList = Collections.emptyList();
         }
-        ObservableList<TOSpecificAsset> list = FXCollections.observableArrayList(toList);
+        populateData();
+    }
+
+    public void setData(List<TOSpecificAsset> specificAssetList) {
+        this.specificAssetList = specificAssetList;
+        populateData();
+    }
+
+
+    public void populateData() {
+        ObservableList<TOSpecificAsset> list = FXCollections.observableArrayList(specificAssetList);
 
 		columnAssetNumber.setCellValueFactory(new PropertyValueFactory<>("assetNumber"));
 		columnFloorNumber.setCellValueFactory(new PropertyValueFactory<>("floorNumber"));
 		columnRoomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
 		columnPurchaseDate.setCellValueFactory(new PropertyValueFactory<>("purchaseDate"));
+        // 1..1 mapping
+        columnDetailsAssetType.setCellFactory(column ->  new ButtonCell<>("Details", this::redirectToAssetType));
 
         columnUpdate.setCellFactory(column -> new ButtonCell<>("Update", this::updateSpecificAsset));
         columnDelete.setCellFactory(column -> new ButtonCell<>("Delete", this::showDialogDeleteSpecificAsset));
         table.setItems(list);
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-		initializeTable();
+
+    public void redirectToAssetType(TOSpecificAsset specificAsset) {
+        parentContainer.fireEvent(new PageSwitchEvent<>("REDIRECT", specificAsset.getAssetType()));
     }
 
     private void updateSpecificAsset(TOSpecificAsset specificAsset) {
 		parentContainer.fireEvent(new PageSwitchEvent<>("UPDATE", specificAsset));
-    }
-
-    public void onAddSpecificAsset(ActionEvent event) {
-        parentContainer.fireEvent(new PageSwitchEvent<>("ADD"));
     }
 
     private void showDialogDeleteSpecificAsset(TOSpecificAsset specificAsset) {
@@ -88,7 +103,7 @@ public class SpecificAssetTableController implements Initializable  {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(parent));
             stage.showAndWait();
-            initializeTable();
+            populateData();
         } catch (IOException e) {
             e.printStackTrace();
         }

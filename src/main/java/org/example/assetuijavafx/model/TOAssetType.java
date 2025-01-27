@@ -29,7 +29,7 @@ public class TOAssetType
   // CONSTRUCTOR
   //------------------------
 
-  public TOAssetType(String aName, int aExpectedLifeSpan, String aImage, boolean aVisible, TOSpecificAsset... allSpecificAssets)
+  public TOAssetType(String aName, int aExpectedLifeSpan, String aImage, boolean aVisible)
   {
     name = aName;
     expectedLifeSpan = aExpectedLifeSpan;
@@ -37,11 +37,12 @@ public class TOAssetType
     visible = aVisible;
     canSetSpecificAssets = true;
     specificAssets = new ArrayList<TOSpecificAsset>();
-    boolean didAddSpecificAssets = setSpecificAssets(allSpecificAssets);
-    if (!didAddSpecificAssets)
-    {
-      throw new RuntimeException("Unable to create TOAssetType, must not have duplicate specificAssets. See https://manual.umple.org?RE001ViolationofImmutability.html");
-    }
+//    System.out.println(allSpecificAssets.size());
+//    boolean didAddSpecificAssets = setSpecificAssets(allSpecificAssets.toArray(new TOSpecificAsset[0]));
+//    if (!didAddSpecificAssets)
+//    {
+//      throw new RuntimeException("Unable to create TOAssetType, must not have duplicate specificAssets. See https://manual.umple.org?RE001ViolationofImmutability.html");
+//    }
   }
 
   //------------------------
@@ -130,6 +131,8 @@ public class TOAssetType
 
     specificAssets.clear();
     specificAssets.addAll(verifiedSpecificAssets);
+    System.out.println("Inside TOAssetType");
+    System.out.println(specificAssets);
     wasSet = true;
     return wasSet;
   }

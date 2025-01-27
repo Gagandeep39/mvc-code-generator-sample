@@ -4,16 +4,15 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
 	fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetTableController"
-	fx:id="parentContainer"	
+	fx:id="parentContainer"
 	spacing="16">
-	
-    <Button text="Add SpecificAsset" onAction="#onAddSpecificAsset"/>
-    <TableView fx:id="table">
+	<TableView fx:id="table">
         <columns>
 			<TableColumn fx:id="columnAssetNumber" prefWidth="75.0" text="assetNumber"/>
 			<TableColumn fx:id="columnFloorNumber" prefWidth="75.0" text="floorNumber"/>
 			<TableColumn fx:id="columnRoomNumber" prefWidth="75.0" text="roomNumber"/>
 			<TableColumn fx:id="columnPurchaseDate" prefWidth="75.0" text="purchaseDate"/>
+            <TableColumn fx:id="columnDetailsAssetType" prefWidth="75.0" text="assetType" style="-fx-alignment: center"/>
             <TableColumn fx:id="columnUpdate" prefWidth="75.0" text="Update" style="-fx-alignment: center"/>
             <TableColumn fx:id="columnDelete" prefWidth="75.0" text="Delete" style="-fx-alignment: center"/>
         </columns>
