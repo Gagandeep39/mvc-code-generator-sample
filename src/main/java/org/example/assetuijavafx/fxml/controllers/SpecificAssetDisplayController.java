@@ -15,16 +15,18 @@ import java.util.ResourceBundle;
 
 public class SpecificAssetDisplayController extends BaseDisplayController implements Initializable {
     @FXML
-    public VBox parentContainer, childContainer;
-    protected String multiplicity = "*";
+    private VBox parentContainer, childContainer;
     @FXML
     private Button buttonAdd;
 
     @Override
+    public VBox getChildContainer() {
+        return childContainer;
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.childContainer = childContainer;
-        super.activeFxml = "SpecificAssetTable.fxml";
-        super.loadFXML();
+        super.loadFXML("SpecificAssetTable.fxml");
     }
 
     public void onAddSpecificAsset(ActionEvent event) {
@@ -32,16 +34,13 @@ public class SpecificAssetDisplayController extends BaseDisplayController implem
     }
 
     public <T> void setData(String multiplicity, T data) {
-        this.multiplicity = multiplicity;
         buttonAdd.setVisible(false);
         buttonAdd.setManaged(false);
-        if (this.multiplicity.equals("*")) {
-            super.activeFxml = "SpecificAssetTable.fxml";
-            SpecificAssetTableController controller = super.loadFXML().getController();
+        if (multiplicity.equals("*")) {
+            SpecificAssetTableController controller = super.loadFXML("SpecificAssetTable.fxml").getController();
             controller.setData((List<TOSpecificAsset>) data);
         } else {
-            super.activeFxml = "SpecificAssetTableOne.fxml";
-            SpecificAssetTableOneController controller = super.loadFXML().getController();
+            SpecificAssetTableOneController controller = super.loadFXML("SpecificAssetTableOne.fxml").getController();
             controller.setData((TOSpecificAsset) data);
         }
     }

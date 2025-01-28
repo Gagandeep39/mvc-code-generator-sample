@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.NavigationState;
@@ -17,15 +18,17 @@ public class AssetTypeDisplayController extends BaseDisplayController implements
 
     @FXML
     public VBox parentContainer, childContainer;
-    protected String multiplicity = "*";
     @FXML
     private Button buttonAdd;
 
     @Override
+    protected Pane getChildContainer() {
+        return childContainer;
+    }
+
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.activeFxml = "AssetTypeTable.fxml";
-        super.childContainer = childContainer;
-        super.loadFXML();
+        super.loadFXML("AssetTypeTable.fxml");
     }
 
     public void onAddAssetType(ActionEvent event) {
@@ -33,19 +36,16 @@ public class AssetTypeDisplayController extends BaseDisplayController implements
     }
 
     public <T> void setData(String multiplicity, T data) {
-        this.multiplicity = multiplicity;
+        multiplicity = multiplicity;
         buttonAdd.setVisible(false);
         buttonAdd.setManaged(false);
-        if (this.multiplicity.equals("*")) {
-            super.activeFxml = "AssetTypeTable.fxml";
-            AssetTypeTableController controller = super.loadFXML().getController();
+        if (multiplicity.equals("*")) {
+            AssetTypeTableController controller = super.loadFXML("AssetTypeTable.fxml").getController();
             controller.setData((List<TOAssetType>) data);
         } else {
-            super.activeFxml = "AssetTypeTableOne.fxml";
-            AssetTypeTableOneController controller = super.loadFXML().getController();
+            AssetTypeTableOneController controller = super.loadFXML("AssetTypeTableOne.fxml").getController();
             controller.setData((TOAssetType) data);
         }
     }
-
 }
 
