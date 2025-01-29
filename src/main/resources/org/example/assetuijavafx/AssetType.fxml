@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.BreadCrumbBar?>
 <VBox xmlns:fx="http://javafx.com/fxml"
@@ -8,7 +9,13 @@
       fx:id="parentContainer"
       spacing="16">
     <children>
-        <BreadCrumbBar fx:id="breadCrumbBar"/>
+        <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="NEVER"
+                    style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <VBox alignment="CENTER_LEFT" spacing="16">
+                <BreadCrumbBar fx:id="breadCrumbBar"/>
+            </VBox>
+        </ScrollPane>
+
         <VBox fx:id="childContainer"/>
     </children>
     <padding>
