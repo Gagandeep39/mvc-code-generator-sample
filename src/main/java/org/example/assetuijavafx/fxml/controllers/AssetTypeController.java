@@ -64,8 +64,8 @@ public class AssetTypeController implements Initializable {
             Parent child = loader.load();
             childContainer.getChildren().add(child);
 
-            if (!navigationStack.isEmpty() && navigationStack.getLast().getFeature().contains("REDIRECT") && navigationState.getFeature().equals("UPDATE"))
-                navigationState.setFeature("REDIRECT_UPDATE");
+//            if (!navigationStack.isEmpty() && navigationStack.getLast().getFeature().contains("REDIRECT") && navigationState.getFeature().equals("UPDATE"))
+//                navigationState.setFeature("REDIRECT_UPDATE");
 
             navigationStack.add(navigationState);
 
@@ -80,11 +80,14 @@ public class AssetTypeController implements Initializable {
                     breadCrumbBar.setSelectedCrumb(addItem);
                     break;
                 case "UPDATE":
-                    TreeItem<String> updateItem = new TreeItem<>(navigationState.getTitle());
-                    root.getChildren().add(updateItem);
-                    breadCrumbBar.setSelectedCrumb(updateItem);
-                    AssetTypeFormController controller = loader.getController();
-                    controller.setData((TOAssetType) navigationState.getData());
+                    // Handles update for current and other concepts
+                    TreeItem<String> redirectUpdateItem = new TreeItem<>(navigationState.getTitle());
+                    breadCrumbBar.getSelectedCrumb().getChildren().add(redirectUpdateItem);
+                    breadCrumbBar.setSelectedCrumb(redirectUpdateItem);
+                    Object redirectUpdateController = loader.getController();
+                    redirectUpdateController.getClass()
+                            .getMethod("setData", navigationState.getData().getClass())
+                            .invoke(redirectUpdateController, navigationState.getData());
                     break;
                 case "REDIRECT_DISPLAY":
                     System.out.println("AASASSAS");
@@ -96,15 +99,6 @@ public class AssetTypeController implements Initializable {
                     redirectController.getClass()
                             .getMethod("setData", String.class, Object.class)
                             .invoke(redirectController, navigationState.getMultiplicity(), navigationState.getData());
-                    break;
-                case "REDIRECT_UPDATE":
-                    TreeItem<String> redirectUpdateItem = new TreeItem<>(navigationState.getTitle());
-                    breadCrumbBar.getSelectedCrumb().getChildren().add(redirectUpdateItem);
-                    breadCrumbBar.setSelectedCrumb(redirectUpdateItem);
-                    Object redirectUpdateController = loader.getController();
-                    redirectUpdateController.getClass()
-                            .getMethod("setData", Object.class)
-                            .invoke(redirectUpdateController, navigationState.getData());
                     break;
             }
         } catch (Exception e) {
