@@ -433,7 +433,7 @@ public class AssetPlusController {
       	if (specificAsset == null) {
 			return null;
 		}
-		return new TOSpecificAsset(specificAsset.getAssetNumber(), specificAsset.getFloorNumber(), specificAsset.getRoomNumber(), specificAsset.getPurchaseDate(), convertToTOAssetType(specificAsset.getAssetType()));
+		return new TOSpecificAsset(specificAsset.getAssetNumber(), specificAsset.getFloorNumber(), specificAsset.getRoomNumber(), specificAsset.getPurchaseDate(), specificAsset.getAssetType().getName());
     }
 
 	private static List<TOSpecificAsset> convertToTOSpecificAsset(List<SpecificAsset> specificAssetList) {
@@ -450,7 +450,7 @@ public class AssetPlusController {
       	if (assetType == null) {
 			return null;
 		}
-		return new TOAssetType(assetType.getName(), assetType.getExpectedLifeSpan(), assetType.getImage(), assetType.getVisible());
+		return new TOAssetType(assetType.getName(), assetType.getExpectedLifeSpan(), assetType.getImage(), assetType.getVisible(), assetType.getSpecificAssets().stream().map(specificAsset -> specificAsset.getAssetNumber()).toList());
     }
 
 	private static List<TOAssetType> convertToTOAssetType(List<AssetType> assetTypeList) {

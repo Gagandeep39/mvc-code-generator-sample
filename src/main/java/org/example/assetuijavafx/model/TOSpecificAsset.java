@@ -18,28 +18,19 @@ public class TOSpecificAsset
   private int floorNumber;
   private int roomNumber;
   private Date purchaseDate;
-
-  //TOSpecificAsset Associations
-  private TOAssetType assetType;
-
-  //Helper Variables
-  private boolean canSetAssetType;
+  private String nameForAssetType;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public TOSpecificAsset(int aAssetNumber, int aFloorNumber, int aRoomNumber, Date aPurchaseDate, TOAssetType aAssetType)
+  public TOSpecificAsset(int aAssetNumber, int aFloorNumber, int aRoomNumber, Date aPurchaseDate, String aNameForAssetType)
   {
     assetNumber = aAssetNumber;
     floorNumber = aFloorNumber;
     roomNumber = aRoomNumber;
     purchaseDate = aPurchaseDate;
-    canSetAssetType = true;
-    if (!setAssetType(aAssetType))
-    {
-      throw new RuntimeException("Unable to create TOSpecificAsset due to aAssetType. See https://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
+    nameForAssetType = aNameForAssetType;
   }
 
   //------------------------
@@ -65,23 +56,10 @@ public class TOSpecificAsset
   {
     return purchaseDate;
   }
-  /* Code from template association_GetOne */
-  public TOAssetType getAssetType()
+
+  public String getNameForAssetType()
   {
-    return assetType;
-  }
-  /* Code from template association_SetUnidirectionalOne */
-  private boolean setAssetType(TOAssetType aNewAssetType)
-  {
-    boolean wasSet = false;
-    if (!canSetAssetType) { return false; }
-    canSetAssetType = false;
-    if (aNewAssetType != null)
-    {
-      assetType = aNewAssetType;
-      wasSet = true;
-    }
-    return wasSet;
+    return nameForAssetType;
   }
 
   public void delete()
@@ -93,8 +71,8 @@ public class TOSpecificAsset
     return super.toString() + "["+
             "assetNumber" + ":" + getAssetNumber()+ "," +
             "floorNumber" + ":" + getFloorNumber()+ "," +
-            "roomNumber" + ":" + getRoomNumber()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "purchaseDate" + "=" + (getPurchaseDate() != null ? !getPurchaseDate().equals(this)  ? getPurchaseDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "assetType = "+(getAssetType()!=null?Integer.toHexString(System.identityHashCode(getAssetType())):"null");
+            "roomNumber" + ":" + getRoomNumber()+ "," +
+            "nameForAssetType" + ":" + getNameForAssetType()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "purchaseDate" + "=" + (getPurchaseDate() != null ? !getPurchaseDate().equals(this)  ? getPurchaseDate().toString().replaceAll("  ","    ") : "this" : "null");
   }
 }
