@@ -80,7 +80,8 @@ public class AssetTypeTableController implements Initializable  {
     public void redirectToSpecificAssets(TOAssetType assetType) {
         NavigationState<List<TOSpecificAsset>> state = new NavigationState<>("SpecificAssets", "REDIRECT_DISPLAY", "SpecificAssetDisplay.fxml");
         state.setMultiplicity("*");
-        state.setData(assetType.getSpecificAssets());
+        List<TOSpecificAsset> specificAssetList = assetType.getAssetNumberForSpecificAssets().stream().map(AssetPlusController::getSpecificAsset).toList();
+        state.setData(specificAssetList);
         parentContainer.fireEvent(new PageSwitchEvent(state));
     }
 
