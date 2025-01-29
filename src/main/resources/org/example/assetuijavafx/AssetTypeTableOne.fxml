@@ -28,12 +28,14 @@
             <Text fx:id="textName" GridPane.columnIndex="1" GridPane.rowIndex="0" />
             <Label text="expectedLifeSpan" GridPane.rowIndex="1" />
             <Text fx:id="textExpectedLifeSpan" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="visible" GridPane.rowIndex="3" />
-            <Text fx:id="textVisible" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="image" GridPane.rowIndex="2" />
             <Text fx:id="textImage" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="buttonUpdate" text="Update" onAction="#updateAssetType" GridPane.rowIndex="4" />
-            <Button fx:id="buttonDelete" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="visible" GridPane.rowIndex="3" />
+            <Text fx:id="textVisible" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="specificAssets" GridPane.rowIndex="4" />
+            <Button fx:id="buttonSpecificAssets" text="Details" onAction="#redirectToSpecificAssets" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button fx:id="buttonUpdate" text="Update" onAction="#updateAssetType" GridPane.rowIndex="5" />
+            <Button fx:id="buttonDelete" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="5" />
         </children>
     </GridPane>
 </VBox>

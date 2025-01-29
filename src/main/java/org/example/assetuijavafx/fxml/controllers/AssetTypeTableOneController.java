@@ -4,12 +4,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.NavigationState;
 import org.example.assetuijavafx.model.TOAssetType;
+import org.example.assetuijavafx.model.TOSpecificAsset;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AssetTypeTableOneController  implements Initializable {
@@ -29,6 +33,9 @@ public class AssetTypeTableOneController  implements Initializable {
     @FXML
     private Button buttonUpdate;
 
+    @FXML
+    private Button buttonSpecificAssets;
+
     private TOAssetType assetType;
 
     public void populateData() {
@@ -36,6 +43,15 @@ public class AssetTypeTableOneController  implements Initializable {
         textExpectedLifeSpan.setText(String.valueOf(assetType.getExpectedLifeSpan()));
         textVisible.setText(String.valueOf(assetType.getVisible()));
         textImage.setText(assetType.getImage());
+    }
+
+    @FXML
+    public void redirectToSpecificAssets(ActionEvent event) {
+        NavigationState<List<TOSpecificAsset>> state = new NavigationState<>("SpecificAssets", "REDIRECT_DISPLAY", "SpecificAssetDisplay.fxml");
+        state.setMultiplicity("*");
+        List<TOSpecificAsset> specificAssetList = assetType.getAssetNumberForSpecificAssets().stream().map(AssetPlusController::getSpecificAsset).toList();
+        state.setData(specificAssetList);
+        buttonSpecificAssets.fireEvent(new PageSwitchEvent(state));
     }
 
     public void setData(TOAssetType assetType) {
