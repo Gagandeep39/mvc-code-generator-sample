@@ -58,24 +58,17 @@ public class AssetTypeController extends BaseController implements Initializable
     public void changePage(PageSwitchEvent event) {
         try {
             NavigationState<?> navigationState = event.getNavigationState();
-            if (navigationState.getPageType().equals(PageType.BACK)) {
+            PageType type = navigationState.getPageType();
+            if (type == PageType.BACK) {
                 super.handleBack();
                 return;
             }
             FXMLLoader loader = super.loadPage(navigationState);
-            switch (navigationState.getPageType()) {
-                case PageType.DISPLAY:
-                    super.handleDisplay();
-                    break;
-                case PageType.ADD:
-                    super.handleAdd(navigationState);
-                    break;
-                case PageType.UPDATE:
-                    super.handleUpdate(navigationState, loader);
-                    break;
-                case PageType.REDIRECT_DISPLAY:
-                    super.handleRedirectDisplay(navigationState, loader);
-                    break;
+            switch (type) {
+                case PageType.DISPLAY -> super.handleDisplay();
+                case PageType.ADD -> super.handleAdd(navigationState);
+                case PageType.UPDATE -> super.handleUpdate(navigationState, loader);
+                case PageType.REDIRECT_DISPLAY -> super.handleRedirectDisplay(navigationState, loader);
             }
         } catch (Exception e) {
             e.printStackTrace();
