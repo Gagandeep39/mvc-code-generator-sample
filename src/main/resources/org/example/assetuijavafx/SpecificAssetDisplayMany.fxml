@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
-	fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetTableController"
+	fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetDisplayManyController"
 	fx:id="parentContainer"
 	spacing="16">
 	<TableView fx:id="table">

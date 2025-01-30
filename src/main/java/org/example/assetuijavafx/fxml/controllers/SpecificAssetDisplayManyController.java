@@ -1,7 +1,6 @@
 package org.example.assetuijavafx.fxml.controllers;
 
 import javafx.collections.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,7 +10,6 @@ import javafx.scene.layout.*;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.model.*;
 // Handles enum values and other imports
-import org.example.assetuijavafx.model.SpecificAsset.*;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 
@@ -22,7 +20,7 @@ import java.util.*;
 
 import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
-public class SpecificAssetTableController implements Initializable  {
+public class SpecificAssetDisplayManyController implements Initializable  {
 
 
     @FXML

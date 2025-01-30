@@ -1,7 +1,6 @@
 package org.example.assetuijavafx.fxml.controllers;
 
 import javafx.collections.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,18 +10,16 @@ import javafx.scene.layout.*;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.model.*;
 // Handles enum values and other imports
-import org.example.assetuijavafx.model.AssetType.*;
 import org.example.assetuijavafx.fxml.layouts.ButtonCell;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Date;
 import java.util.*;
 
 import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
-public class AssetTypeTableController implements Initializable  {
+public class AssetTypeDisplayManyController implements Initializable  {
 
     @FXML
     private VBox parentContainer;
@@ -71,6 +68,7 @@ public class AssetTypeTableController implements Initializable  {
         columnExpectedLifeSpan.setCellValueFactory(new PropertyValueFactory<>("expectedLifeSpan"));
         columnVisible.setCellValueFactory(new PropertyValueFactory<>("visible"));
         columnImage.setCellValueFactory(new PropertyValueFactory<>("image"));
+
         columnSpecificAssets.setCellFactory(column -> new ButtonCell<>("Details", this::redirectToSpecificAssets));
         columnUpdate.setCellFactory(column -> new ButtonCell<>("Update", this::updateAssetType));
         columnDelete.setCellFactory(column -> new ButtonCell<>("Delete", this::showDialogDeleteAssetType));

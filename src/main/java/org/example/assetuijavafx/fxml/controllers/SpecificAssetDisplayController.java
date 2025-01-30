@@ -26,7 +26,7 @@ public class SpecificAssetDisplayController extends BaseDisplayController implem
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.loadFXML("SpecificAssetTable.fxml");
+        super.loadFXML("SpecificAssetDisplayMany.fxml");
     }
 
     public void onAddSpecificAsset(ActionEvent event) {
@@ -37,10 +37,10 @@ public class SpecificAssetDisplayController extends BaseDisplayController implem
         buttonAdd.setVisible(false);
         buttonAdd.setManaged(false);
         if (multiplicity.equals("*")) {
-            SpecificAssetTableController controller = super.loadFXML("SpecificAssetTable.fxml").getController();
+            SpecificAssetDisplayManyController controller = super.loadFXML("SpecificAssetDisplayMany.fxml").getController();
             controller.setData((List<TOSpecificAsset>) data);
         } else {
-            SpecificAssetTableOneController controller = super.loadFXML("SpecificAssetTableOne.fxml").getController();
+            SpecificAssetDisplayOneController controller = super.loadFXML("SpecificAssetTableOne.fxml").getController();
             controller.setData((TOSpecificAsset) data);
         }
     }

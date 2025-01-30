@@ -28,7 +28,7 @@ public class AssetTypeDisplayController extends BaseDisplayController implements
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.loadFXML("AssetTypeTable.fxml");
+        super.loadFXML("AssetTypeDisplayMany.fxml");
     }
 
     public void onAddAssetType(ActionEvent event) {
@@ -40,10 +40,10 @@ public class AssetTypeDisplayController extends BaseDisplayController implements
         buttonAdd.setVisible(false);
         buttonAdd.setManaged(false);
         if (multiplicity.equals("*")) {
-            AssetTypeTableController controller = super.loadFXML("AssetTypeTable.fxml").getController();
+            AssetTypeDisplayManyController controller = super.loadFXML("AssetTypeDisplayMany.fxml").getController();
             controller.setData((List<TOAssetType>) data);
         } else {
-            AssetTypeTableOneController controller = super.loadFXML("AssetTypeTableOne.fxml").getController();
+            AssetTypeDisplayOneController controller = super.loadFXML("AssetTypeDisplayOne.fxml").getController();
             controller.setData((TOAssetType) data);
         }
     }
