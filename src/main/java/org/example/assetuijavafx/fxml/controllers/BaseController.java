@@ -26,7 +26,7 @@ public abstract class BaseController {
         this.root = new TreeItem<>(rootPage);
         getBreadcrumbBar().setOnCrumbAction(event -> {
             int depth = getCrumbDepth(event.getSelectedCrumb());
-//            navigationStack.subList(depth+1, navigationStack.size()).clear();
+            navigationStack.subList(depth+1, navigationStack.size()).clear();
             getParentContainer().fireEvent(new PageSwitchEvent(navigationStack.get(depth)));
         });
     }
@@ -85,8 +85,13 @@ public abstract class BaseController {
     }
 
     protected void handleBack() {
-        int index = navigationStack.size()-2;
-//        navigationStack.subList(depth+1, navigationStack.size()).clear();
+        // Switch to second last crumb
+        TreeItem<String> current = getBreadcrumbBar().getSelectedCrumb();
+        getBreadcrumbBar().setSelectedCrumb(current.getParent());
+        // Remove last item from nav stack
+        navigationStack.removeLast();
+        // Trigger event to set last item as active
+        int index = navigationStack.size() - 1;
         getParentContainer().fireEvent(new PageSwitchEvent(navigationStack.get(index)));
     }
 
