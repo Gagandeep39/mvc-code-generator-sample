@@ -37,7 +37,6 @@ public class AssetTypeDisplayController extends BaseDisplayController implements
     }
 
     public <T> void setData(String multiplicity, T data) {
-        multiplicity = multiplicity;
         buttonAdd.setVisible(false);
         buttonAdd.setManaged(false);
         if (multiplicity.equals("*")) {

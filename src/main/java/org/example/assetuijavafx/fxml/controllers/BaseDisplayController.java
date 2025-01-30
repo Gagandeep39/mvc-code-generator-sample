@@ -14,7 +14,7 @@ public abstract class BaseDisplayController {
 
     protected abstract Pane getChildContainer();
 
-    public FXMLLoader loadFXML(String fxml) {
+    protected FXMLLoader loadFXML(String fxml) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(PACKAGE_ID.concat(fxml)));
         try {
             Parent child = loader.load();
