@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.NavigationState;
+import org.example.assetuijavafx.model.PageType;
 import org.example.assetuijavafx.model.TOAssetType;
 import org.example.assetuijavafx.model.TOSpecificAsset;
 
@@ -46,7 +47,7 @@ public class AssetTypeDisplayOneController implements Initializable {
 
     @FXML
     public void redirectToSpecificAssets(ActionEvent event) {
-        NavigationState<List<TOSpecificAsset>> state = new NavigationState<>("SpecificAssets", "REDIRECT_DISPLAY", "SpecificAssetDisplay.fxml");
+        NavigationState<List<TOSpecificAsset>> state = new NavigationState<>("SpecificAssets", PageType.REDIRECT_DISPLAY, "SpecificAssetDisplay.fxml");
         state.setMultiplicity("*");
         List<TOSpecificAsset> specificAssetList = assetType.getAssetNumberForSpecificAssets().stream().map(AssetPlusController::getSpecificAsset).toList();
         state.setData(specificAssetList);
@@ -64,7 +65,7 @@ public class AssetTypeDisplayOneController implements Initializable {
 
     @FXML
     public void updateAssetType(ActionEvent event) {
-        NavigationState<TOAssetType> state = new NavigationState("Update AssetType", "UPDATE", "AssetTypeForm.fxml");
+        NavigationState<TOAssetType> state = new NavigationState("Update AssetType", PageType.UPDATE, "AssetTypeForm.fxml");
         state.setData(assetType);
         buttonUpdate.fireEvent(new PageSwitchEvent(state));
     }

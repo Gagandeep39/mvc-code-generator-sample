@@ -76,7 +76,7 @@ public class AssetTypeDisplayManyController implements Initializable  {
     }
 
     public void redirectToSpecificAssets(TOAssetType assetType) {
-        NavigationState<List<TOSpecificAsset>> state = new NavigationState<>("SpecificAssets", "REDIRECT_DISPLAY", "SpecificAssetDisplay.fxml");
+        NavigationState<List<TOSpecificAsset>> state = new NavigationState<>("SpecificAssets", PageType.REDIRECT_DISPLAY, "SpecificAssetDisplay.fxml");
         state.setMultiplicity("*");
         List<TOSpecificAsset> specificAssetList = assetType.getAssetNumberForSpecificAssets().stream().map(AssetPlusController::getSpecificAsset).toList();
         state.setData(specificAssetList);
@@ -84,7 +84,7 @@ public class AssetTypeDisplayManyController implements Initializable  {
     }
 
     protected void updateAssetType(TOAssetType assetType) {
-        NavigationState<TOAssetType> state = new NavigationState<>("Update AssetType", "UPDATE", "AssetTypeForm.fxml");
+        NavigationState<TOAssetType> state = new NavigationState<>("Update AssetType", PageType.UPDATE, "AssetTypeForm.fxml");
         state.setData(assetType);
         parentContainer.fireEvent(new PageSwitchEvent(state));
     }

@@ -8,6 +8,7 @@ import org.controlsfx.control.BreadCrumbBar;
 import org.example.assetuijavafx.fxml.utils.PageHelper;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.NavigationState;
+import org.example.assetuijavafx.model.PageType;
 import org.example.assetuijavafx.model.TOAssetType;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class AssetTypeController extends BaseController implements Initializable
         parentContainer.addEventHandler(PageSwitchEvent.PAGE_SWITCH, this::changePage);
         parentContainer.fireEvent(new PageSwitchEvent(
                 new NavigationState<>("AssetType",
-                        "DISPLAY",
+                        PageType.DISPLAY,
                         "AssetTypeDisplay.fxml")));
     }
 
@@ -57,22 +58,22 @@ public class AssetTypeController extends BaseController implements Initializable
     public void changePage(PageSwitchEvent event) {
         try {
             NavigationState<?> navigationState = event.getNavigationState();
-            if (navigationState.getAction().equals("BACK")) {
+            if (navigationState.getPageType().equals(PageType.BACK)) {
                 super.handleBack();
                 return;
             }
             FXMLLoader loader = super.loadPage(navigationState);
-            switch (navigationState.getAction()) {
-                case "DISPLAY":
+            switch (navigationState.getPageType()) {
+                case PageType.DISPLAY:
                     super.handleDisplay();
                     break;
-                case "ADD":
+                case PageType.ADD:
                     super.handleAdd(navigationState);
                     break;
-                case "UPDATE":
+                case PageType.UPDATE:
                     super.handleUpdate(navigationState, loader);
                     break;
-                case "REDIRECT_DISPLAY":
+                case PageType.REDIRECT_DISPLAY:
                     super.handleRedirectDisplay(navigationState, loader);
                     break;
             }

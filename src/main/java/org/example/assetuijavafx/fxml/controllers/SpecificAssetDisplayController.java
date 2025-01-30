@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.NavigationState;
+import org.example.assetuijavafx.model.PageType;
 import org.example.assetuijavafx.model.TOSpecificAsset;
 
 import java.net.URL;
@@ -30,7 +31,7 @@ public class SpecificAssetDisplayController extends BaseDisplayController implem
     }
 
     public void onAddSpecificAsset(ActionEvent event) {
-        parentContainer.fireEvent(new PageSwitchEvent(new NavigationState<>("Add SpecificAsset", "ADD", "SpecificAssetForm.fxml")));
+        parentContainer.fireEvent(new PageSwitchEvent(new NavigationState<>("Add SpecificAsset", PageType.ADD, "SpecificAssetForm.fxml")));
     }
 
     public <T> void setData(String multiplicity, T data) {

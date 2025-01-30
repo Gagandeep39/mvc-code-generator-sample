@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.NavigationState;
+import org.example.assetuijavafx.model.PageType;
 import org.example.assetuijavafx.model.TOAssetType;
 
 import java.net.URL;
@@ -32,7 +33,7 @@ public class AssetTypeDisplayController extends BaseDisplayController implements
     }
 
     public void onAddAssetType(ActionEvent event) {
-        parentContainer.fireEvent(new PageSwitchEvent(new NavigationState<>("Add AssetType", "ADD", "AssetTypeForm.fxml")));
+        parentContainer.fireEvent(new PageSwitchEvent(new NavigationState<>("Add AssetType", PageType.ADD, "AssetTypeForm.fxml")));
     }
 
     public <T> void setData(String multiplicity, T data) {

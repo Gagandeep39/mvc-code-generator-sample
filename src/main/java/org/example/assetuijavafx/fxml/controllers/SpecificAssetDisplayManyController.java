@@ -81,7 +81,7 @@ public class SpecificAssetDisplayManyController implements Initializable  {
 
 
     public void redirectToAssetType(TOSpecificAsset specificAsset) {
-        NavigationState<TOAssetType> state = new NavigationState<>("AssetType", "REDIRECT_DISPLAY", "AssetTypeDisplay.fxml");
+        NavigationState<TOAssetType> state = new NavigationState<>("AssetType", PageType.REDIRECT_DISPLAY, "AssetTypeDisplay.fxml");
         state.setMultiplicity("1");
         TOAssetType assetType = AssetPlusController.getAssetType(specificAsset.getNameForAssetType());
         state.setData(assetType);
@@ -89,7 +89,7 @@ public class SpecificAssetDisplayManyController implements Initializable  {
     }
 
     private void updateSpecificAsset(TOSpecificAsset specificAsset) {
-        NavigationState<TOSpecificAsset> state = new NavigationState<>("Update SpecificAsset", "UPDATE", "SpecificAssetForm.fxml");
+        NavigationState<TOSpecificAsset> state = new NavigationState<>("Update SpecificAsset", PageType.UPDATE, "SpecificAssetForm.fxml");
         state.setData(specificAsset);
 		parentContainer.fireEvent(new PageSwitchEvent(state));
     }

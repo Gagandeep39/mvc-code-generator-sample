@@ -8,6 +8,7 @@ import javafx.scene.text.Text;
 import org.example.assetuijavafx.controllers.AssetPlusController;
 import org.example.assetuijavafx.fxml.utils.*;
 import org.example.assetuijavafx.model.NavigationState;
+import org.example.assetuijavafx.model.PageType;
 import org.example.assetuijavafx.model.TOAssetType;
  // Handles enum values and other imports
 import org.example.assetuijavafx.model.AssetType.*;
@@ -78,7 +79,7 @@ public class AssetTypeFormController implements Initializable {
 			else {
                 textError.setText("Successfully saved item. Redirecting back to table...");
                 FormHelper.triggerAfterDelay(() -> buttonCancel.fireEvent(new PageSwitchEvent(
-						new NavigationState<>(null, "BACK", null)
+						new NavigationState<>(null, PageType.BACK, null)
 				)), 2);
 			}
 
@@ -89,7 +90,7 @@ public class AssetTypeFormController implements Initializable {
 
     public void onCancel(ActionEvent actionEvent) {
         buttonCancel.fireEvent(new PageSwitchEvent(
-				new NavigationState<>(null, "BACK", null)
+				new NavigationState<>(null, PageType.BACK, null)
 		));
     }
 
