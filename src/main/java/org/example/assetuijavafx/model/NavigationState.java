@@ -2,19 +2,19 @@ package org.example.assetuijavafx.model;
 
 public class NavigationState <T> {
     public String title;
-    public String feature;
+    public String action;
     public String multiplicity;
     public String pageName;
     public T data;
 
-    public NavigationState(String title, String feature, String pageName) {
+    public NavigationState(String title, String action, String pageName) {
         this.title = title;
-        this.feature = feature;
+        this.action = action;
         this.pageName = pageName;
     }
 
-    public String getFeature() {
-        return feature;
+    public String getAction() {
+        return action;
     }
 
     public String getMultiplicity() {
@@ -49,7 +49,7 @@ public class NavigationState <T> {
         this.multiplicity = multiplicity;
     }
 
-    public void setFeature(String feature) {
-        this.feature = feature;
+    public void setAction(String action) {
+        this.action = action;
     }
 }

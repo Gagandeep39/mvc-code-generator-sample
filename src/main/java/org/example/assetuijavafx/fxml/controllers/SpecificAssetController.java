@@ -63,13 +63,13 @@ public class SpecificAssetController implements Initializable {
             Parent child = loader.load();
             childContainer.getChildren().add(child);
 
-            if (!navigationStack.isEmpty() && navigationStack.getLast().getFeature().contains("REDIRECT") && navigationState.getFeature().equals("UPDATE"))
-                navigationState.setFeature("REDIRECT_UPDATE");
+            if (!navigationStack.isEmpty() && navigationStack.getLast().getAction().contains("REDIRECT") && navigationState.getAction().equals("UPDATE"))
+                navigationState.setAction("REDIRECT_UPDATE");
 
             navigationStack.add(navigationState);
 
 
-            switch (navigationState.getFeature()) {
+            switch (navigationState.getAction()) {
                 case "DISPLAY":
                     breadCrumbBar.setSelectedCrumb(root);
                     break;
