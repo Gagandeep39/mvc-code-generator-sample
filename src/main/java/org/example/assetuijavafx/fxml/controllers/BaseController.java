@@ -26,7 +26,7 @@ public abstract class BaseController {
         this.root = new TreeItem<>(rootPage);
         getBreadcrumbBar().setOnCrumbAction(event -> {
             int depth = getCrumbDepth(event.getSelectedCrumb());
-            navigationStack.subList(depth+1, navigationStack.size()).clear();
+//            navigationStack.subList(depth+1, navigationStack.size()).clear();
             getParentContainer().fireEvent(new PageSwitchEvent(navigationStack.get(depth)));
         });
     }
@@ -82,6 +82,12 @@ public abstract class BaseController {
         redirectUpdateController.getClass()
                 .getMethod("setData", parameterType)
                 .invoke(redirectUpdateController, state.getData());
+    }
+
+    protected void handleBack() {
+        int index = navigationStack.size()-2;
+//        navigationStack.subList(depth+1, navigationStack.size()).clear();
+        getParentContainer().fireEvent(new PageSwitchEvent(navigationStack.get(index)));
     }
 
 }

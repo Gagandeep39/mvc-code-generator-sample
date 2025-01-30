@@ -78,7 +78,7 @@ public class AssetTypeFormController implements Initializable {
 			else {
                 textError.setText("Successfully saved item. Redirecting back to table...");
                 FormHelper.triggerAfterDelay(() -> buttonCancel.fireEvent(new PageSwitchEvent(
-						new NavigationState<>("AssetType", "DISPLAY", "AssetTypeDisplay.fxml")
+						new NavigationState<>(null, "BACK", null)
 				)), 2);
 			}
 
@@ -89,7 +89,7 @@ public class AssetTypeFormController implements Initializable {
 
     public void onCancel(ActionEvent actionEvent) {
         buttonCancel.fireEvent(new PageSwitchEvent(
-				new NavigationState<>("AssetType", "DISPLAY", "AssetTypeDisplay.fxml")
+				new NavigationState<>(null, "BACK", null)
 		));
     }
 

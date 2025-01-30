@@ -57,8 +57,11 @@ public class AssetTypeController extends BaseController implements Initializable
     public void changePage(PageSwitchEvent event) {
         try {
             NavigationState<?> navigationState = event.getNavigationState();
+            if (navigationState.getFeature().equals("BACK")) {
+                super.handleBack();
+                return;
+            }
             FXMLLoader loader = super.loadPage(navigationState);
-
             switch (navigationState.getFeature()) {
                 case "DISPLAY":
                     super.handleDisplay();
