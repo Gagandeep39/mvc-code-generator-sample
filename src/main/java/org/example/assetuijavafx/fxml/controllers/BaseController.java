@@ -10,6 +10,7 @@ import org.example.assetuijavafx.model.NavigationState;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
@@ -20,16 +21,60 @@ public abstract class BaseController {
     protected abstract Pane getChildContainer();
     protected TreeItem<String> root = new TreeItem<>();
     protected final ArrayList<NavigationState<?>> navigationStack = new ArrayList<>();
+    protected final ArrayList<NavigationState<?>> collapsedStack = navigationStack;
+    private final TreeItem<String> ellipsisItem = new TreeItem<>("..."); // Non-clickable item
 
+    private final List<TreeItem<String>> visibleBreadcrumbItems = new ArrayList<>();
 
     public void initializeBreadcrumbNavigation(String rootPage) {
         this.root = new TreeItem<>(rootPage);
+        getBreadcrumbBar().setMaxWidth(700);
         getBreadcrumbBar().setOnCrumbAction(event -> {
+//            TODO
+            if (event.getSelectedCrumb().getValue().equals("...")) {
+                return;
+            }
             int depth = getCrumbDepth(event.getSelectedCrumb());
             navigationStack.subList(depth+1, navigationStack.size()).clear();
             getParentContainer().fireEvent(new PageSwitchEvent(navigationStack.get(depth)));
         });
+        getBreadcrumbBar().widthProperty().addListener((obs, oldVal, newVal) -> adjustBreadcrumbs(newVal.doubleValue()));
+
     }
+
+    private void adjustBreadcrumbs(double breadcrumbWidth) {
+        double containerWidth = getParentContainer().getWidth();
+        boolean isOverflowing = breadcrumbWidth + 42 > containerWidth;
+
+        System.out.println("Breadcrumb w" + breadcrumbWidth + 64);
+        System.out.println("A w" + (containerWidth));
+        System.out.println(isOverflowing);
+        if (isOverflowing) {
+            collapseItems(breadcrumbWidth + 42, containerWidth);
+        }
+    }
+
+    private void collapseItems(double breadcrumbWidth, double availableWidth) {
+        if (navigationStack.size() <3) return;
+        TreeItem<String> root = getBreadcrumbBar().getSelectedCrumb();
+        TreeItem<String> current = getBreadcrumbBar().getSelectedCrumb();
+        while (current.getParent() != null) {
+            current = current.getParent();
+        }
+
+        TreeItem<String> first = current.getChildren().get(0);
+        TreeItem<String> second = first.getChildren().get(0);
+        TreeItem<String> third = second.getChildren().get(0);
+        current.getChildren().remove(first);
+        ellipsisItem.getChildren().clear();
+        ellipsisItem.getChildren().add(third);
+        current.getChildren().add(ellipsisItem);
+        getBreadcrumbBar().setSelectedCrumb(current);
+        getBreadcrumbBar().setSelectedCrumb(root);
+//        Platform.runLater(() -> );
+    }
+
+
 
     protected int getCrumbDepth(TreeItem<String> item) {
         int depth = 0;
