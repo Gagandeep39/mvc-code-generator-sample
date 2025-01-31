@@ -30,13 +30,16 @@ public abstract class BaseController {
         this.root = new TreeItem<>(rootPage);
         getBreadcrumbBar().setMaxWidth(700);
         getBreadcrumbBar().setOnCrumbAction(event -> {
-//            TODO
-            if (event.getSelectedCrumb().getValue().equals("...")) {
-                return;
-            }
             int depth = getCrumbDepth(event.getSelectedCrumb());
             navigationStack.subList(depth+1, navigationStack.size()).clear();
             getParentContainer().fireEvent(new PageSwitchEvent(navigationStack.get(depth)));
+        });
+
+        // Disables breadcrumb when collapsed
+        getBreadcrumbBar().setCrumbFactory(crumb -> {
+            BreadCrumbBar.BreadCrumbButton breadCrumbButton = new BreadCrumbBar.BreadCrumbButton(crumb.getValue());
+            breadCrumbButton.setDisable(crumb.getValue().equals("..."));
+            return breadCrumbButton;
         });
         getBreadcrumbBar().widthProperty().addListener((obs, oldVal, newVal) -> adjustBreadcrumbs(newVal.doubleValue()));
 
