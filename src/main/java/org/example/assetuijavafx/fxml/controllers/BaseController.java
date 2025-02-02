@@ -21,10 +21,8 @@ public abstract class BaseController {
     protected abstract Pane getChildContainer();
     protected TreeItem<String> root = new TreeItem<>();
     protected final ArrayList<NavigationState<?>> navigationStack = new ArrayList<>();
-    protected final ArrayList<NavigationState<?>> collapsedStack = navigationStack;
+    protected final ArrayList<NavigationState<?>> collapsedStack =  new ArrayList<>();
     private final TreeItem<String> ellipsisItem = new TreeItem<>("..."); // Non-clickable item
-
-    private final List<TreeItem<String>> visibleBreadcrumbItems = new ArrayList<>();
 
     public void initializeBreadcrumbNavigation(String rootPage) {
         this.root = new TreeItem<>(rootPage);
@@ -33,7 +31,7 @@ public abstract class BaseController {
             System.out.println(depth);
             // Handle items after elipse
             if (depth > 0) {
-                depth += collapsedStack.size();
+                depth += collapsedStack.size() - 1; // To exclude ellipse depth
             }
             // Removed current item to last item
             // Because once the event is sccessful, itll get added back anyway
@@ -65,25 +63,30 @@ public abstract class BaseController {
 
     private void collapseItems() {
         if (getCrumbDepth(getBreadcrumbBar().getSelectedCrumb()) <3) return;
-        TreeItem<String> root = getBreadcrumbBar().getSelectedCrumb();
-        TreeItem<String> current = getBreadcrumbBar().getSelectedCrumb();
-        while (current.getParent() != null) {
-            current = current.getParent();
+        TreeItem<String> last = getBreadcrumbBar().getSelectedCrumb();
+        TreeItem<String> first = getBreadcrumbBar().getSelectedCrumb();
+        while (first.getParent() != null) {
+            first = first.getParent();
         }
 
-        TreeItem<String> first = current.getChildren().getFirst();
         TreeItem<String> second = first.getChildren().getFirst();
-        if (first.getChildren().equals(ellipsisItem)) {
+        // If ellipse already there then remove ellipse and update the second item to non ellipse second item
+        if (second.equals(ellipsisItem)) {
+            first.getChildren().remove(second);
             second = second.getChildren().getFirst();
         }
+        // Remove second item
+        collapsedStack.add(navigationStack.get(1 + collapsedStack.size()));
+        // Append 3rd item to ellipse
         TreeItem<String> third = second.getChildren().getFirst();
-        current.getChildren().remove(first);
         ellipsisItem.getChildren().clear();
         ellipsisItem.getChildren().add(third);
-        current.getChildren().add(ellipsisItem);
-        getBreadcrumbBar().setSelectedCrumb(current);
-        getBreadcrumbBar().setSelectedCrumb(root);
-//        Platform.runLater(() -> );
+        // Remove second item from first item
+        first.getChildren().remove(second);
+        // Append ellipse to first item
+        first.getChildren().add(ellipsisItem);
+        getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
+        getBreadcrumbBar().setSelectedCrumb(last);
     }
 
 
