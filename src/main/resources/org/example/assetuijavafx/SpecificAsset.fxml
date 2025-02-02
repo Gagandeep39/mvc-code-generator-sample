@@ -3,12 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.BreadCrumbBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.assetuijavafx.fxml.controllers.SpecificAssetController"
       fx:id="parentContainer"
       spacing="16">
     <children>
-        <BreadCrumbBar fx:id="breadCrumbBar"/>
+        <HBox>
+            <BreadCrumbBar fx:id="breadCrumbBar"/>
+        </HBox>
         <VBox fx:id="childContainer"/>
     </children>
     <padding>

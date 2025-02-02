@@ -4,18 +4,15 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.BreadCrumbBar?>
+<?import javafx.scene.layout.HBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="org.example.assetuijavafx.fxml.controllers.AssetTypeController"
       fx:id="parentContainer"
       spacing="16">
     <children>
-        <ScrollPane fitToHeight="true" fitToWidth="true" vbarPolicy="NEVER"
-                    style="-fx-background-color: transparent; -fx-border-color: transparent;">
-            <VBox alignment="CENTER_LEFT" spacing="16">
-                <BreadCrumbBar fx:id="breadCrumbBar"/>
-            </VBox>
-        </ScrollPane>
-
+        <HBox>
+            <BreadCrumbBar fx:id="breadCrumbBar"/>
+        </HBox>
         <VBox fx:id="childContainer"/>
     </children>
     <padding>
