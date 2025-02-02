@@ -28,9 +28,8 @@ public abstract class BaseController {
         this.root = new TreeItem<>(rootPage);
         getBreadcrumbBar().setOnCrumbAction(event -> {
             int depth = getCrumbDepth(event.getSelectedCrumb());
-            System.out.println(depth);
             // Handle items after elipse
-            if (depth > 0) {
+            if (depth > 0 && !collapsedStack.isEmpty()) {
                 depth += collapsedStack.size() - 1; // To exclude ellipse depth
             }
             // Removed current item to last item
