@@ -28,11 +28,20 @@ public abstract class BaseController {
 
     public void initializeBreadcrumbNavigation(String rootPage) {
         this.root = new TreeItem<>(rootPage);
-        getBreadcrumbBar().setMaxWidth(700);
         getBreadcrumbBar().setOnCrumbAction(event -> {
             int depth = getCrumbDepth(event.getSelectedCrumb());
-            navigationStack.subList(depth+1, navigationStack.size()).clear();
-            getParentContainer().fireEvent(new PageSwitchEvent(navigationStack.get(depth)));
+            System.out.println(depth);
+            // Handle items after elipse
+            if (depth > 0) {
+                depth += collapsedStack.size();
+            }
+            // Removed current item to last item
+            // Because once the event is sccessful, itll get added back anyway
+            event.getSelectedCrumb().getChildren().clear();
+            NavigationState<?> state = navigationStack.get(depth);
+            navigationStack.subList(depth, navigationStack.size()).clear();
+
+            getParentContainer().fireEvent(new PageSwitchEvent(state));
         });
 
         // Disables breadcrumb when collapsed
@@ -49,25 +58,25 @@ public abstract class BaseController {
         double containerWidth = getParentContainer().getWidth();
         boolean isOverflowing = breadcrumbWidth + 42 > containerWidth;
 
-        System.out.println("Breadcrumb w" + breadcrumbWidth + 64);
-        System.out.println("A w" + (containerWidth));
-        System.out.println(isOverflowing);
         if (isOverflowing) {
-            collapseItems(breadcrumbWidth + 42, containerWidth);
+            collapseItems();
         }
     }
 
-    private void collapseItems(double breadcrumbWidth, double availableWidth) {
-        if (navigationStack.size() <3) return;
+    private void collapseItems() {
+        if (getCrumbDepth(getBreadcrumbBar().getSelectedCrumb()) <3) return;
         TreeItem<String> root = getBreadcrumbBar().getSelectedCrumb();
         TreeItem<String> current = getBreadcrumbBar().getSelectedCrumb();
         while (current.getParent() != null) {
             current = current.getParent();
         }
 
-        TreeItem<String> first = current.getChildren().get(0);
-        TreeItem<String> second = first.getChildren().get(0);
-        TreeItem<String> third = second.getChildren().get(0);
+        TreeItem<String> first = current.getChildren().getFirst();
+        TreeItem<String> second = first.getChildren().getFirst();
+        if (first.getChildren().equals(ellipsisItem)) {
+            second = second.getChildren().getFirst();
+        }
+        TreeItem<String> third = second.getChildren().getFirst();
         current.getChildren().remove(first);
         ellipsisItem.getChildren().clear();
         ellipsisItem.getChildren().add(third);
