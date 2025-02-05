@@ -23,6 +23,7 @@ public abstract class BaseController {
     protected final ArrayList<NavigationState<?>> navigationStack = new ArrayList<>();
     protected final ArrayList<NavigationState<?>> collapsedStack =  new ArrayList<>();
     private final TreeItem<String> ellipsisItem = new TreeItem<>("..."); // Non-clickable item
+    private double lastChangedWidth = 0;
 
     public void initializeBreadcrumbNavigation(String rootPage) {
         this.root = new TreeItem<>(rootPage);
@@ -48,7 +49,43 @@ public abstract class BaseController {
             return breadCrumbButton;
         });
         getBreadcrumbBar().widthProperty().addListener((obs, oldVal, newVal) -> adjustBreadcrumbs(newVal.doubleValue()));
+        getParentContainer().widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
+    }
 
+    private void insertNewItemBefore(TreeItem<String> selectedItem, String newItemValue) {
+        TreeItem<String> parent = selectedItem.getParent();
+        if (parent != null) {
+            int index = parent.getChildren().indexOf(selectedItem);
+            parent.getChildren().remove(selectedItem); // Remove the selected item from its parent
+
+            TreeItem<String> newItem = new TreeItem<>(newItemValue);
+            parent.getChildren().add(index, newItem); // Insert new item at the same position
+            newItem.getChildren().add(selectedItem); // Add the original item as a child of the new item
+        }
+    }
+
+    private void expandItems(double newWidth) {
+        if (Math.abs(newWidth - lastChangedWidth) < 100) return;
+        if (collapsedStack.isEmpty()) return;
+        // Expand 1 item and
+        TreeItem<String> last = getBreadcrumbBar().getSelectedCrumb();
+        TreeItem<String> first = getBreadcrumbBar().getSelectedCrumb();
+        while (first.getParent() != null) {
+            first = first.getParent();
+        }
+        if (collapsedStack.size() == 1) {
+            TreeItem<String> itemAfterEllipse = ellipsisItem.getChildren().getFirst();
+            TreeItem<String> collapsedItem = new TreeItem<>(collapsedStack.removeFirst().getTitle());
+            collapsedItem.getChildren().add(itemAfterEllipse);
+            first.getChildren().remove(ellipsisItem);
+            first.getChildren().add(collapsedItem);
+        } else {
+            insertNewItemBefore(ellipsisItem.getChildren().getFirst(), collapsedStack.removeLast().getTitle());
+        }
+        getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
+        getBreadcrumbBar().setSelectedCrumb(last);
+        // uodate lastChangedWidth
+        lastChangedWidth = newWidth;
     }
 
     private void adjustBreadcrumbs(double breadcrumbWidth) {
@@ -86,6 +123,7 @@ public abstract class BaseController {
         first.getChildren().add(ellipsisItem);
         getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
         getBreadcrumbBar().setSelectedCrumb(last);
+        lastChangedWidth = getParentContainer().getWidth();
     }
 
 
