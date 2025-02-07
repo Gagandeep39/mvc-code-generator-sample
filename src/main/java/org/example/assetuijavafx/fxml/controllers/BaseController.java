@@ -10,7 +10,6 @@ import org.example.assetuijavafx.model.NavigationState;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
@@ -29,17 +28,22 @@ public abstract class BaseController {
         this.root = new TreeItem<>(rootPage);
         getBreadcrumbBar().setOnCrumbAction(event -> {
             int depth = getCrumbDepth(event.getSelectedCrumb());
+            int rawNavigationDepth = navigationStack.size();
             // Handle items after elipse
             if (depth > 0 && !collapsedStack.isEmpty()) {
                 depth += collapsedStack.size() - 1; // To exclude ellipse depth
             }
+            int rawSelectionDepth = depth + 1;
+            // Done here because wewill get last item length using navstack length and depth calculated after elipse handlinh
             // Removed current item to last item
             // Because once the event is sccessful, itll get added back anyway
+            // TODO Maybe do it at the end? nce all other breadcrum events are done
             event.getSelectedCrumb().getChildren().clear();
             NavigationState<?> state = navigationStack.get(depth);
             navigationStack.subList(depth, navigationStack.size()).clear();
 
             getParentContainer().fireEvent(new PageSwitchEvent(state));
+            expandIfRequired(rawSelectionDepth, rawNavigationDepth);
         });
 
         // Disables breadcrumb when collapsed
@@ -50,6 +54,38 @@ public abstract class BaseController {
         });
         getBreadcrumbBar().widthProperty().addListener((obs, oldVal, newVal) -> adjustBreadcrumbs(newVal.doubleValue()));
         getParentContainer().widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
+    }
+// todo just refresh thwe whole thing
+    // todo create evcaluate in other classes and use those
+    private void expandIfRequired(int clickedDepth, int totalNavigationDepth) {
+        if (collapsedStack.isEmpty()) return;
+        System.out.println("Cliked depth: " + clickedDepth);
+        System.out.println("Last item depth: " + totalNavigationDepth);
+        int numOfItemsToExpand = totalNavigationDepth - clickedDepth;
+        TreeItem<String> last = getBreadcrumbBar().getSelectedCrumb();
+        TreeItem<String> first = getBreadcrumbBar().getSelectedCrumb();
+        TreeItem<String> secondItem = ellipsisItem;
+        while (first.getParent() != null) {
+            first = first.getParent();
+        }
+        if (numOfItemsToExpand > collapsedStack.size()) {
+            System.out.println("Expand " + numOfItemsToExpand + " items without ellipse");
+//            TreeItem<String> ellipseParent = ellipsisItem.getParent();
+//            ellipseParent.getChildren().remove(ellipsisItem);
+//            ellipseParent.getChildren().add(secondItem.getChildren().getFirst());
+            secondItem = ellipsisItem.getParent();
+            secondItem.getChildren().add(ellipsisItem.getChildren().getFirst());
+            secondItem.getChildren().remove(ellipsisItem);
+        }
+        // Working state
+            System.out.println("Expand " + numOfItemsToExpand + " items with ellipse");
+        int finalItems = Math.min(numOfItemsToExpand, collapsedStack.size());
+            for (int i = 0; i < finalItems; i++) {
+                insertNewItemBefore(secondItem.getChildren().getFirst(), collapsedStack.removeLast().getTitle());
+            }
+
+        getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
+        getBreadcrumbBar().setSelectedCrumb(last);
     }
 
     private void insertNewItemBefore(TreeItem<String> selectedItem, String newItemValue) {
