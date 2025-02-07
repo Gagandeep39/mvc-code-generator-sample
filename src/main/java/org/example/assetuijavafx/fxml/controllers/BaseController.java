@@ -58,6 +58,7 @@ public abstract class BaseController {
 // todo just refresh thwe whole thing
     // todo create evcaluate in other classes and use those
     private void expandIfRequired(int clickedDepth, int totalNavigationDepth) {
+        System.out.println(collapsedStack.size());
         if (collapsedStack.isEmpty()) return;
         System.out.println("Cliked depth: " + clickedDepth);
         System.out.println("Last item depth: " + totalNavigationDepth);
@@ -70,9 +71,6 @@ public abstract class BaseController {
         }
         if (numOfItemsToExpand > collapsedStack.size()) {
             System.out.println("Expand " + numOfItemsToExpand + " items without ellipse");
-//            TreeItem<String> ellipseParent = ellipsisItem.getParent();
-//            ellipseParent.getChildren().remove(ellipsisItem);
-//            ellipseParent.getChildren().add(secondItem.getChildren().getFirst());
             secondItem = ellipsisItem.getParent();
             secondItem.getChildren().add(ellipsisItem.getChildren().getFirst());
             secondItem.getChildren().remove(ellipsisItem);
@@ -134,6 +132,7 @@ public abstract class BaseController {
     }
 
     private void collapseItems() {
+        System.out.println("Collapsing " + collapsedStack.size() + " items");
         if (getCrumbDepth(getBreadcrumbBar().getSelectedCrumb()) <3) return;
         TreeItem<String> last = getBreadcrumbBar().getSelectedCrumb();
         TreeItem<String> first = getBreadcrumbBar().getSelectedCrumb();
