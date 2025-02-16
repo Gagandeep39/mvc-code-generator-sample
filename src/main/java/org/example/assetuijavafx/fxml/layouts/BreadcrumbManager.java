@@ -54,18 +54,12 @@ public class BreadcrumbManager {
             breadCrumbButton.setDisable(crumb.getValue().equals("..."));
             return breadCrumbButton;
         });
-        this.breadCrumbBar.widthProperty().addListener((obs, oldVal, newVal) -> adjustBreadcrumbs(newVal.doubleValue()));
-        parentContainer.widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
+        this.breadCrumbBar.widthProperty()
+                .addListener((obs, oldVal, newVal) -> collapseItems(newVal.doubleValue()));
+        this.parentContainer
+                .widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
     }
 
-
-    private void adjustBreadcrumbs(double breadcrumbWidth) {
-        double containerWidth = this.parentContainer.getWidth();
-        boolean isOverflowing = breadcrumbWidth + 42 > containerWidth;
-        if (isOverflowing) {
-            collapseItems();
-        }
-    }
 
     protected int getCrumbDepth(TreeItem<String> item) {
         int depth = 0;
@@ -76,13 +70,13 @@ public class BreadcrumbManager {
         return depth;
     }
 
-    private void collapseItems() {
+    private void collapseItems(double breadcrumbWidth) {
+        double containerWidth = this.parentContainer.getWidth();
+        boolean isOverflowing = breadcrumbWidth + 42 > containerWidth;
+        if (!isOverflowing) return;
         if (getCrumbDepth(this.breadCrumbBar.getSelectedCrumb()) <3) return;
         TreeItem<String> last = this.breadCrumbBar.getSelectedCrumb();
-        TreeItem<String> first = this.breadCrumbBar.getSelectedCrumb();
-        while (first.getParent() != null) {
-            first = first.getParent();
-        }
+        TreeItem<String> first = getRootTreeItem(last) ;
 
         TreeItem<String> second = first.getChildren().getFirst();
         // If ellipse already there then remove ellipse and update the second item to non ellipse second item
@@ -96,12 +90,15 @@ public class BreadcrumbManager {
         // Append 3rd item to ellipse
         TreeItem<String> third = second.getChildren().getFirst();
         ellipsisItem.getChildren().addFirst(third);
-        this.breadCrumbBar.setSelectedCrumb(third);
         first.getChildren().clear();
         first.getChildren().add(ellipsisItem);
-        this.breadCrumbBar.setSelectedCrumb(first); // Tem workaround for UI to update
-        this.breadCrumbBar.setSelectedCrumb(last);
+        this.forceUpdateUi(last);
         lastChangedWidth = parentContainer.getWidth();
+    }
+
+    public void forceUpdateUi(TreeItem<String> last) {
+        this.breadCrumbBar.setSelectedCrumb(null); // Tem workaround for UI to update
+        this.breadCrumbBar.setSelectedCrumb(last);
     }
 
     private void expandIfRequired(int clickedDepth, int totalNavigationDepth) {
@@ -110,11 +107,7 @@ public class BreadcrumbManager {
         System.out.println("Last item depth: " + totalNavigationDepth);
         int numOfItemsToExpand = totalNavigationDepth - clickedDepth;
         TreeItem<String> last = this.breadCrumbBar.getSelectedCrumb();
-        TreeItem<String> first = this.breadCrumbBar.getSelectedCrumb();
         TreeItem<String> secondItem = ellipsisItem;
-        while (first.getParent() != null) {
-            first = first.getParent();
-        }
         if (numOfItemsToExpand >= collapsedStack.size()) {
             System.out.println("Remove Eclipse");
             secondItem = ellipsisItem.getParent();
@@ -122,16 +115,12 @@ public class BreadcrumbManager {
             secondItem.getChildren().remove(ellipsisItem);
         }
         System.out.println(collapsedStack.size());
-        // Working state
         System.out.println("Expand " + numOfItemsToExpand + " items with ellipse");
         int finalItems = Math.min(numOfItemsToExpand, collapsedStack.size());
         for (int i = 0; i < finalItems; i++) {
             insertNewItemBefore(secondItem.getChildren().getFirst(), collapsedStack.removeLast().getTitle());
         }
-
-        this.breadCrumbBar.setSelectedCrumb(null);
-//        getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
-        this.breadCrumbBar.setSelectedCrumb(last);
+        forceUpdateUi(last);
     }
 
 
@@ -140,10 +129,8 @@ public class BreadcrumbManager {
         if (collapsedStack.isEmpty()) return;
         // Expand 1 item and
         TreeItem<String> last = this.breadCrumbBar.getSelectedCrumb();
-        TreeItem<String> first = this.breadCrumbBar.getSelectedCrumb();
-        while (first.getParent() != null) {
-            first = first.getParent();
-        }
+        TreeItem<String> first = getRootTreeItem(last) ;
+
         if (collapsedStack.size() == 1) {
             TreeItem<String> itemAfterEllipse = ellipsisItem.getChildren().getFirst();
             TreeItem<String> collapsedItem = new TreeItem<>(collapsedStack.removeFirst().getTitle());
@@ -153,8 +140,7 @@ public class BreadcrumbManager {
         } else {
             insertNewItemBefore(ellipsisItem.getChildren().getFirst(), collapsedStack.removeLast().getTitle());
         }
-        this.breadCrumbBar.setSelectedCrumb(first); // Tem workaround for UI to update
-        this.breadCrumbBar.setSelectedCrumb(last);
+        forceUpdateUi(last);
         // uodate lastChangedWidth
         lastChangedWidth = newWidth;
     }
@@ -169,6 +155,14 @@ public class BreadcrumbManager {
             parent.getChildren().add(index, newItem); // Insert new item at the same position
             newItem.getChildren().add(selectedItem); // Add the original item as a child of the new item
         }
+    }
+
+    public TreeItem<String> getRootTreeItem(TreeItem<String> node) {
+        TreeItem<String> temp = node;
+        while (temp.getParent() != null) {
+            temp = temp.getParent();
+        }
+        return temp;
     }
 
 }
