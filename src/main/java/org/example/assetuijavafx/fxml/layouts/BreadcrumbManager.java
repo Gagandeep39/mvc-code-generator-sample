@@ -9,12 +9,13 @@ import org.example.assetuijavafx.model.NavigationState;
 import java.util.ArrayList;
 
 public class BreadcrumbManager {
+    private final BreadCrumbBar<String> breadCrumbBar;
+    private final Pane parentContainer;
+    private final ArrayList<NavigationState<?>> collapsedStack =  new ArrayList<>();
+    private final ArrayList<NavigationState<?>> navigationStack = new ArrayList<>();
+
     private final TreeItem<String> ellipsisItem = new TreeItem<>("..."); // Non-clickable item
     private double lastChangedWidth = 0;
-    BreadCrumbBar<String> breadCrumbBar;
-    private final Pane parentContainer;
-    protected final ArrayList<NavigationState<?>> collapsedStack =  new ArrayList<>();
-    public ArrayList<NavigationState<?>> navigationStack = new ArrayList<>();
     private final int THRESHOLD_WIDTH = 50;
 
     /**
@@ -67,6 +68,24 @@ public class BreadcrumbManager {
         return depth;
     }
 
+
+    /**
+     * Add a new Item before an item in breadcrumb
+     * @param selectedItem Item before which new item is added
+     * @param newItemValue String item to be added
+     */
+    private void insertNewItemBefore(TreeItem<String> selectedItem, String newItemValue) {
+        TreeItem<String> parent = selectedItem.getParent();
+        if (parent != null) {
+            int index = parent.getChildren().indexOf(selectedItem);
+            parent.getChildren().remove(selectedItem); // Remove the selected item from its parent
+
+            TreeItem<String> newItem = new TreeItem<>(newItemValue);
+            parent.getChildren().add(index, newItem); // Insert new item at the same position
+            newItem.getChildren().add(selectedItem); // Add the original item as a child of the new item
+        }
+    }
+
     /**
      * Initialize Breadcrumbar
      * @param breadCrumbBar Breadcrumbar
@@ -109,6 +128,11 @@ public class BreadcrumbManager {
                 .widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
     }
 
+    /**
+     * When New item is added in breadcrumb, it checks if theere is enough space.
+     * If not, then one item is collapsed and replaced with ellipse
+     * @param breadcrumbWidth
+     */
     private void collapseItems(double breadcrumbWidth) {
         double containerWidth = this.parentContainer.getWidth();
         boolean isOverflowing = breadcrumbWidth + THRESHOLD_WIDTH > containerWidth;
@@ -136,29 +160,11 @@ public class BreadcrumbManager {
     }
 
 
-    private void expandIfRequired(int clickedDepth, int totalNavigationDepth) {
-        if (collapsedStack.isEmpty()) return;
-        System.out.println("Clicked depth: " + clickedDepth);
-        System.out.println("Last item depth: " + totalNavigationDepth);
-        int numOfItemsToExpand = totalNavigationDepth - clickedDepth;
-        TreeItem<String> last = this.breadCrumbBar.getSelectedCrumb();
-        TreeItem<String> secondItem = ellipsisItem;
-        if (numOfItemsToExpand >= collapsedStack.size()) {
-            System.out.println("Remove Eclipse");
-            secondItem = ellipsisItem.getParent();
-            secondItem.getChildren().add(ellipsisItem.getChildren().getFirst());
-            secondItem.getChildren().remove(ellipsisItem);
-        }
-        System.out.println(collapsedStack.size());
-        System.out.println("Expand " + numOfItemsToExpand + " items with ellipse");
-        int finalItems = Math.min(numOfItemsToExpand, collapsedStack.size());
-        for (int i = 0; i < finalItems; i++) {
-            insertNewItemBefore(secondItem.getChildren().getFirst(), collapsedStack.removeLast().getTitle());
-        }
-        forceUpdateUi(last);
-    }
-
-
+    /**
+     * When width of the Window is increased, it checks if there is available space
+     * If yes, then one item is expanded
+     * @param newWidth
+     */
     private void expandItems(double newWidth) {
         if (Math.abs(newWidth - lastChangedWidth) < THRESHOLD_WIDTH) return;
         if (collapsedStack.isEmpty()) return;
@@ -180,16 +186,33 @@ public class BreadcrumbManager {
         lastChangedWidth = newWidth;
     }
 
-    private void insertNewItemBefore(TreeItem<String> selectedItem, String newItemValue) {
-        TreeItem<String> parent = selectedItem.getParent();
-        if (parent != null) {
-            int index = parent.getChildren().indexOf(selectedItem);
-            parent.getChildren().remove(selectedItem); // Remove the selected item from its parent
 
-            TreeItem<String> newItem = new TreeItem<>(newItemValue);
-            parent.getChildren().add(index, newItem); // Insert new item at the same position
-            newItem.getChildren().add(selectedItem); // Add the original item as a child of the new item
+    /**
+     * When a breadcrumb item is clicked, then the number of items after selected item are collapsed (Already done before calling this method)
+     * At the same time, same number of items  (if any) before selected item is expanded
+     * @param clickedDepth Depth of the selected item
+     * @param totalNavigationDepth Total length of Navigation Stack
+     */
+    private void expandIfRequired(int clickedDepth, int totalNavigationDepth) {
+        if (collapsedStack.isEmpty()) return;
+        System.out.println("Clicked depth: " + clickedDepth);
+        System.out.println("Last item depth: " + totalNavigationDepth);
+        int numOfItemsToExpand = totalNavigationDepth - clickedDepth;
+        TreeItem<String> last = this.breadCrumbBar.getSelectedCrumb();
+        TreeItem<String> secondItem = ellipsisItem;
+        if (numOfItemsToExpand >= collapsedStack.size()) {
+            System.out.println("Remove Eclipse");
+            secondItem = ellipsisItem.getParent();
+            secondItem.getChildren().add(ellipsisItem.getChildren().getFirst());
+            secondItem.getChildren().remove(ellipsisItem);
         }
+        System.out.println(collapsedStack.size());
+        System.out.println("Expand " + numOfItemsToExpand + " items with ellipse");
+        int finalItems = Math.min(numOfItemsToExpand, collapsedStack.size());
+        for (int i = 0; i < finalItems; i++) {
+            insertNewItemBefore(secondItem.getChildren().getFirst(), collapsedStack.removeLast().getTitle());
+        }
+        forceUpdateUi(last);
     }
 
 }
