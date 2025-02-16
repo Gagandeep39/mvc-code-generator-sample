@@ -55,10 +55,8 @@ public abstract class BaseController {
         getBreadcrumbBar().widthProperty().addListener((obs, oldVal, newVal) -> adjustBreadcrumbs(newVal.doubleValue()));
         getParentContainer().widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
     }
-// todo just refresh thwe whole thing
-    // todo create evcaluate in other classes and use those
+
     private void expandIfRequired(int clickedDepth, int totalNavigationDepth) {
-        System.out.println(collapsedStack.size());
         if (collapsedStack.isEmpty()) return;
         System.out.println("Cliked depth: " + clickedDepth);
         System.out.println("Last item depth: " + totalNavigationDepth);
@@ -69,12 +67,13 @@ public abstract class BaseController {
         while (first.getParent() != null) {
             first = first.getParent();
         }
-        if (numOfItemsToExpand > collapsedStack.size()) {
-            System.out.println("Expand " + numOfItemsToExpand + " items without ellipse");
+        if (numOfItemsToExpand >= collapsedStack.size()) {
+            System.out.println("Remove Eclipse");
             secondItem = ellipsisItem.getParent();
             secondItem.getChildren().add(ellipsisItem.getChildren().getFirst());
             secondItem.getChildren().remove(ellipsisItem);
         }
+        System.out.println(collapsedStack.size());
         // Working state
             System.out.println("Expand " + numOfItemsToExpand + " items with ellipse");
         int finalItems = Math.min(numOfItemsToExpand, collapsedStack.size());
@@ -82,7 +81,8 @@ public abstract class BaseController {
                 insertNewItemBefore(secondItem.getChildren().getFirst(), collapsedStack.removeLast().getTitle());
             }
 
-        getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
+            getBreadcrumbBar().setSelectedCrumb(null);
+//        getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
         getBreadcrumbBar().setSelectedCrumb(last);
     }
 
@@ -132,7 +132,6 @@ public abstract class BaseController {
     }
 
     private void collapseItems() {
-        System.out.println("Collapsing " + collapsedStack.size() + " items");
         if (getCrumbDepth(getBreadcrumbBar().getSelectedCrumb()) <3) return;
         TreeItem<String> last = getBreadcrumbBar().getSelectedCrumb();
         TreeItem<String> first = getBreadcrumbBar().getSelectedCrumb();
@@ -148,6 +147,7 @@ public abstract class BaseController {
         }
         // Remove second item
         collapsedStack.add(navigationStack.get(1 + collapsedStack.size()));
+        System.out.println("Collapsing " + collapsedStack.size() + " items");
         // Append 3rd item to ellipse
         TreeItem<String> third = second.getChildren().getFirst();
         ellipsisItem.getChildren().clear();
