@@ -10,24 +10,24 @@ import org.example.assetuijavafx.fxml.utils.PageSwitchEvent;
 import org.example.assetuijavafx.model.NavigationState;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.example.assetuijavafx.application.AssetPlusApplication.PACKAGE_ID;
 
 public abstract class BaseController {
 
-    protected abstract BreadCrumbBar<String> getBreadcrumbBar();
-    protected abstract Pane getParentContainer();
-    protected abstract Pane getChildContainer();
     protected TreeItem<String> root = new TreeItem<>();
     protected BreadcrumbManager breadcrumbManager;
 
-    public void initializeBreadcrumbNavigation(String rootPage) {
+    protected abstract BreadCrumbBar<String> getBreadcrumbBar();
 
+    protected abstract Pane getParentContainer();
+
+    protected abstract Pane getChildContainer();
+
+    public void initializeBreadcrumbNavigation(String rootPage) {
         this.root = new TreeItem<>(rootPage);
         breadcrumbManager = new BreadcrumbManager(getBreadcrumbBar(), getParentContainer());
     }
-
 
 
     public FXMLLoader loadPage(NavigationState<?> navigationState) throws IOException {

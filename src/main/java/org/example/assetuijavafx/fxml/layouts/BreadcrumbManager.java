@@ -11,84 +11,17 @@ import java.util.ArrayList;
 public class BreadcrumbManager {
     private final BreadCrumbBar<String> breadCrumbBar;
     private final Pane parentContainer;
-    private final ArrayList<NavigationState<?>> collapsedStack =  new ArrayList<>();
+    private final ArrayList<NavigationState<?>> collapsedStack = new ArrayList<>();
     private final ArrayList<NavigationState<?>> navigationStack = new ArrayList<>();
 
     private final TreeItem<String> ellipsisItem = new TreeItem<>("..."); // Non-clickable item
-    private double lastChangedWidth = 0;
     private final int THRESHOLD_WIDTH = 50;
-
-    /**
-     * Helper Methods
-     * @param navItem Add item to the navStack
-     */
-    public void addNavItem(final NavigationState<?> navItem) {
-        navigationStack.add(navItem);
-    }
-
-    /**
-     * Remove last item and returns Second last item
-     * @return navigationState
-     */
-    public NavigationState<?> removeLastAndGetSecondLast() {
-        navigationStack.removeLast();
-        return navigationStack.getLast();
-    }
-
-
-    /**
-     * Force rerenders the Breadcrumb UI
-     */
-    public void forceUpdateUi(TreeItem<String> last) {
-        this.breadCrumbBar.setSelectedCrumb(null); // Tem workaround for UI to update
-        this.breadCrumbBar.setSelectedCrumb(last);
-    }
-
-
-    /**
-     * Finds the first item in the Tree Structure of breadcrumb
-     */
-    public TreeItem<String> getRootTreeItem(TreeItem<String> node) {
-        TreeItem<String> temp = node;
-        while (temp.getParent() != null) {
-            temp = temp.getParent();
-        }
-        return temp;
-    }
-
-    /**
-     * Calculate depth of the selected breadcrumb
-     */
-    protected int getCrumbDepth(TreeItem<String> item) {
-        int depth = 0;
-        while (item.getParent() != null) {
-            depth++;
-            item = item.getParent();
-        }
-        return depth;
-    }
-
-
-    /**
-     * Add a new Item before an item in breadcrumb
-     * @param selectedItem Item before which new item is added
-     * @param newItemValue String item to be added
-     */
-    private void insertNewItemBefore(TreeItem<String> selectedItem, String newItemValue) {
-        TreeItem<String> parent = selectedItem.getParent();
-        if (parent != null) {
-            int index = parent.getChildren().indexOf(selectedItem);
-            parent.getChildren().remove(selectedItem); // Remove the selected item from its parent
-
-            TreeItem<String> newItem = new TreeItem<>(newItemValue);
-            parent.getChildren().add(index, newItem); // Insert new item at the same position
-            newItem.getChildren().add(selectedItem); // Add the original item as a child of the new item
-        }
-    }
+    private double lastChangedWidth = 0;
 
     /**
      * Initialize Breadcrumbar
-     * @param breadCrumbBar Breadcrumbar
+     *
+     * @param breadCrumbBar   Breadcrumbar
      * @param parentContainer Container containing breadcrumb
      */
     public BreadcrumbManager(BreadCrumbBar<String> breadCrumbBar, Pane parentContainer) {
@@ -122,24 +55,91 @@ public class BreadcrumbManager {
             breadCrumbButton.setDisable(crumb.getValue().equals("..."));
             return breadCrumbButton;
         });
-        this.breadCrumbBar.widthProperty()
-                .addListener((obs, oldVal, newVal) -> collapseItems(newVal.doubleValue()));
-        this.parentContainer
-                .widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
+        this.breadCrumbBar.widthProperty().addListener((obs, oldVal, newVal) -> collapseItems(newVal.doubleValue()));
+        this.parentContainer.widthProperty().addListener((obs, oldVal, newVal) -> expandItems(newVal.doubleValue()));
+    }
+
+    /**
+     * Helper Methods
+     *
+     * @param navItem Add item to the navStack
+     */
+    public void addNavItem(final NavigationState<?> navItem) {
+        navigationStack.add(navItem);
+    }
+
+    /**
+     * Remove last item and returns Second last item
+     *
+     * @return navigationState
+     */
+    public NavigationState<?> removeLastAndGetSecondLast() {
+        navigationStack.removeLast();
+        return navigationStack.getLast();
+    }
+
+    /**
+     * Force rerenders the Breadcrumb UI
+     */
+    public void forceUpdateUi(TreeItem<String> last) {
+        this.breadCrumbBar.setSelectedCrumb(null); // Tem workaround for UI to update
+        this.breadCrumbBar.setSelectedCrumb(last);
+    }
+
+    /**
+     * Finds the first item in the Tree Structure of breadcrumb
+     */
+    public TreeItem<String> getRootTreeItem(TreeItem<String> node) {
+        TreeItem<String> temp = node;
+        while (temp.getParent() != null) {
+            temp = temp.getParent();
+        }
+        return temp;
+    }
+
+    /**
+     * Calculate depth of the selected breadcrumb
+     */
+    protected int getCrumbDepth(TreeItem<String> item) {
+        int depth = 0;
+        while (item.getParent() != null) {
+            depth++;
+            item = item.getParent();
+        }
+        return depth;
+    }
+
+    /**
+     * Add a new Item before an item in breadcrumb
+     *
+     * @param selectedItem Item before which new item is added
+     * @param newItemValue String item to be added
+     */
+    private void insertNewItemBefore(TreeItem<String> selectedItem, String newItemValue) {
+        TreeItem<String> parent = selectedItem.getParent();
+        if (parent != null) {
+            int index = parent.getChildren().indexOf(selectedItem);
+            parent.getChildren().remove(selectedItem); // Remove the selected item from its parent
+
+            TreeItem<String> newItem = new TreeItem<>(newItemValue);
+            parent.getChildren().add(index, newItem); // Insert new item at the same position
+            newItem.getChildren().add(selectedItem); // Add the original item as a child of the new item
+        }
     }
 
     /**
      * When New item is added in breadcrumb, it checks if theere is enough space.
      * If not, then one item is collapsed and replaced with ellipse
+     *
      * @param breadcrumbWidth
      */
     private void collapseItems(double breadcrumbWidth) {
         double containerWidth = this.parentContainer.getWidth();
         boolean isOverflowing = breadcrumbWidth + THRESHOLD_WIDTH > containerWidth;
         if (!isOverflowing) return;
-        if (getCrumbDepth(this.breadCrumbBar.getSelectedCrumb()) <3) return;
+        if (getCrumbDepth(this.breadCrumbBar.getSelectedCrumb()) < 3) return;
         TreeItem<String> last = this.breadCrumbBar.getSelectedCrumb();
-        TreeItem<String> first = getRootTreeItem(last) ;
+        TreeItem<String> first = getRootTreeItem(last);
 
         TreeItem<String> second = first.getChildren().getFirst();
         // If ellipse already there then remove ellipse and update the second item to non ellipse second item
@@ -163,6 +163,7 @@ public class BreadcrumbManager {
     /**
      * When width of the Window is increased, it checks if there is available space
      * If yes, then one item is expanded
+     *
      * @param newWidth
      */
     private void expandItems(double newWidth) {
@@ -170,7 +171,7 @@ public class BreadcrumbManager {
         if (collapsedStack.isEmpty()) return;
         // Expand 1 item and
         TreeItem<String> last = this.breadCrumbBar.getSelectedCrumb();
-        TreeItem<String> first = getRootTreeItem(last) ;
+        TreeItem<String> first = getRootTreeItem(last);
 
         if (collapsedStack.size() == 1) {
             TreeItem<String> itemAfterEllipse = ellipsisItem.getChildren().getFirst();
@@ -190,7 +191,8 @@ public class BreadcrumbManager {
     /**
      * When a breadcrumb item is clicked, then the number of items after selected item are collapsed (Already done before calling this method)
      * At the same time, same number of items  (if any) before selected item is expanded
-     * @param clickedDepth Depth of the selected item
+     *
+     * @param clickedDepth         Depth of the selected item
      * @param totalNavigationDepth Total length of Navigation Stack
      */
     private void expandIfRequired(int clickedDepth, int totalNavigationDepth) {
