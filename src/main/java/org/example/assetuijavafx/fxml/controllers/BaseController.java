@@ -125,7 +125,6 @@ public abstract class BaseController {
     private void adjustBreadcrumbs(double breadcrumbWidth) {
         double containerWidth = getParentContainer().getWidth();
         boolean isOverflowing = breadcrumbWidth + 42 > containerWidth;
-
         if (isOverflowing) {
             collapseItems();
         }
@@ -150,11 +149,9 @@ public abstract class BaseController {
         System.out.println("Collapsing " + collapsedStack.size() + " items");
         // Append 3rd item to ellipse
         TreeItem<String> third = second.getChildren().getFirst();
-        ellipsisItem.getChildren().clear();
-        ellipsisItem.getChildren().add(third);
-        // Remove second item from first item
-        first.getChildren().remove(second);
-        // Append ellipse to first item
+        ellipsisItem.getChildren().addFirst(third);
+        getBreadcrumbBar().setSelectedCrumb(third);
+        first.getChildren().clear();
         first.getChildren().add(ellipsisItem);
         getBreadcrumbBar().setSelectedCrumb(first); // Tem workaround for UI to update
         getBreadcrumbBar().setSelectedCrumb(last);
