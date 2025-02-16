@@ -1,36 +1,57 @@
 {
   "AssetPlus": {
     "specificAssets": [
-      ""
-    ],
-    "assetTypes": [
       {
-        "AssetType": {
+        "SpecificAsset": {
+          "assetNumber": 11212,
+          "floorNumber": 1212,
+          "roomNumber": 1212,
+          "purchaseDate": "2025-01-04",
           "assetPlus": {
             "@reference": "../../.."
           },
-          "name": "wert5y6",
-          "expectedLifeSpan": 12,
-          "image": "dwsfegcdvfbghhyju",
-          "specificAssets": [
-            ""
-          ]
-        }
-      }
-    ],
-    "maintenanceTickets": [
-      {
-        "MaintenanceTicket": {
-          "id": 1001,
-          "raisedOnDate": "2025-01-14",
-          "description": "cdvfbgh",
-          "timeToResolve": "LessThanADay",
-          "priority": "Normal",
-          "assetPlus": {
-            "@reference": "../../.."
+          "assetType": {
+            "assetPlus": {
+              "@reference": "../../../.."
+            },
+            "name": "checkbox",
+            "expectedLifeSpan": 1222,
+            "image": "we23r4t56",
+            "visible": false,
+            "specificAssets": [
+              {
+                "SpecificAsset": {
+                  "@reference": "../../.."
+                }
+              }
+            ]
           }
         }
       }
+    ],
+    "assetTypes": [
+      {
+        "AssetType": [
+          {
+            "assetPlus": {
+              "@reference": "../../.."
+            },
+            "name": "efrghy",
+            "expectedLifeSpan": 12,
+            "image": "dfghyju",
+            "visible": false,
+            "specificAssets": [
+              ""
+            ]
+          },
+          {
+            "@reference": "../../specificAssets/SpecificAsset/assetType"
+          }
+        ]
+      }
+    ],
+    "maintenanceTickets": [
+      ""
     ]
   }
 }
